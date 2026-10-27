@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Red pill button with a ripple on press (ripple needs API 21+, which every current project has) -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#33FFFFFF">
+    <item>
+        <selector>
+            <item android:state_pressed="true">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/asanni_welcome_accent_pressed" />
+                    <corners android:radius="100dp" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/asanni_welcome_accent" />
+                    <corners android:radius="100dp" />
+                </shape>
+            </item>
+        </selector>
+    </item>
+</ripple>

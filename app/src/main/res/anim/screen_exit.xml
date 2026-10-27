@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/anim/screen_exit.xml - the welcome screen fades out. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/accelerate_quad">
+    <alpha
+        android:duration="220"
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0" />
+</set>

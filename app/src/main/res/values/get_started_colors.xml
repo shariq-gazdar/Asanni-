@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <color name="asanni_welcome_background">#F4F1EC</color>
+
+    <color name="asanni_welcome_ink">#14110F</color>
+
+    <color name="asanni_welcome_muted">#6B645D</color>
+
+    <color name="asanni_welcome_accent">#A6262D</color>
+
+    <color name="asanni_welcome_accent_pressed">#821D23</color>
+
+    <color name="asanni_welcome_on_accent">#FFFFFF</color>
+
+    <color name="asanni_welcome_chip">#F2FFFFFF</color>
+
+    <color name="asanni_welcome_live_dot">#2E9E5B</color>
+</resources>

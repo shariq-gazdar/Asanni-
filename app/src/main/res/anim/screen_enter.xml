@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/anim/screen_enter.xml - next screen slides/fades in. Duration in ms. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <alpha
+        android:duration="320"
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0" />
+    <translate
+        android:duration="320"
+        android:fromXDelta="6%p"
+        android:toXDelta="0" />
+</set>

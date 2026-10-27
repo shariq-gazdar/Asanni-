@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="brand_name">ASANNI</string>
+
+    <string name="welcome_eyebrow">KARACHI, AT YOUR TABLE</string>
+
+    <string name="welcome_title">Find a free table\nbefore you leave.</string>
+
+    <string name="welcome_description"> Live restaurant availability, honest wait times and directions across the city</string>
+
+    <!-- SAMPLE number -->
+    <string name="welcome_live_chip">328 tables live now</string>
+
+    <string name="welcome_hero_description">A busy restaurant terrace at dusk with the city skyline behind it</string>
+
+    <string name="get_started_button">Get started</string>
+
+    <string name="login_prompt">Already have an account?</string>
+    <string name="login_button">Log in</string>
+</resources>

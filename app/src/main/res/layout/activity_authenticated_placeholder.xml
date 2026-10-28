@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    TEMPORARY signed-in screen  (NEW)
+    Location: app/src/main/res/layout/activity_authenticated_placeholder.xml
+    Shown to returning users whose onboarding is complete, until the real dashboards exist.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/placeholder_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asanni_welcome_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- [EDIT TEXT] Placeholder heading -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:accessibilityHeading="true"
+            android:text="@string/placeholder_title"
+            android:textColor="@color/asanni_welcome_ink"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            tools:targetApi="p" />
+
+        <!-- Real account name/email from Firebase (filled in by Java) -->
+        <TextView
+            android:id="@+id/text_signed_in_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/asanni_welcome_ink"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_signed_in_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/asanni_welcome_muted"
+            android:textSize="14sp" />
+
+        <!-- [EDIT TEXT] Explains this is not the real dashboard -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingMultiplier="1.1"
+            android:text="@string/placeholder_body"
+            android:textColor="@color/asanni_welcome_muted"
+            android:textSize="14sp" />
+
+        <!-- [EDIT TEXT] Sign out (testing / future integration point) -->
+        <TextView
+            android:id="@+id/button_sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_google_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:minHeight="56dp"
+            android:text="@string/sign_out"
+            android:textColor="@color/asanni_welcome_ink"
+            android:textSize="15sp" />
+    </LinearLayout>
+</FrameLayout>

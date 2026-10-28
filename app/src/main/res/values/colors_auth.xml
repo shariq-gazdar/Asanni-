@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/colors_auth.xml  (NEW) -->
+<resources>
+    <!-- [COLOR] Google button, light theme values from Google's sign-in branding guidelines.
+         Keep these if you want to stay within Google's rules. -->
+    <color name="asanni_google_button_fill">#FFFFFF</color>
+    <color name="asanni_google_button_stroke">#747775</color>
+    <color name="asanni_google_button_text">#1F1F1F</color>
+</resources>

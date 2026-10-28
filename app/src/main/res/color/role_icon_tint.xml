@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icon color: red when its card is selected, dark otherwise. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/asanni_welcome_accent" android:state_selected="true" />
+    <item android:color="@color/asanni_icon_default" />
+</selector>

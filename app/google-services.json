@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "480991342441",
+    "project_id": "asanni-6e242",
+    "storage_bucket": "asanni-6e242.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480991342441:android:8d2e93461a6388fca397f8",
+        "android_client_info": {
+          "package_name": "com.asanni.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "480991342441-uj3ckrfo8pps1bjn46onu1oo4st8sfc8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asanni.app",
+            "certificate_hash": "fb0e7f565beb1170d6fd60c3f4aa2e3cdaf833c2"
+          }
+        },
+        {
+          "client_id": "480991342441-ebg52p1oibcl152i2ia9jti6jkv3gbrs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcZoksT_Vla09Jy5ee5Af8PdQikVF-NE4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "480991342441-ebg52p1oibcl152i2ia9jti6jkv3gbrs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

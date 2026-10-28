@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Choose Your Role screen  (NEW)
+    Location: app/src/main/res/layout/activity_choose_role.xml
+
+    Structure (matches the reference):
+      1. Top bar        close button + "Welcome to ASANNI"
+      2. Heading        "How will you use ASANNI?" + supporting line
+      3. Diner card     (selected by default)
+      4. Manager card
+      5. Flexible space
+      6. Continue button (label follows the selected card)
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/choose_role_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asanni_welcome_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- ============ 1. TOP BAR ============ -->
+            <LinearLayout
+                android:id="@+id/top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Close button: 48dp touch target, drawn as a 36dp circle -->
+                <FrameLayout
+                    android:id="@+id/button_close"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/close"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_close_button"
+                        android:importantForAccessibility="no"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_close" />
+                </FrameLayout>
+
+                <!-- [EDIT TEXT] Small top title -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/choose_role_top_title"
+                    android:textColor="@color/asanni_welcome_ink"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- ============ 2. HEADING ============ -->
+            <!-- [EDIT TEXT] Main page heading -->
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:accessibilityHeading="true"
+                android:lineSpacingMultiplier="1.05"
+                android:text="@string/choose_role_title"
+                android:textColor="@color/asanni_welcome_ink"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                tools:targetApi="p" />
+
+            <!-- [EDIT TEXT] Supporting description -->
+            <TextView
+                android:id="@+id/text_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/choose_role_description"
+                android:textColor="@color/asanni_welcome_muted"
+                android:textSize="13sp" />
+
+            <!-- ============ 3. DINER CARD ============ -->
+            <LinearLayout
+                android:id="@+id/card_diner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_role_card"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- [UI ASSET] Replace with the diner illustration from the ui folder.
+                         Default is the vector res/drawable/ic_role_diner.xml. To use your own,
+                         add res/drawable/ic_role_diner.png (delete the .xml first). -->
+                    <ImageView
+                        android:id="@+id/icon_diner"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="start"
+                        android:background="@drawable/bg_role_icon_tile"
+                        android:importantForAccessibility="no"
+                        android:padding="13dp"
+                        android:src="@drawable/ic_role_diner"
+                        android:tint="@color/role_icon_tint" />
+
+                    <ImageView
+                        android:id="@+id/diner_chevron"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_chevron_right"
+                        android:tint="@color/asanni_chevron"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <!-- [EDIT TEXT] Diner option title -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/role_diner_title"
+                    android:textColor="@color/asanni_welcome_ink"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- [EDIT TEXT] Diner option description -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="@string/role_diner_description"
+                    android:textColor="@color/asanni_welcome_muted"
+                    android:textSize="13sp" />
+
+                <!-- "Selected" marker (visible only when this card is selected) -->
+                <LinearLayout
+                    android:id="@+id/diner_selected_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_check_circle"
+                        android:tint="@color/asanni_welcome_accent" />
+
+                    <!-- [EDIT TEXT] "Selected" label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/role_selected_label"
+                        android:textColor="@color/asanni_welcome_accent"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ============ 4. MANAGER CARD ============ -->
+            <LinearLayout
+                android:id="@+id/card_manager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_role_card"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- [UI ASSET] Replace with the restaurant manager illustration from the ui folder.
+                         Default is the vector res/drawable/ic_role_manager.xml. To use your own,
+                         add res/drawable/ic_role_manager.png (delete the .xml first). -->
+                    <ImageView
+                        android:id="@+id/icon_manager"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="start"
+                        android:background="@drawable/bg_role_icon_tile"
+                        android:importantForAccessibility="no"
+                        android:padding="13dp"
+                        android:src="@drawable/ic_role_manager"
+                        android:tint="@color/role_icon_tint" />
+
+                    <ImageView
+                        android:id="@+id/manager_chevron"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_chevron_right"
+                        android:tint="@color/asanni_chevron" />
+                </FrameLayout>
+
+                <!-- [EDIT TEXT] Restaurant manager option title -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/role_manager_title"
+                    android:textColor="@color/asanni_welcome_ink"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- [EDIT TEXT] Restaurant manager option description -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="@string/role_manager_description"
+                    android:textColor="@color/asanni_welcome_muted"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    android:id="@+id/manager_selected_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_check_circle"
+                        android:tint="@color/asanni_welcome_accent" />
+
+                    <!-- [EDIT TEXT] "Selected" label (same string as the diner card) -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/role_selected_label"
+                        android:textColor="@color/asanni_welcome_accent"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ============ 5. FLEXIBLE SPACE (pushes the button to the bottom) ============ -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no" />
+
+            <!-- ============ 6. CONTINUE BUTTON ============ -->
+            <TextView
+                android:id="@+id/button_continue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_get_started_button"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:minHeight="56dp"
+                android:paddingStart="24dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="24dp"
+                android:paddingBottom="16dp"
+                android:text="@string/continue_as_diner"
+                android:textColor="@color/asanni_welcome_on_accent"
+                android:textSize="16sp" />
+            <!-- [EDIT TEXT] Primary button label: changes between continue_as_diner / continue_as_manager -->
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

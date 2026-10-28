@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/colors_choose_role.xml  (NEW)
+     Reuses the colors from get_started_colors.xml and adds the card colors. -->
+<resources>
+    <!-- [COLOR] Selected card -->
+    <color name="asanni_card_selected_fill">#FFFDFB</color>
+    <color name="asanni_card_selected_border">#A6262D</color>
+    <color name="asanni_tile_selected_fill">#F3D9DA</color>
+    <!-- [COLOR] Unselected card -->
+    <color name="asanni_card_default_fill">#EEEBE6</color>
+    <color name="asanni_card_default_border">#E6E1DA</color>
+    <color name="asanni_tile_default_fill">#FFFFFF</color>
+    <!-- [COLOR] Icons -->
+    <color name="asanni_icon_default">#14110F</color>
+    <color name="asanni_chevron">#8A837B</color>
+    <!-- [COLOR] Close button -->
+    <color name="asanni_close_fill">#FFFFFF</color>
+    <color name="asanni_close_border">#E2DDD5</color>
+</resources>

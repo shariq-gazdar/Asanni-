@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Get Started / Welcome screen
+    Location: app/src/main/res/layout/activity_get_started.xml
 
+    Structure (top to bottom, matching the reference):
+      1. Logo block      (wordmark + small tagline, centered)
+      2. Eyebrow         (small red uppercase line)
+      3. Heading         (large bold)
+      4. Description     (muted grey)
+      5. Hero card       (rounded photo + "live tables" chip)  <- takes all spare height
+      6. Primary button  (full-width, dark red pill)
+
+    Only platform widgets are used (no extra dependencies).
+-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/get_started_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/asanni_welcome_background">
+    <!-- [COLOR] Screen background: change asanni_welcome_background in get_started_colors.xml -->
 
+    <!-- ScrollView + fillViewport: the hero card stretches on tall phones,
+         and the page still scrolls on small phones / large font sizes. -->
     <ScrollView
         android:id="@+id/get_started_scroll"
         android:layout_width="match_parent"
@@ -24,7 +40,7 @@
             android:paddingEnd="24dp"
             android:paddingBottom="24dp">
 
-            <!--LOGO BLOCK -->
+            <!-- ============ 1. LOGO BLOCK ============ -->
             <LinearLayout
                 android:id="@+id/logo_block"
                 android:layout_width="match_parent"
@@ -33,7 +49,8 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <!-- logo image view -->
+                <!-- [UI ASSET] If you add res/drawable/asanni_logo.(png|webp|xml), the Java code
+                     shows this ImageView and hides the text wordmark below. -->
                 <ImageView
                     android:id="@+id/logo_image"
                     android:layout_width="wrap_content"
@@ -43,7 +60,7 @@
                     android:scaleType="fitCenter"
                     android:visibility="gone" />
 
-                <!-- text fallback used until asanni_logo exists -->
+                <!-- [EDIT TEXT] Brand wordmark (text fallback used until asanni_logo exists) -->
                 <TextView
                     android:id="@+id/logo_wordmark"
                     android:layout_width="wrap_content"
@@ -56,10 +73,22 @@
                     android:textColor="@color/asanni_welcome_ink"
                     android:textSize="44sp" />
 
+                <!-- [EDIT TEXT] Small tagline under the logo (placeholder copy) -->
+                <TextView
+                    android:id="@+id/logo_tagline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.12"
+                    android:text="@string/welcome_logo_tagline"
+                    android:textAllCaps="true"
+                    android:textColor="@color/asanni_welcome_ink"
+                    android:textSize="9sp" />
             </LinearLayout>
 
-            <!-- EYEBROW -->
-
+            <!-- ============ 2. EYEBROW ============ -->
+            <!-- [EDIT TEXT] Small red line above the heading -->
             <TextView
                 android:id="@+id/text_eyebrow"
                 android:layout_width="wrap_content"
@@ -72,8 +101,10 @@
                 android:textColor="@color/asanni_welcome_accent"
                 android:textSize="11sp" />
 
-            <!-- HEADING -->
-            <!-- Main welcome heading -->
+            <!-- ============ 3. HEADING ============ -->
+            <!-- [EDIT TEXT] Main welcome heading -->
+            <!-- [FONT] To use a custom font, add a file to res/font/ and set
+                 android:fontFamily="@font/your_font_name" -->
             <TextView
                 android:id="@+id/text_title"
                 android:layout_width="match_parent"
@@ -88,8 +119,8 @@
                 android:textStyle="bold"
                 tools:targetApi="p" />
 
-            <!-- DESCRIPTION -->
-            <!-- Welcome description -->
+            <!-- ============ 4. DESCRIPTION ============ -->
+            <!-- [EDIT TEXT] Welcome description -->
             <TextView
                 android:id="@+id/text_description"
                 android:layout_width="match_parent"
@@ -100,8 +131,9 @@
                 android:textColor="@color/asanni_welcome_muted"
                 android:textSize="14sp" />
 
-            <!-- HERO CARD -->
-
+            <!-- ============ 5. HERO CARD ============ -->
+            <!-- clipToOutline + rounded background = rounded photo corners.
+                 layout_weight="1" makes it fill the leftover height. -->
             <FrameLayout
                 android:id="@+id/hero_card"
                 android:layout_width="match_parent"
@@ -112,7 +144,10 @@
                 android:clipToOutline="true"
                 android:minHeight="220dp">
 
-
+                <!-- [UI ASSET] Replace this illustration with your restaurant hero image from the ui folder.
+                     Currently points at a gradient placeholder: res/drawable/welcome_hero_restaurant.xml
+                     To use your photo: DELETE that .xml file and add
+                     res/drawable-nodpi/welcome_hero_restaurant.webp (or .jpg / .png). Same name, no code change. -->
                 <ImageView
                     android:id="@+id/hero_image"
                     android:layout_width="match_parent"
@@ -121,6 +156,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/welcome_hero_restaurant" />
 
+                <!-- Soft dark gradient at the bottom so the chip stays readable on any photo -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="96dp"
@@ -150,7 +186,7 @@
                         android:background="@drawable/bg_live_dot"
                         android:importantForAccessibility="no" />
 
-                    <!-- Live-tables chip. SAMPLE value only - no backend yet. -->
+                    <!-- [EDIT TEXT] Live-tables chip. SAMPLE value only - no backend yet. -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -162,43 +198,87 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- PRIMARY BUTTON -->
-
+            <!-- ============ 6. PRIMARY BUTTON + LOGIN LINK ============ -->
+            <!-- MODIFIED: button and the new "Log in" link are grouped so they animate in together. -->
             <LinearLayout
-                android:id="@+id/button_get_started"
+                android:id="@+id/bottom_actions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/bg_get_started_button"
-                android:clickable="true"
-                android:contentDescription="@string/get_started_button"
-                android:elevation="4dp"
-                android:focusable="true"
-                android:gravity="center"
-                android:minHeight="56dp"
-                android:orientation="horizontal"
-                android:paddingStart="24dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="24dp"
-                android:paddingBottom="16dp">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_arrow_forward" />
+                <!-- Built from a LinearLayout so the arrow icon sits right next to the centered label.
+                     minHeight 56dp = comfortable touch target (min recommended is 48dp). -->
+                <LinearLayout
+                    android:id="@+id/button_get_started"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_get_started_button"
+                    android:clickable="true"
+                    android:contentDescription="@string/get_started_button"
+                    android:elevation="4dp"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:minHeight="56dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="24dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="24dp"
+                    android:paddingBottom="16dp">
 
-                <!-- Primary button label -->
-                <TextView
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_arrow_forward" />
+
+                    <!-- [EDIT TEXT] Primary button label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/get_started_button"
+                        android:textColor="@color/asanni_welcome_on_accent"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- NEW: Login link (requested in phase 2; not in the original reference image).
+                     Kept small and quiet so the "Get started" button stays the main action. -->
+                <LinearLayout
+                    android:id="@+id/login_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/get_started_button"
-                    android:textColor="@color/asanni_welcome_on_accent"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <!-- [EDIT TEXT] Login prompt -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_prompt"
+                        android:textColor="@color/asanni_welcome_muted"
+                        android:textSize="14sp" />
+
+                    <!-- [EDIT TEXT] Login button label. 48dp tall for an easy tap. -->
+                    <TextView
+                        android:id="@+id/button_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="@string/login_button"
+                        android:textColor="@color/asanni_welcome_accent"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

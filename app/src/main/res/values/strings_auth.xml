@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/strings_auth.xml  (NEW)
+     Every user-facing text of the Google Login page and the signed-in placeholder.
+     Login copy is PLACEHOLDER until the login reference image is provided. -->
+<resources>
+    <!-- [EDIT TEXT] Login page -->
+    <string name="login_top_title">Log in</string>
+    <string name="login_title">Welcome back.</string>
+    <string name="login_description">Sign in with your Google account to check live tables and pick up where you left off.</string>
+    <string name="login_illustration_description">Diners at a restaurant in the evening</string>
+
+    <!-- [EDIT TEXT] Google Sign-In button label and its busy states -->
+    <string name="login_google_button">Continue with Google</string>
+    <string name="login_signing_in">Signing in…</string>
+    <string name="login_preparing_profile">Setting up your profile…</string>
+    <string name="login_signing_out">Signing out…</string>
+    <string name="login_try_again">Try again</string>
+    <string name="login_use_other_account">Use a different account</string>
+    <string name="login_privacy_note">Google handles your sign-in. ASANNI never sees your password.</string>
+
+    <!-- [EDIT TEXT] Sign-in errors (shown above the button) -->
+    <string name="login_error_not_configured">Google sign-in isn\'t set up in this build yet. Add google-services.json and enable Google in Firebase.</string>
+    <string name="login_error_developer">Google rejected this app\'s setup. Check the SHA-1/SHA-256 fingerprints and package name in Firebase.</string>
+    <string name="login_error_no_account">No Google account found on this device. Add one in Settings, then try again.</string>
+    <string name="login_error_play_services">Google Play services needs an update on this device. Update it and try again.</string>
+    <string name="login_error_network">No connection. Check your internet and try again.</string>
+    <string name="login_error_generic">Couldn\'t sign in with Google. Please try again.</string>
+
+    <!-- [EDIT TEXT] Profile errors (signed in, but the profile couldn't be loaded) -->
+    <string name="login_profile_error_network">You\'re signed in, but we couldn\'t reach ASANNI to load your profile. Check your connection and try again.</string>
+    <string name="login_profile_error_permission">You\'re signed in, but your profile couldn\'t be opened (Firestore rules). Try again later.</string>
+    <string name="login_profile_error_database">You\'re signed in, but the ASANNI database isn\'t set up yet (create Firestore in Firebase).</string>
+    <string name="login_profile_error_generic">You\'re signed in, but your profile couldn\'t be loaded. Please try again.</string>
+
+    <!-- [EDIT TEXT] Temporary signed-in screen -->
+    <string name="placeholder_title">You\'re signed in</string>
+    <string name="placeholder_body">Your ASANNI home screen isn\'t built yet. This is a temporary page that confirms your sign-in worked.</string>
+    <string name="sign_out">Sign out</string>
+
+    <!-- Accessibility -->
+    <string name="back">Back</string>
+</resources>

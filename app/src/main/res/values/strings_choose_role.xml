@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/strings_choose_role.xml  (NEW)
+     Every user-facing text of the Choose Your Role page lives here. -->
+<resources>
+    <!-- [EDIT TEXT] Small title next to the close button (from reference) -->
+    <string name="choose_role_top_title">Welcome to ASANNI</string>
+
+    <!-- [EDIT TEXT] Main page heading (from reference). \n = line break -->
+    <string name="choose_role_title">How will you use\nASANNI?</string>
+
+    <!-- [EDIT TEXT] Supporting description (from reference) -->
+    <string name="choose_role_description">You can switch roles later from Settings.</string>
+
+    <!-- [EDIT TEXT] Diner option title / description (from reference) -->
+    <string name="role_diner_title">I\'m looking for a table</string>
+    <string name="role_diner_description">Discover nearby restaurants and see live availability.</string>
+
+    <!-- [EDIT TEXT] Restaurant manager option title / description (from reference) -->
+    <string name="role_manager_title">I manage a restaurant</string>
+    <string name="role_manager_description">Publish tables, wait times and your restaurant profile.</string>
+
+    <!-- [EDIT TEXT] Marker shown on the selected card (from reference) -->
+    <string name="role_selected_label">Selected</string>
+    <!-- Accessibility: spoken for the card that is not selected -->
+    <string name="role_not_selected_label">Not selected</string>
+
+    <!-- [EDIT TEXT] Bottom button label for each choice. "Continue as diner" is from the reference;
+         the manager wording is PLACEHOLDER copy. -->
+    <string name="continue_as_diner">Continue as diner</string>
+    <string name="continue_as_manager">Continue as manager</string>
+
+    <!-- [EDIT TEXT] Placeholder messages (shown until real diner/manager screens exist) -->
+    <string name="role_placeholder_diner">Diner selected. The diner experience is not built yet, and your choice is not saved.</string>
+    <string name="role_placeholder_manager">Manager selected. The manager experience is not built yet, and your choice is not saved.</string>
+
+    <!-- Accessibility -->
+    <string name="close">Close</string>
+</resources>

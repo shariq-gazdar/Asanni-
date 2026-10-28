@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/themes_asanni_screens.xml  (NEW)
+     A small platform theme for the four ASANNI screens (no AppCompat/Material dependency).
+     No action bar, warm background while the screen loads, transparent system bars.
+     It does not touch your existing app theme. -->
+<resources>
+    <style name="AsanniScreenTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- [COLOR] Shown for a split second before the layout draws -->
+        <item name="android:windowBackground">@color/asanni_welcome_background</item>
+        <item name="android:colorAccent">@color/asanni_welcome_accent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

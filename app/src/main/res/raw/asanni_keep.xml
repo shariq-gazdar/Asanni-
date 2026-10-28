@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/raw/asanni_keep.xml  (NEW)
+     These resources are looked up by name at runtime (getIdentifier), so tell the release-build
+     resource shrinker not to remove them. Names that don't exist yet are simply ignored. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@string/default_web_client_id,@drawable/asanni_logo,@drawable/ic_google_logo,@drawable/login_illustration" />

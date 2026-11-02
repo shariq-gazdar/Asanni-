@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/colors_intro.xml  (NEW in phase 5)
+     Intro (launch animation) colors, sampled from the reference video. The intro is a brand
+     moment, so it looks the same in Light and Dark mode (values-night/colors.xml repeats them). -->
+<resources>
+    <!-- [COLOR] Intro background red (video: RGB 156,18,39) -->
+    <color name="asanni_intro_background">#9C1227</color>
+    <!-- [COLOR] "ASANN" letters and tagline (warm white) -->
+    <color name="asanni_intro_wordmark">#FFFBF0</color>
+    <!-- [COLOR] Hourglass -->
+    <color name="asanni_intro_hourglass">#000000</color>
+</resources>

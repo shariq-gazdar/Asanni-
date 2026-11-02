@@ -19,7 +19,7 @@ import com.asanni.app.auth.GoogleAuthClient;
  *   - System bar code moved to the shared SystemBarsHelper
  * Visual design is unchanged apart from the small Login link under the button.
  */
-public class GetStartedActivity extends Activity {
+public class GetStartedActivity extends AsanniActivity {
 
     /** Remembers across rotation that the entrance already played, so it never replays/stacks. */
     private static final String STATE_ENTRANCE_PLAYED = "entrance_played";

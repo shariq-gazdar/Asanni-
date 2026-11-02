@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/strings_intro_offline.xml  (NEW in phase 5)
+     Texts for the intro animation and the offline screen. \' = apostrophe, \n = line break. -->
+<resources>
+    <!-- ========================= INTRO ========================= -->
+    <!-- [EDIT TEXT] Intro screen tagline (exactly as in the reference video) -->
+    <string name="intro_tagline">Taake asanni\nhojaye</string>
+    <!-- Spoken by screen readers while the intro plays -->
+    <string name="intro_content_description">ASANNI. Taake asanni hojaye.</string>
+
+    <!-- ========================= OFFLINE ========================= -->
+    <!-- [EDIT TEXT] Offline page heading -->
+    <string name="offline_title">You\'re offline</string>
+    <!-- [EDIT TEXT] Offline explanation -->
+    <string name="offline_description">ASANNI needs the internet for this step. Check your Wi-Fi or mobile data and try again.</string>
+    <!-- [EDIT TEXT] Retry button label -->
+    <string name="offline_retry">Try again</string>
+    <!-- [EDIT TEXT] Close the offline page and go back to the screen -->
+    <string name="offline_back">Go back</string>
+    <!-- [EDIT TEXT] Shown when Retry is tapped but there is still no internet -->
+    <string name="offline_still_offline">Still no connection. Please check your network and try again.</string>
+    <string name="offline_checking">Checking…</string>
+    <!-- [EDIT TEXT] Connection came back while the page was open (user still taps Try again) -->
+    <string name="offline_back_online">You\'re back online. Tap \"Try again\" to continue.</string>
+    <!-- [EDIT TEXT] Small note shown when a page shows saved (cached) details while offline -->
+    <string name="offline_cached_note">Offline. Showing your last saved details.</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/themes_intro.xml  (NEW in phase 5)
+     Window theme for the intro: red from the very first frame (no white flash), white status-bar
+     icons on red, no action bar. Android 12+ adds its own system splash first; values-v31 makes
+     that splash plain red too, so it flows straight into the ASANNI animation. -->
+<resources>
+    <style name="AsanniIntroTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/asanni_intro_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/asanni_intro_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

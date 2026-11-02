@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Phone verification (Firebase Phone Auth)  (NEW in phase 4)
+    Location: app/src/main/res/layout/activity_phone_verification.xml
+    No reference image: same visual language as the location and registration screens.
+      1. Top bar  2. Heading + why  3a. Number step (+92 field)  3b. Code step (6 digits)
+      4. Status line  5. Primary button (Send code / Verify / Try saving again)
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/phone_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asanni_welcome_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:id="@+id/top_bar"
+                style="@style/AsanniTopBar">
+
+                <FrameLayout
+                    android:id="@+id/button_back"
+                    style="@style/AsanniTopBarButton"
+                    android:contentDescription="@string/back">
+
+                    <ImageView
+                        style="@style/AsanniTopBarIcon"
+                        android:src="@drawable/ic_arrow_back" />
+                </FrameLayout>
+
+                <!-- [EDIT TEXT] Small top title -->
+                <TextView
+                    style="@style/AsanniTopBarTitle"
+                    android:text="@string/phone_verify_top_title" />
+            </LinearLayout>
+
+            <!-- [EDIT TEXT] Phone verification heading -->
+            <TextView
+                android:id="@+id/text_title"
+                style="@style/AsanniPageTitle"
+                android:text="@string/phone_verify_title"
+                tools:targetApi="p" />
+
+            <!-- [EDIT TEXT] Why we verify -->
+            <TextView
+                android:id="@+id/text_description"
+                style="@style/AsanniPageDescription"
+                android:text="@string/phone_verify_description" />
+
+            <LinearLayout
+                android:id="@+id/form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <!-- ============ STEP A: NUMBER ============ -->
+                <LinearLayout
+                    android:id="@+id/number_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- [EDIT TEXT] Phone number field label -->
+                    <TextView
+                        style="@style/AsanniFieldLabel"
+                        android:labelFor="@+id/input_phone"
+                        android:text="@string/phone_number_label" />
+
+                    <LinearLayout
+                        android:id="@+id/field_phone"
+                        style="@style/AsanniField"
+                        android:paddingStart="0dp">
+
+                        <!-- Fixed country code (Pakistan only in this version) -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_phone_prefix"
+                            android:contentDescription="@string/phone_country_code_description"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:minHeight="56dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="14dp"
+                            android:text="@string/phone_country_code"
+                            android:textColor="@color/asanni_welcome_ink"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/input_phone"
+                            style="@style/AsanniFieldInput"
+                            android:layout_marginStart="12dp"
+                            android:autofillHints="phoneNational"
+                            android:hint="@string/phone_number_hint"
+                            android:imeOptions="actionDone"
+                            android:inputType="phone"
+                            android:maxLength="16" />
+                    </LinearLayout>
+
+                    <!-- [EDIT TEXT] Phone helper -->
+                    <TextView
+                        android:id="@+id/text_phone_message"
+                        style="@style/AsanniFieldHelper"
+                        android:textColor="@color/asanni_welcome_accent"
+                        android:visibility="gone" />
+
+                    <TextView
+                        style="@style/AsanniFieldHelper"
+                        android:text="@string/phone_helper" />
+                </LinearLayout>
+
+                <!-- ============ STEP B: CODE ============ -->
+                <LinearLayout
+                    android:id="@+id/code_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/text_code_sent_to"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:textColor="@color/asanni_welcome_ink"
+                        android:textSize="14sp" />
+
+                    <!-- [EDIT TEXT] Code field label -->
+                    <TextView
+                        style="@style/AsanniFieldLabel"
+                        android:labelFor="@+id/input_code"
+                        android:text="@string/otp_label" />
+
+                    <EditText
+                        android:id="@+id/input_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:autofillHints="smsOTPCode"
+                        android:background="@drawable/bg_form_field"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:hint="@string/otp_hint"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="yes"
+                        android:inputType="number"
+                        android:letterSpacing="0.5"
+                        android:maxLength="6"
+                        android:textColor="@color/asanni_welcome_ink"
+                        android:textColorHint="@color/asanni_hint"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text_code_message"
+                        style="@style/AsanniFieldHelper"
+                        android:textColor="@color/asanni_welcome_accent"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <!-- [EDIT TEXT] Resend (otp_resend / otp_resend_in) -->
+                        <TextView
+                            android:id="@+id/button_resend"
+                            style="@style/AsanniTextButton"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|start" />
+
+                        <!-- [EDIT TEXT] Change number -->
+                        <TextView
+                            android:id="@+id/button_change_number"
+                            style="@style/AsanniTextButton"
+                            android:text="@string/otp_change_number" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="24dp" />
+
+            <LinearLayout
+                android:id="@+id/bottom_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_status"
+                    style="@style/AsanniStatusText" />
+
+                <LinearLayout
+                    android:id="@+id/button_primary"
+                    style="@style/AsanniPrimaryButton">
+
+                    <ProgressBar
+                        android:id="@+id/primary_progress"
+                        style="@style/AsanniButtonProgress" />
+
+                    <!-- [EDIT TEXT] Primary button (phone_send_code_button / otp_verify_button) -->
+                    <TextView
+                        android:id="@+id/primary_label"
+                        style="@style/AsanniPrimaryButtonLabel"
+                        android:text="@string/phone_send_code_button" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

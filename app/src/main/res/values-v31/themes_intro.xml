@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values-v31/themes_intro.xml  (NEW in phase 5)
+     Android 12+ always shows a short SYSTEM splash screen before the app draws. This keeps it
+     plain ASANNI red with no icon, so it isn't confused with (and blends into) the custom intro.
+     To show your launcher icon on the system splash instead, delete the windowSplashScreenAnimatedIcon line. -->
+<resources>
+    <style name="AsanniIntroTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/asanni_intro_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/asanni_intro_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowSplashScreenBackground">@color/asanni_intro_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_blank</item>
+    </style>
+</resources>

@@ -3,6 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -12,21 +22,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:enableOnBackInvokedCallback="false"
         android:theme="@style/Theme.ASANNI">
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
 
         <activity
-            android:name=".ui.GetStartedActivity"
+            android:name=".ui.IntroActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AsanniScreenTheme">
+            android:theme="@style/AsanniIntroTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.GetStartedActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AsanniScreenTheme" />
 
         <activity
             android:name=".ui.ChooseRoleActivity"
@@ -35,15 +49,58 @@
 
         <activity
             android:name=".ui.GoogleLoginActivity"
-            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AsanniScreenTheme" />
 
         <activity
-            android:name=".ui.AuthenticatedPlaceholderActivity"
+            android:name=".ui.AllowLocationActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AsanniScreenTheme" />
+
+        <activity
+            android:name=".ui.ManualLocationActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.RegistrationActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.PhoneVerificationActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AsanniScreenTheme"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.NotificationPermissionActivity"
             android:exported="false"
             android:theme="@style/AsanniScreenTheme" />
+
+        <activity
+            android:name=".ui.HomeActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme" />
+
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme" />
+
+        <activity
+            android:name=".ui.InfoActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme"
+            android:windowSoftInputMode="adjustResize" />
 
     </application>
 

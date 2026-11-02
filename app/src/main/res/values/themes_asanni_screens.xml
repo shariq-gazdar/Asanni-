@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Location: app/src/main/res/values/themes_asanni_screens.xml  (NEW)
-     A small platform theme for the four ASANNI screens (no AppCompat/Material dependency).
-     No action bar, warm background while the screen loads, transparent system bars.
+<!-- Location: app/src/main/res/values/themes_asanni_screens.xml  (MODIFIED in phase 3)
+     A small platform theme for the ASANNI screens (no AppCompat/Material dependency),
+     plus phase 3 styles for form fields and the searchable bottom-sheet list.
      It does not touch your existing app theme. -->
 <resources>
     <style name="AsanniScreenTheme" parent="android:Theme.Material.Light.NoActionBar">
@@ -11,5 +11,92 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!-- ===================== Form fields (Manual Location) ===================== -->
+
+    <style name="AsanniFieldLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- [STYLE] The white rounded field box. Height, padding and shape are changed here. -->
+    <style name="AsanniField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:background">@drawable/bg_form_field</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">14dp</item>
+    </style>
+
+    <style name="AsanniFieldIcon">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:tint">@color/asanni_welcome_muted</item>
+    </style>
+
+    <style name="AsanniFieldValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textColorHint">@color/asanni_hint</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AsanniFieldTrailing">
+        <item name="android:layout_width">22dp</item>
+        <item name="android:layout_height">22dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:tint">@color/asanni_chevron</item>
+    </style>
+
+    <style name="AsanniFieldProgress" parent="android:Widget.Material.ProgressBar.Small">
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:indeterminateTint">@color/asanni_welcome_accent</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="AsanniFieldHelper">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:accessibilityLiveRegion">polite</item>
+        <item name="android:textColor">@color/asanni_welcome_muted</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- ===================== Searchable bottom sheet ===================== -->
+
+    <style name="AsanniPickerDialog" parent="android:Theme.Material.Light.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.35</item>
+        <item name="android:windowAnimationStyle">@style/AsanniPickerAnimation</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:colorAccent">@color/asanni_welcome_accent</item>
+    </style>
+
+    <!-- [ANIMATION] Bottom sheet slide in/out: res/anim/sheet_enter.xml, sheet_exit.xml -->
+    <style name="AsanniPickerAnimation">
+        <item name="android:windowEnterAnimation">@anim/sheet_enter</item>
+        <item name="android:windowExitAnimation">@anim/sheet_exit</item>
     </style>
 </resources>

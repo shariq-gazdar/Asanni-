@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/strings_profile.xml  (NEW in phase 4)
+     Every user-facing text of Registration, Phone verification, Notifications, Home/drawer,
+     Settings and Info. %1$s etc. are filled in by the app. \' = apostrophe. -->
+<resources>
+    <!-- ========================= COMMON ========================= -->
+    <string name="cancel">Cancel</string>
+    <string name="state_not_selected">Not selected</string>
+
+    <!-- ========================= REGISTRATION ========================= -->
+    <!-- [EDIT TEXT] Registration form title / step / description -->
+    <string name="registration_step_label">Last step</string>
+    <string name="registration_title">Tell us about you</string>
+    <string name="registration_description">This is how you\'ll appear in ASANNI. You can change it later in Settings.</string>
+
+    <!-- [EDIT TEXT] Profile picture field label + hints -->
+    <string name="profile_picture_label">Profile picture</string>
+    <string name="profile_picture_change">Change photo</string>
+    <string name="profile_picture_use_default">Use previous photo</string>
+    <string name="profile_picture_hint_google">Using your Google photo</string>
+    <string name="profile_picture_hint_custom">Using your own photo</string>
+    <!-- [EDIT TEXT] Phase 5: custom pictures are kept on this phone only -->
+    <string name="profile_picture_hint_local">Your photo (saved on this phone)</string>
+    <string name="profile_picture_hint_local_missing">Your own photo is on another phone. Showing your Google photo here.</string>
+    <string name="profile_picture_hint_none">Add a photo (optional)</string>
+    <string name="profile_picture_hint_chosen">New photo. It will be saved on this phone.</string>
+    <string name="profile_picture_processing">Preparing photo…</string>
+    <string name="profile_picture_error_read">That image couldn\'t be opened. Try another one.</string>
+    <string name="photo_error_write">The photo couldn\'t be saved on this phone (storage may be full). Try another photo.</string>
+    <string name="photo_error_profile">The photo couldn\'t be added to your profile. Please try again.</string>
+
+    <!-- [EDIT TEXT] First name label -->
+    <string name="first_name_label">First name</string>
+    <string name="first_name_hint">e.g. Sara</string>
+    <string name="first_name_error">Please enter your first name.</string>
+    <!-- [EDIT TEXT] Middle name label -->
+    <string name="middle_name_label">Middle name (optional)</string>
+    <string name="middle_name_hint">Leave empty if none</string>
+    <string name="middle_name_error">Please use letters, or leave it empty.</string>
+    <!-- [EDIT TEXT] Last name label -->
+    <string name="last_name_label">Last name</string>
+    <string name="last_name_hint">e.g. Ahmed</string>
+    <string name="last_name_error">Please enter your last name.</string>
+    <string name="username_preview">Shown as %1$s</string>
+    <string name="username_preview_empty">Your name is shown as first name + last name.</string>
+
+    <!-- [EDIT TEXT] Email label -->
+    <string name="email_label">Email</string>
+
+    <!-- [EDIT TEXT] Language label -->
+    <string name="language_label">Language</string>
+    <string name="language_helper">More languages are coming later.</string>
+
+    <!-- [EDIT TEXT] Appearance selector label + options -->
+    <string name="appearance_label">Appearance</string>
+    <string name="appearance_system">System</string>
+    <string name="appearance_light">Light</string>
+    <string name="appearance_dark">Dark</string>
+
+    <!-- [EDIT TEXT] Phone number field label + states -->
+    <string name="phone_number_label">Mobile number</string>
+    <string name="phone_country_code">+92</string>
+    <string name="phone_country_code_description">Country code plus 92, Pakistan</string>
+    <string name="phone_number_hint">300 1234567</string>
+    <string name="phone_status_verified">Verified</string>
+    <string name="phone_status_not_verified">Not verified</string>
+    <string name="phone_verification_required">We\'ll send a code by SMS to confirm this number.</string>
+    <string name="phone_verify_button">Verify number</string>
+    <string name="phone_change">Change</string>
+    <string name="phone_add">Add</string>
+    <string name="phone_verified_description">Mobile number %1$s, verified. Double tap Change to use another number.</string>
+    <string name="phone_error_required">Please enter your mobile number and verify it.</string>
+    <string name="phone_error_verify_first">Please verify this number before continuing.</string>
+    <string name="phone_error_invalid">Enter a Pakistani mobile number, like 300 1234567 or 0300 1234567.</string>
+
+    <!-- [EDIT TEXT] Save button + errors -->
+    <string name="registration_save_button">Save and continue</string>
+    <string name="registration_saving">Saving…</string>
+    <string name="registration_retry_load">Try again</string>
+    <string name="registration_error_load">Couldn\'t load your profile. Check your connection and try again.</string>
+    <string name="registration_error_network">Couldn\'t save. Check your connection and try again. Your answers are kept.</string>
+    <string name="registration_error_save">Couldn\'t save your profile. Please try again.</string>
+    <string name="registration_error_fix_fields">Please check the highlighted fields.</string>
+
+    <!-- ========================= PHONE VERIFICATION ========================= -->
+    <!-- [EDIT TEXT] Phone verification screen -->
+    <string name="phone_verify_top_title">Verify number</string>
+    <string name="phone_verify_title">Confirm your mobile number</string>
+    <string name="phone_verify_description">We\'ll text you a 6-digit code. Your number is linked to your ASANNI account and isn\'t shown to restaurants.</string>
+    <string name="phone_helper">Pakistani mobile numbers only. Standard SMS rates may apply.</string>
+    <string name="phone_send_code_button">Send code</string>
+    <string name="phone_sending">Sending code…</string>
+    <string name="phone_retry_save">Try saving again</string>
+    <string name="otp_label">Verification code</string>
+    <string name="otp_hint">••••••</string>
+    <string name="otp_sent_to">Code sent to %1$s</string>
+    <string name="otp_change_number">Change number</string>
+    <string name="otp_resend">Resend code</string>
+    <string name="otp_resend_in">Resend code in %1$d:%2$02d</string>
+    <string name="otp_resend_limit">No more resends here. Try again later.</string>
+    <string name="otp_verify_button">Verify</string>
+    <string name="otp_verifying">Verifying…</string>
+    <string name="otp_error_format">Enter the 6-digit code from the SMS.</string>
+    <string name="otp_error_wrong">That code isn\'t right. Check the SMS and try again.</string>
+    <string name="otp_error_expired">This code has expired. Request a new one.</string>
+    <string name="phone_error_resend_limit">You\'ve requested several codes. Please wait a while and try again.</string>
+    <string name="phone_error_too_many">Too many attempts from this device. Please try again later.</string>
+    <string name="phone_error_network">No connection. Check your internet and try again.</string>
+    <string name="phone_error_generic">Couldn\'t verify the number. Please try again.</string>
+    <string name="phone_error_not_configured">Phone verification isn\'t set up for ASANNI yet. (Developer: enable Phone sign-in and billing in Firebase. See GUIDE.md.)</string>
+    <string name="phone_error_region">SMS to Pakistan isn\'t enabled yet. (Developer: allow PK in Firebase SMS region policy.)</string>
+    <string name="phone_error_in_use">This number is already linked to another ASANNI account.</string>
+    <string name="phone_error_relogin">For your security, please sign out and sign in again, then retry.</string>
+    <string name="phone_error_save_failed">Your number was verified, but it couldn\'t be saved to your profile. Tap \"Try saving again\".</string>
+
+    <!-- ========================= NOTIFICATIONS ========================= -->
+    <!-- [EDIT TEXT] Notification permission title / explanation -->
+    <string name="notification_permission_title">Know when a table frees up</string>
+    <string name="notification_permission_description">ASANNI can let you know about things you ask for, like a table opening up at a place you\'re watching. No spam.</string>
+    <string name="notification_permission_note">You can turn this on or off anytime in Settings.</string>
+    <string name="notification_permission_allow">Allow notifications</string>
+    <string name="notification_permission_later">Not now</string>
+    <string name="notification_permission_continue">Continue</string>
+    <string name="notification_permission_open_settings">Open notification settings</string>
+    <string name="notification_permission_denied">Notifications are off. That\'s fine. You can turn them on later in Settings.</string>
+    <string name="notification_permission_settings_hint">Turn on notifications for ASANNI, then come back, or just continue.</string>
+
+    <!-- ========================= HOME (phase 5: profile button, no drawer) ========================= -->
+    <!-- [EDIT TEXT] Home profile button (spoken by screen readers) -->
+    <string name="home_profile_button">Open settings</string>
+    <string name="home_profile_button_named">%1$s, open settings</string>
+
+    <!-- ========================= SETTINGS (from the reference) ========================= -->
+    <!-- [EDIT TEXT] Settings page title -->
+    <string name="settings_title">Settings</string>
+    <!-- [EDIT TEXT] Subtitle under the name. Reference shows "Premium diner · Karachi"; there is
+         no premium plan yet, so it says "Diner". -->
+    <string name="settings_profile_subtitle">Diner · %1$s</string>
+    <string name="settings_profile_subtitle_no_city">Diner</string>
+    <string name="settings_profile_load_error">Couldn\'t load your profile</string>
+    <string name="settings_profile_description">%1$s. Open your information.</string>
+    <!-- [EDIT TEXT] Settings address label -->
+    <string name="address_label">Home area</string>
+    <string name="settings_address_none">Not set</string>
+    <string name="settings_address_description">Home area, %1$s. Double tap to change.</string>
+    <string name="settings_address_saved">Home area updated</string>
+    <!-- [EDIT TEXT] Alerts row -->
+    <string name="settings_alerts_label">Live availability alerts</string>
+    <string name="settings_alerts_on">On</string>
+    <string name="settings_alerts_off">Off</string>
+    <string name="settings_appearance_not_saved">Appearance changed on this phone. It will be saved to your account next time you open Settings online.</string>
+    <!-- [EDIT TEXT] Restaurant partner card (information only; the app is diner-only) -->
+    <string name="settings_partner_title">Restaurant partner mode</string>
+    <string name="settings_partner_description">Manage a venue, tables and live waiting times with ASANNI\'s separate partner software. It isn\'t part of this app.</string>
+    <!-- [EDIT TEXT] Footer -->
+    <string name="settings_version">ASANNI · version %1$s</string>
+
+    <!-- ========================= INFO ========================= -->
+    <!-- [EDIT TEXT] Info page title -->
+    <string name="info_title">Your information</string>
+    <string name="info_name_section">Name</string>
+    <string name="info_contact_section">Contact</string>
+    <string name="info_save_names">Save name</string>
+    <string name="info_names_saved">Name saved</string>
+    <string name="info_save_photo">Save photo</string>
+    <string name="info_photo_preview">Preview. Save it to use this photo.</string>
+    <string name="info_photo_saving">Saving photo…</string>
+    <string name="info_photo_saved">Photo saved on this phone</string>
+    <string name="info_photo_saved_pending">Photo saved on this phone. Your profile will update when you\'re back online.</string>
+    <!-- [EDIT TEXT] Contact number label -->
+    <string name="contact_number_label">Contact number</string>
+    <string name="info_phone_none">Not added</string>
+    <string name="info_phone_saved">Number verified and saved</string>
+    <string name="info_email_description">Email, %1$s. Comes from your Google account and can\'t be edited here.</string>
+    <string name="info_phone_description_verified">Contact number %1$s, verified. Double tap to change.</string>
+    <string name="info_phone_description_unverified">Contact number %1$s, not verified. Double tap to verify.</string>
+    <string name="info_error_load">Couldn\'t load your information. Check your connection.</string>
+    <string name="info_error_save_names">Couldn\'t save your name. Please try again.</string>
+
+    <!-- ========================= MANUAL LOCATION (edit from Settings) ========================= -->
+    <!-- [EDIT TEXT] Titles when changing the address from Settings -->
+    <string name="manual_location_edit_top_title">Change home area</string>
+    <string name="manual_location_edit_title">Where should we look for tables now?</string>
+</resources>

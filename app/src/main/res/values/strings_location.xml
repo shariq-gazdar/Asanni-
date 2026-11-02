@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/strings_location.xml  (NEW)
+     Every user-facing text of Allow Location, Manual Location, the City/Area lists and the
+     temporary diner home screen. %1$s, %2$s ... are filled in by the app. \' = apostrophe. -->
+<resources>
+
+    <!-- ========================= ALLOW LOCATION (from the reference) ========================= -->
+    <!-- [EDIT TEXT] Small top title -->
+    <string name="allow_location_top_title">Set your location</string>
+    <!-- [EDIT TEXT] Allow Location heading -->
+    <string name="allow_location_title">What\'s open around you, right now.</string>
+    <!-- [EDIT TEXT] Location permission explanation.
+         NOTE: copied from the reference. It describes how ASANNI will use location while browsing
+         and the 5 km "Basic" radius; those features are not built yet, so keep this text in line
+         with what the app really does. -->
+    <string name="allow_location_description">ASANNI uses your live location only while you browse. Basic includes restaurants within 5 km.</string>
+    <!-- [EDIT TEXT] Privacy note in the box -->
+    <string name="allow_location_privacy_note">Precise location is never shared with restaurants.</string>
+    <!-- [EDIT TEXT] Allow Location button -->
+    <string name="allow_location_button">Allow while using app</string>
+    <!-- [EDIT TEXT] Manual location option -->
+    <string name="enter_location_manually">Enter area manually</string>
+    <!-- [EDIT TEXT] Sample label on the map chip (shown until a place is actually detected) -->
+    <string name="allow_location_map_chip_sample">Clifton, Karachi</string>
+    <string name="allow_location_map_description">Sample map illustration with a location pin</string>
+
+    <!-- [EDIT TEXT] Allow Location: button labels for each state -->
+    <string name="location_finding">Finding your area…</string>
+    <string name="location_saving">Saving…</string>
+    <string name="location_try_again">Try again</string>
+    <string name="location_open_settings">Open app settings</string>
+    <string name="location_turn_on">Turn on location</string>
+    <string name="location_use_suggestion">Use %1$s, %2$s</string>
+    <string name="location_choose_area_in">Choose your area in %1$s</string>
+    <string name="location_choose_different_area">Choose a different area</string>
+    <string name="location_chip_format">%1$s, %2$s</string>
+
+    <!-- [EDIT TEXT] Allow Location: status messages -->
+    <string name="location_suggest_area">It looks like you\'re in %1$s, %2$s. Is that right?</string>
+    <string name="location_suggest_city">We found %1$s, but not your exact area. Please choose it from the list.</string>
+    <string name="location_approximate_note">(Approximate location, so please double-check.)</string>
+    <string name="location_denied">Location access was not allowed. You can try again or enter your area manually.</string>
+    <string name="location_blocked">Location is turned off for ASANNI. Allow it in app settings, or enter your area manually.</string>
+    <string name="location_services_off">Your phone\'s location is switched off. Turn it on, or enter your area manually.</string>
+    <string name="location_unavailable">We couldn\'t find your location just now. Move near a window or try again, or enter your area manually.</string>
+    <string name="location_failed">Something went wrong while finding your location. Try again or enter your area manually.</string>
+    <string name="location_geocode_unavailable">We found your position but couldn\'t work out the area name. Please enter your area manually.</string>
+    <string name="location_no_city_match">Your city isn\'t in ASANNI\'s list yet. Please enter your area manually.</string>
+    <string name="location_outside_country">ASANNI is only available in Pakistan for now. You can still enter an area manually.</string>
+    <string name="location_settings_unavailable">Couldn\'t open settings on this device.</string>
+    <string name="location_saving_slow">Still saving… check your internet connection.</string>
+
+    <!-- [EDIT TEXT] Save errors (both location screens) -->
+    <string name="location_save_error_network">Couldn\'t save your area. Check your connection and try again.</string>
+    <string name="location_save_error_permission">Couldn\'t save your area: it wasn\'t accepted by the server. Choose it again from the list.</string>
+    <string name="location_save_error_generic">Couldn\'t save your area. Please try again.</string>
+
+    <!-- [EDIT TEXT] City/area list loading errors -->
+    <string name="catalogue_error_network">Couldn\'t load the list. Check your connection and try again.</string>
+    <string name="catalogue_error_permission">The list couldn\'t be opened. Please sign in again.</string>
+    <string name="catalogue_error_not_seeded">The city list isn\'t available yet. (Developer: run the seed script, see GUIDE.md.)</string>
+    <string name="catalogue_error_generic">Couldn\'t load the list. Please try again.</string>
+
+    <!-- ========================= MANUAL LOCATION ========================= -->
+    <!-- [EDIT TEXT] Small top title -->
+    <string name="manual_location_top_title">Enter your area</string>
+    <!-- [EDIT TEXT] Manual form heading -->
+    <string name="manual_location_title">Where should we look for tables?</string>
+    <!-- [EDIT TEXT] Why the location is needed -->
+    <string name="manual_location_description">Pick your city and area so ASANNI can show restaurants near you. You can change it anytime.</string>
+
+    <!-- [EDIT TEXT] Country field label / value / helper -->
+    <string name="country_label">Country</string>
+    <string name="country_pakistan">Pakistan</string>
+    <string name="country_helper">ASANNI is available in Pakistan for now.</string>
+    <string name="country_field_description">Country, Pakistan, fixed</string>
+
+    <!-- [EDIT TEXT] City field label / placeholder -->
+    <string name="city_label">City</string>
+    <string name="city_placeholder">Select your city</string>
+    <!-- [EDIT TEXT] Area field label / placeholders -->
+    <string name="area_label">Area</string>
+    <string name="area_placeholder">Select your area</string>
+    <string name="area_placeholder_no_city">Choose a city first</string>
+    <string name="area_loading">Loading areas…</string>
+    <string name="area_empty">No areas are listed for %1$s yet.</string>
+    <string name="area_load_failed">Couldn\'t load areas. Tap the field to try again.</string>
+
+    <!-- [EDIT TEXT] Save Location button -->
+    <string name="save_location_button">Save location</string>
+
+    <!-- [EDIT TEXT] Validation messages -->
+    <string name="error_city_required">Please choose your city from the list.</string>
+    <string name="error_area_required">Please choose your area from the list.</string>
+    <string name="error_area_mismatch">That area isn\'t in the selected city. Please choose again.</string>
+    <string name="error_choose_city_first">Choose a city first.</string>
+
+    <!-- [EDIT TEXT] Searchable lists -->
+    <string name="city_picker_title">Choose your city</string>
+    <string name="city_search_hint">Search cities</string>
+    <string name="area_picker_title">Areas in %1$s</string>
+    <string name="area_search_hint">Search areas</string>
+    <string name="picker_no_matches">No matches for \"%1$s\". Try another spelling.</string>
+    <string name="picker_retry">Retry</string>
+
+    <!-- Accessibility -->
+    <string name="city_field_description">City, %1$s. Double tap to choose.</string>
+    <string name="area_field_description">Area, %1$s. Double tap to choose.</string>
+    <string name="not_selected">not selected</string>
+    <string name="picker_selected_item">%1$s, selected</string>
+
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/colors_location.xml  (NEW)
+     Colors for Allow Location + Manual Location. Shared colors (background, ink, muted text,
+     brand red) stay in get_started_colors.xml. -->
+<resources>
+    <!-- [COLOR] Soft red halo around the map pin (26% red) -->
+    <color name="asanni_map_halo">#42A6262D</color>
+    <!-- [COLOR] Privacy box and search box fill -->
+    <color name="asanni_info_fill">#FAF8F5</color>
+    <!-- [COLOR] Outlines: secondary button, fields, sheet handle -->
+    <color name="asanni_outline">#D6CFC6</color>
+    <!-- [COLOR] Locked (Country) field fill -->
+    <color name="asanni_field_locked">#EFEBE5</color>
+    <!-- [COLOR] Placeholder text in fields and search (4.5:1 on white) -->
+    <color name="asanni_hint">#7A726A</color>
+</resources>

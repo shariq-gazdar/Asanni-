@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text/icon color of an appearance pill: inverted when selected. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/asanni_segment_selected_text" android:state_selected="true" />
+    <item android:color="@color/asanni_welcome_ink" />
+</selector>

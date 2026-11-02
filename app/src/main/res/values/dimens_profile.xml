@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/dimens_profile.xml  (NEW in phase 4) -->
+<resources>
+    <!-- [STYLE] Side drawer width (the drawer never covers the whole screen) -->
+    <dimen name="drawer_width">296dp</dimen>
+</resources>

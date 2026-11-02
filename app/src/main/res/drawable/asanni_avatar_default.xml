@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [UI ASSET] Replace the default ASANNI avatar with an image from the ui folder.
+     Shown when the user has no photo and no name yet. To use your own: delete this file and
+     add res/drawable/asanni_avatar_default.png (square, about 256x256). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <path
+        android:fillColor="@color/asanni_tile_selected_fill"
+        android:pathData="M48,0a48,48 0,1 1,0 96a48,48 0,1 1,0 -96z" />
+    <path
+        android:fillColor="@color/asanni_welcome_accent"
+        android:pathData="M48,26a12,12 0,1 1,0 24a12,12 0,1 1,0 -24zM26,72c0,-11 10,-17 22,-17s22,6 22,17v2H26z" />
+</vector>

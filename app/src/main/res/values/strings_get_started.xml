@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/strings_get_started.xml
+    (Kept in its own file so it can't overwrite your existing strings.xml.
+     You may paste these lines into strings.xml instead - just don't keep both copies.)
 
+    NOTE: if your project already defines "brand_name", delete the duplicate line below.
+-->
 <resources>
-
+    <!-- [EDIT TEXT] Brand wordmark shown when no logo image is added -->
     <string name="brand_name">ASANNI</string>
 
-    <string name="welcome_eyebrow">KARACHI, AT YOUR TABLE</string>
+    <!-- [EDIT TEXT] PLACEHOLDER COPY: tagline under the logo (reference text is too small to read exactly) -->
+    <!-- MODIFIED in phase 5: the real tagline, as shown in the intro video -->
+    <string name="welcome_logo_tagline">Taake asanni hojaye</string>
 
+    <!-- [EDIT TEXT] Small red line above the heading (from reference) -->
+    <string name="welcome_eyebrow">Karachi, at your table</string>
+
+    <!-- [EDIT TEXT] Main welcome heading (from reference). \n forces the line break. -->
     <string name="welcome_title">Find a free table\nbefore you leave.</string>
 
-    <string name="welcome_description"> Live restaurant availability, honest wait times and directions across the city</string>
+    <!-- [EDIT TEXT] Welcome description (from reference) -->
+    <string name="welcome_description">Live restaurant availability, honest wait times and directions across the city.</string>
 
-    <!-- SAMPLE number -->
-    <string name="welcome_live_chip">328 tables live now</string>
+    <!-- [EDIT TEXT] Chip on the photo. SAMPLE number only - there is no backend yet. -->
+    <string name="welcome_live_chip">326 tables live now</string>
 
+    <!-- [EDIT TEXT] Screen-reader description of the hero photo -->
     <string name="welcome_hero_description">A busy restaurant terrace at dusk with the city skyline behind it</string>
 
+    <!-- [EDIT TEXT] Primary button label (from reference) -->
     <string name="get_started_button">Get started</string>
 
+    <!-- Reserved for a future login link (not shown in the reference design) -->
     <string name="login_prompt">Already have an account?</string>
     <string name="login_button">Log in</string>
 </resources>

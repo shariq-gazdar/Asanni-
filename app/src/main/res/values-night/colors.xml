@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values-night/colors.xml  (NEW in phase 4)
+    DARK THEME. Same color names as res/values/*.xml; Android uses these when the app is in
+    Dark mode (chosen in Settings, or System + phone in dark mode). Palette follows the
+    Settings reference screenshot: near-black warm background, raised dark cards, red accent.
+    [COLOR] Change any dark color here; light colors stay in res/values/.
+-->
+<resources>
+    <!-- get_started_colors.xml -->
+    <color name="asanni_welcome_background">#121110</color>
+    <color name="asanni_welcome_ink">#F3EFEA</color>
+    <color name="asanni_welcome_muted">#A39C94</color>
+    <color name="asanni_welcome_accent">#C8383F</color>
+    <color name="asanni_welcome_accent_pressed">#A82D33</color>
+    <color name="asanni_welcome_on_accent">#FFFFFF</color>
+    <color name="asanni_welcome_chip">#EB1E1C1A</color>
+    <color name="asanni_welcome_live_dot">#3DBA71</color>
+
+    <!-- colors_choose_role.xml -->
+    <color name="asanni_card_selected_fill">#231918</color>
+    <color name="asanni_card_selected_border">#C8383F</color>
+    <color name="asanni_tile_selected_fill">#3A2224</color>
+    <color name="asanni_card_default_fill">#1E1C1A</color>
+    <color name="asanni_card_default_border">#2E2B28</color>
+    <color name="asanni_tile_default_fill">#2A2724</color>
+    <color name="asanni_icon_default">#F3EFEA</color>
+    <color name="asanni_chevron">#8C857D</color>
+    <color name="asanni_close_fill">#1E1C1A</color>
+    <color name="asanni_close_border">#34302C</color>
+
+    <!-- colors_auth.xml: Google's dark-theme button colors -->
+    <color name="asanni_google_button_fill">#131314</color>
+    <color name="asanni_google_button_stroke">#8E918F</color>
+    <color name="asanni_google_button_text">#E3E3E3</color>
+
+    <!-- colors_location.xml -->
+    <color name="asanni_map_halo">#55C8383F</color>
+    <color name="asanni_info_fill">#1A1816</color>
+    <color name="asanni_outline">#3A3632</color>
+    <color name="asanni_field_locked">#24211F</color>
+    <color name="asanni_hint">#9C958D</color>
+
+    <!-- colors_profile.xml -->
+    <color name="asanni_surface">#1E1C1A</color>
+    <color name="asanni_divider">#2C2926</color>
+    <color name="asanni_segment_selected_fill">#F3EFEA</color>
+    <color name="asanni_segment_selected_text">#121110</color>
+    <color name="asanni_verified">#6FCF97</color>
+    <color name="asanni_verified_fill">#1C2B22</color>
+    <color name="asanni_pending">#F2B65A</color>
+    <color name="asanni_pending_fill">#2E2416</color>
+    <color name="asanni_avatar_fill">#C8383F</color>
+    <color name="asanni_avatar_text">#FFFFFF</color>
+
+    <!-- colors_intro.xml: the intro looks the same in dark mode (brand screen) -->
+    <color name="asanni_intro_background">#9C1227</color>
+    <color name="asanni_intro_wordmark">#FFFBF0</color>
+    <color name="asanni_intro_hourglass">#000000</color>
+</resources>

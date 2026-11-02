@@ -32,9 +32,7 @@
     <string name="login_profile_error_database">You\'re signed in, but the ASANNI database isn\'t set up yet (create Firestore in Firebase).</string>
     <string name="login_profile_error_generic">You\'re signed in, but your profile couldn\'t be loaded. Please try again.</string>
 
-    <!-- [EDIT TEXT] Temporary signed-in screen -->
-    <string name="placeholder_title">You\'re signed in</string>
-    <string name="placeholder_body">Your ASANNI home screen isn\'t built yet. This is a temporary page that confirms your sign-in worked.</string>
+    <!-- [EDIT TEXT] Sign out (used on the Info page) -->
     <string name="sign_out">Sign out</string>
 
     <!-- Accessibility -->

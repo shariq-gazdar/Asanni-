@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/styles_profile.xml  (NEW in phase 4)
+    Shared building blocks for the phase 4 screens (Registration, Phone verification,
+    Notification permission, Home, Drawer, Settings, Info). They reuse the existing ASANNI
+    colors, so Light/Dark switch automatically.
+    [STYLE] Change sizes, paddings and shapes for all these screens here.
+-->
+<resources>
+    <!-- ===================== Page structure ===================== -->
+    <style name="AsanniTopBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <!-- 48dp touch target around a 36dp circle (same as earlier screens) -->
+    <style name="AsanniTopBarButton">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="AsanniTopBarIcon">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/bg_close_button</item>
+        <item name="android:padding">9dp</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <style name="AsanniTopBarTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:accessibilityHeading">true</item>
+    </style>
+
+    <style name="AsanniPageTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:accessibilityHeading">true</item>
+        <item name="android:lineSpacingMultiplier">1.05</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AsanniPageDescription">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+        <item name="android:textColor">@color/asanni_welcome_muted</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Small red caps label above a group ("APPEARANCE" in the Settings reference) -->
+    <style name="AsanniSectionLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/asanni_welcome_accent</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <!-- Raised rounded card (Settings groups, Info sections) -->
+    <style name="AsanniCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_settings_card</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- ===================== Text inputs ===================== -->
+    <!-- EditText inside an AsanniField box -->
+    <style name="AsanniFieldInput">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textColorHint">@color/asanni_hint</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- A whole EditText styled as a field (names) -->
+    <style name="AsanniTextField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:background">@drawable/bg_form_field</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textColorHint">@color/asanni_hint</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- ===================== Buttons ===================== -->
+    <style name="AsanniPrimaryButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_get_started_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+
+    <style name="AsanniPrimaryButtonLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/asanni_welcome_on_accent</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AsanniButtonProgress" parent="android:Widget.Material.ProgressBar.Small">
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:indeterminateTint">@color/asanni_welcome_on_accent</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- White/dark outlined pill (like "Enter area manually") -->
+    <style name="AsanniSecondaryButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_outline_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Small red text button (Resend, Change) with a 48dp touch target -->
+    <style name="AsanniTextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:textColor">@color/asanni_welcome_accent</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AsanniStatusText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:accessibilityLiveRegion">polite</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+        <item name="android:textColor">@color/asanni_welcome_accent</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- Small status badges for the phone number -->
+    <style name="AsanniBadgeVerified">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:background">@drawable/bg_status_badge_verified</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:textColor">@color/asanni_verified</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="AsanniBadgePending" parent="AsanniBadgeVerified">
+        <item name="android:background">@drawable/bg_status_badge_pending</item>
+        <item name="android:textColor">@color/asanni_pending</item>
+    </style>
+
+    <!-- ===================== Settings rows ===================== -->
+    <style name="AsanniSettingsRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <style name="AsanniSettingsRowIcon">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_marginEnd">14dp</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:tint">@color/asanni_welcome_muted</item>
+    </style>
+
+    <style name="AsanniSettingsRowLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/asanni_welcome_ink</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AsanniSettingsRowValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxWidth">170dp</item>
+        <item name="android:textColor">@color/asanni_welcome_muted</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="AsanniSettingsChevron">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:src">@drawable/ic_chevron_right</item>
+        <item name="android:tint">@color/asanni_chevron</item>
+    </style>
+
+    <style name="AsanniDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginStart">50dp</item>
+        <item name="android:background">@color/asanni_divider</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <!-- Appearance pill (System / Light / Dark). Selected state comes from view.setSelected(). -->
+    <style name="AsanniSegment">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/bg_segment</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="AsanniSegmentIcon">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:tint">@color/segment_content</item>
+    </style>
+
+    <style name="AsanniSegmentLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/segment_content</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values/colors_profile.xml  (NEW in phase 4)
+     Light-theme colors for Registration, Home, Drawer, Settings, Info, Phone verification.
+     Dark versions: res/values-night/colors.xml -->
+<resources>
+    <!-- [COLOR] Cards, fields and buttons drawn on the page background -->
+    <color name="asanni_surface">#FFFFFF</color>
+    <!-- [COLOR] Hairline dividers between rows -->
+    <color name="asanni_divider">#ECE7E0</color>
+    <!-- [COLOR] Selected appearance pill (dark pill on light theme, light pill on dark theme) -->
+    <color name="asanni_segment_selected_fill">#14110F</color>
+    <color name="asanni_segment_selected_text">#FFFFFF</color>
+    <!-- [COLOR] Phone status badges -->
+    <color name="asanni_verified">#2E7D4F</color>
+    <color name="asanni_verified_fill">#E3F1E8</color>
+    <color name="asanni_pending">#9A5B00</color>
+    <color name="asanni_pending_fill">#FBEFD9</color>
+    <!-- [COLOR] Initials avatar background + text -->
+    <color name="asanni_avatar_fill">#A6262D</color>
+    <color name="asanni_avatar_text">#FFFFFF</color>
+</resources>

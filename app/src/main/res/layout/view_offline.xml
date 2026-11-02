@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Offline page  (NEW in phase 5)
+    Location: app/src/main/res/layout/view_offline.xml
+
+    No reference design: ASANNI style (warm background, soft red icon circle like the
+    notification screen, bold heading, muted text, red pill + outlined pill). Follows Light/Dark.
+    Shown ON TOP of the current screen by OfflineOverlay.java (never a new screen, never stacked),
+    only when an action really needs the internet. It blocks touches to the screen below.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/offline_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asanni_welcome_background"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="24dp" />
+
+            <LinearLayout
+                android:id="@+id/offline_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <!-- [UI ASSET] Replace with the offline illustration from the ui folder:
+                     add res/drawable/offline_illustration.png and set it as src of @id/offline_icon. -->
+                <FrameLayout
+                    android:id="@+id/offline_icon_circle"
+                    android:layout_width="112dp"
+                    android:layout_height="112dp"
+                    android:background="@drawable/bg_notification_icon"
+                    android:importantForAccessibility="no">
+
+                    <ImageView
+                        android:id="@+id/offline_icon"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_wifi_off"
+                        android:tint="@color/asanni_welcome_accent" />
+                </FrameLayout>
+
+                <!-- [EDIT TEXT] Offline page heading -->
+                <TextView
+                    android:id="@+id/offline_title"
+                    style="@style/AsanniPageTitle"
+                    android:layout_marginTop="28dp"
+                    android:gravity="center"
+                    android:text="@string/offline_title"
+                    tools:targetApi="p" />
+
+                <!-- [EDIT TEXT] Offline explanation -->
+                <TextView
+                    style="@style/AsanniPageDescription"
+                    android:gravity="center"
+                    android:text="@string/offline_description"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="24dp" />
+
+            <LinearLayout
+                android:id="@+id/offline_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- "Still offline" / "Checking…" (read out automatically) -->
+                <TextView
+                    android:id="@+id/offline_status"
+                    style="@style/AsanniStatusText"
+                    android:textColor="@color/asanni_welcome_muted" />
+
+                <LinearLayout
+                    android:id="@+id/offline_retry"
+                    style="@style/AsanniPrimaryButton">
+
+                    <!-- [EDIT TEXT] Retry button label -->
+                    <TextView
+                        android:id="@+id/offline_retry_label"
+                        style="@style/AsanniPrimaryButtonLabel"
+                        android:text="@string/offline_retry" />
+                </LinearLayout>
+
+                <!-- [EDIT TEXT] Go back (closes this page, back to the screen you were on) -->
+                <TextView
+                    android:id="@+id/offline_back"
+                    style="@style/AsanniSecondaryButton"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/offline_back" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

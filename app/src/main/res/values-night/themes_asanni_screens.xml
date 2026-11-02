@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values-night/themes_asanni_screens.xml  (NEW in phase 4)
+     Dark versions of the two window themes (light status-bar icons, dark dialog base).
+     All other styles are shared from res/values/themes_asanni_screens.xml. -->
+<resources>
+    <style name="AsanniScreenTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/asanni_welcome_background</item>
+        <item name="android:colorAccent">@color/asanni_welcome_accent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="AsanniPickerDialog" parent="android:Theme.Material.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:windowAnimationStyle">@style/AsanniPickerAnimation</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:colorAccent">@color/asanni_welcome_accent</item>
+    </style>
+</resources>

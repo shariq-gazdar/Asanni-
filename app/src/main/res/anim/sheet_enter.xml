@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bottom sheet slides up. Duration in ms. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <translate
+        android:duration="280"
+        android:fromYDelta="100%"
+        android:toYDelta="0" />
+</set>

@@ -1,0 +1,13 @@
+{
+  "name": "asanni-catalogue-seed",
+  "private": true,
+  "description": "Trusted admin script that uploads the ASANNI city/area catalogue to Firestore. Not part of the Android app.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "check": "node seed-catalogue.js --dry-run",
+    "seed": "node seed-catalogue.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.5.0"
+  }
+}

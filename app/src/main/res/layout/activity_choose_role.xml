@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    ASANNI - Choose Your Role screen  (NEW)
+    ASANNI - Choose page  (MODIFIED in phase 3: diner only)
     Location: app/src/main/res/layout/activity_choose_role.xml
 
-    Structure (matches the reference):
+    The restaurant manager card was removed: the Android app is for diners only.
+    The diner card keeps the reference look (selected state: red border, pink icon tile,
+    "Selected" mark). The flexible space now takes the room the second card used,
+    so the button stays at the bottom exactly as in the reference.
+
       1. Top bar        close button + "Welcome to ASANNI"
-      2. Heading        "How will you use ASANNI?" + supporting line
-      3. Diner card     (selected by default)
-      4. Manager card
-      5. Flexible space
-      6. Continue button (label follows the selected card)
+      2. Heading        + line explaining ASANNI is for diners
+      3. Diner card     (always selected; display only)
+      4. Flexible space
+      5. Error line     (only if saving the choice fails)
+      6. Continue button
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -87,7 +91,7 @@
                 android:textStyle="bold"
                 tools:targetApi="p" />
 
-            <!-- [EDIT TEXT] Supporting description -->
+            <!-- [EDIT TEXT] Supporting description (explains the app is for diners) -->
             <TextView
                 android:id="@+id/text_subtitle"
                 android:layout_width="match_parent"
@@ -97,46 +101,30 @@
                 android:textColor="@color/asanni_welcome_muted"
                 android:textSize="13sp" />
 
-            <!-- ============ 3. DINER CARD ============ -->
+            <!-- ============ 3. DINER CARD (display only, always selected) ============ -->
             <LinearLayout
                 android:id="@+id/card_diner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/bg_role_card"
-                android:clickable="true"
+                android:elevation="4dp"
                 android:focusable="true"
                 android:orientation="vertical"
                 android:padding="18dp">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <!-- [UI ASSET] Replace with the diner illustration from the ui folder.
-                         Default is the vector res/drawable/ic_role_diner.xml. To use your own,
-                         add res/drawable/ic_role_diner.png (delete the .xml first). -->
-                    <ImageView
-                        android:id="@+id/icon_diner"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="start"
-                        android:background="@drawable/bg_role_icon_tile"
-                        android:importantForAccessibility="no"
-                        android:padding="13dp"
-                        android:src="@drawable/ic_role_diner"
-                        android:tint="@color/role_icon_tint" />
-
-                    <ImageView
-                        android:id="@+id/diner_chevron"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="end|center_vertical"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/asanni_chevron"
-                        android:visibility="gone" />
-                </FrameLayout>
+                <!-- [UI ASSET] Replace with the diner illustration from the ui folder.
+                     Default is the vector res/drawable/ic_role_diner.xml. To use your own,
+                     add res/drawable/ic_role_diner.png (delete the .xml first). -->
+                <ImageView
+                    android:id="@+id/icon_diner"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_role_icon_tile"
+                    android:importantForAccessibility="no"
+                    android:padding="13dp"
+                    android:src="@drawable/ic_role_diner"
+                    android:tint="@color/role_icon_tint" />
 
                 <!-- [EDIT TEXT] Diner option title -->
                 <TextView
@@ -159,9 +147,8 @@
                     android:textColor="@color/asanni_welcome_muted"
                     android:textSize="13sp" />
 
-                <!-- "Selected" marker (visible only when this card is selected) -->
+                <!-- "Selected" marker (from the reference) -->
                 <LinearLayout
-                    android:id="@+id/diner_selected_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -187,108 +174,32 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- ============ 4. MANAGER CARD ============ -->
-            <LinearLayout
-                android:id="@+id/card_manager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_role_card"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <!-- [UI ASSET] Replace with the restaurant manager illustration from the ui folder.
-                         Default is the vector res/drawable/ic_role_manager.xml. To use your own,
-                         add res/drawable/ic_role_manager.png (delete the .xml first). -->
-                    <ImageView
-                        android:id="@+id/icon_manager"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="start"
-                        android:background="@drawable/bg_role_icon_tile"
-                        android:importantForAccessibility="no"
-                        android:padding="13dp"
-                        android:src="@drawable/ic_role_manager"
-                        android:tint="@color/role_icon_tint" />
-
-                    <ImageView
-                        android:id="@+id/manager_chevron"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="end|center_vertical"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/asanni_chevron" />
-                </FrameLayout>
-
-                <!-- [EDIT TEXT] Restaurant manager option title -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/role_manager_title"
-                    android:textColor="@color/asanni_welcome_ink"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <!-- [EDIT TEXT] Restaurant manager option description -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:lineSpacingMultiplier="1.1"
-                    android:text="@string/role_manager_description"
-                    android:textColor="@color/asanni_welcome_muted"
-                    android:textSize="13sp" />
-
-                <LinearLayout
-                    android:id="@+id/manager_selected_row"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_check_circle"
-                        android:tint="@color/asanni_welcome_accent" />
-
-                    <!-- [EDIT TEXT] "Selected" label (same string as the diner card) -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="@string/role_selected_label"
-                        android:textColor="@color/asanni_welcome_accent"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- ============ 5. FLEXIBLE SPACE (pushes the button to the bottom) ============ -->
+            <!-- ============ 4. FLEXIBLE SPACE (pushes the button to the bottom) ============ -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:importantForAccessibility="no" />
 
+            <!-- ============ 5. ERROR LINE ============ -->
+            <TextView
+                android:id="@+id/text_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:accessibilityLiveRegion="polite"
+                android:gravity="center"
+                android:textColor="@color/asanni_welcome_accent"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
             <!-- ============ 6. CONTINUE BUTTON ============ -->
+            <!-- [EDIT TEXT] Primary button label: continue_as_diner -->
             <TextView
                 android:id="@+id/button_continue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/bg_get_started_button"
                 android:clickable="true"
                 android:elevation="4dp"
@@ -303,7 +214,6 @@
                 android:text="@string/continue_as_diner"
                 android:textColor="@color/asanni_welcome_on_accent"
                 android:textSize="16sp" />
-            <!-- [EDIT TEXT] Primary button label: changes between continue_as_diner / continue_as_manager -->
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

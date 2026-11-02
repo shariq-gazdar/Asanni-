@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Intro / launch animation  (NEW in phase 5)
+    Location: app/src/main/res/layout/activity_intro.xml
+
+    Rebuilt from the reference video (2.6 s, measured frame by frame):
+      0.00 s  plain red
+      0.45 s  large black hourglass rises into the centre while fading in
+      1.10 s  it keeps rising and fades out
+      1.63 s  "ASANN" appears; the small hourglass fades in as the final "I"
+      1.81 s  tagline "TAAKE ASANNI / HOJAYE" appears; holds until 2.6 s -> Get Started
+    Sizes are in dp taken from the 390-px-wide video (1 px ~ 1 dp on a typical phone). The logo block
+    sits 7 dp below centre (marginTop 14dp on a centred view), as in the video.
+    All views start invisible (alpha 0); IntroActivity animates them.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/intro_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asanni_intro_background"
+    android:contentDescription="@string/intro_content_description"
+    android:importantForAccessibility="yes">
+
+    <!-- Stage 1: large hourglass (91 x 130 dp, centred) -->
+    <!-- [UI ASSET] Replace with the intro illustration from the ui folder (res/drawable/intro_hourglass.xml). -->
+    <ImageView
+        android:id="@+id/intro_big_hourglass"
+        android:layout_width="91dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:alpha="0"
+        android:importantForAccessibility="no"
+        android:src="@drawable/intro_hourglass" />
+
+    <!-- Stage 2: logo + tagline, centred -->
+    <LinearLayout
+        android:id="@+id/intro_logo_block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="14dp"
+        android:gravity="center_horizontal"
+        android:importantForAccessibility="noHideDescendants"
+        android:orientation="vertical">
+
+        <!-- Logo row: 283 x 55 dp. "ASANN" (238 x 32) sits 9 dp lower than the hourglass top. -->
+        <FrameLayout
+            android:layout_width="283dp"
+            android:layout_height="55dp">
+
+            <!-- [UI ASSET] Replace with the ASANNI logo from the ui folder (res/drawable/intro_logo_wordmark.xml). -->
+            <ImageView
+                android:id="@+id/intro_wordmark"
+                android:layout_width="238dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="9dp"
+                android:alpha="0"
+                android:src="@drawable/intro_logo_wordmark" />
+
+            <!-- The hourglass as the final "I" of ASANNI (40 x 55 dp) -->
+            <ImageView
+                android:id="@+id/intro_small_hourglass"
+                android:layout_width="40dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="243dp"
+                android:alpha="0"
+                android:src="@drawable/intro_hourglass" />
+        </FrameLayout>
+
+        <!-- [EDIT TEXT] Intro screen tagline (from the video): intro_tagline -->
+        <TextView
+            android:id="@+id/intro_tagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:letterSpacing="0.05"
+            android:lineSpacingMultiplier="0.95"
+            android:text="@string/intro_tagline"
+            android:textAllCaps="true"
+            android:textColor="@color/asanni_intro_wordmark"
+            android:textSize="8sp" />
+    </LinearLayout>
+</FrameLayout>

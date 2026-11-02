@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.asanni.app.R;
 import com.asanni.app.auth.GoogleAuthClient;
+import com.asanni.app.auth.ProfileData;
 import com.asanni.app.auth.UserProfile;
 import com.asanni.app.auth.UserProfileRepository;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,18 +18,20 @@ import com.google.firebase.auth.FirebaseUser;
  * Google Login screen: real Google sign-in through Firebase Authentication, then
  * first-time vs returning routing from the Firestore profile.
  *
- * Location: app/src/main/java/com/asanni/app/ui/GoogleLoginActivity.java  (NEW)
+ * Location: app/src/main/java/com/asanni/app/ui/GoogleLoginActivity.java  (MODIFIED in phase 3:
+ *           routing by onboarding step, and "continue as diner" from the Choose page)
  *
  * Steps:
  *   1. Tap the Google button -> Google's own account sheet (GoogleAuthClient)
  *   2. Firebase session created
  *   3. users/{uid} read or created (UserProfileRepository)
- *   4. not onboarded -> Choose Your Role | onboarded -> signed-in placeholder
+ *   4. OnboardingRouter: Choose -> Allow Location -> Registration -> notification prompt -> Home
+ *      (MODIFIED in phase 4: routing moved to OnboardingRouter)
  *
  * If a Firebase session already exists (returning user, or the screen was recreated),
  * step 1 is skipped. A second, duplicate sign-in never starts.
  */
-public class GoogleLoginActivity extends Activity {
+public class GoogleLoginActivity extends AsanniActivity {
 
     private static final String TAG = "AsanniLogin";
 
@@ -41,6 +44,8 @@ public class GoogleLoginActivity extends Activity {
 
     private State state = State.IDLE;
     private boolean entrancePlayed;
+    /** True when opened from the Choose page's "Continue as diner" while signed out. */
+    private boolean continueAsDiner;
 
     private View googleButton;
     private TextView googleButtonLabel;
@@ -53,6 +58,7 @@ public class GoogleLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_login);
         entrancePlayed = savedInstanceState != null;
+        continueAsDiner = getIntent().getBooleanExtra(AppNavigator.EXTRA_CONTINUE_AS_DINER, false);
 
         authClient = new GoogleAuthClient(this);
         profiles = new UserProfileRepository();
@@ -119,6 +125,8 @@ public class GoogleLoginActivity extends Activity {
             return;
         }
 
+        // Phase 5: no internet -> offline page (Try again re-taps this button; never automatic).
+        if (OfflineOverlay.showIfOffline(this, this::onGoogleButtonClicked, false)) return;
         render(State.SIGNING_IN, null);
         authClient.signIn(this, new GoogleAuthClient.SignInCallback() {
             @Override
@@ -138,6 +146,9 @@ public class GoogleLoginActivity extends Activity {
             public void onFailed(GoogleAuthClient.Failure failure, Exception error) {
                 if (!isAlive()) return;
                 render(State.SIGN_IN_ERROR, getString(messageFor(failure)));
+                if (failure == GoogleAuthClient.Failure.NETWORK) {
+                    OfflineOverlay.show(GoogleLoginActivity.this, () -> onGoogleButtonClicked(), false);
+                }
             }
         });
     }
@@ -146,13 +157,15 @@ public class GoogleLoginActivity extends Activity {
         render(State.LOADING_PROFILE, null);
         profiles.ensureProfile(user, new UserProfileRepository.ProfileCallback() {
             @Override
-            public void onProfileReady(UserProfile.Status status) {
+            public void onProfileReady(ProfileData profile) {
                 if (!isAlive()) return;
-                if (status == UserProfile.Status.ONBOARDING_COMPLETE) {
-                    AppNavigator.openSignedInHome(GoogleLoginActivity.this);   // Case B: returning
-                } else {
-                    AppNavigator.openChooseRoleAfterSignIn(GoogleLoginActivity.this); // Case A
+                if (profile.status() == UserProfile.Status.NEEDS_ROLE && continueAsDiner) {
+                    // User already tapped "Continue as diner" before signing in.
+                    saveDinerRoleThenContinue(user);
+                    return;
                 }
+                // Choose / Allow Location / Registration / notification prompt / Home
+                OnboardingRouter.route(GoogleLoginActivity.this, profile);
             }
 
             @Override
@@ -160,6 +173,27 @@ public class GoogleLoginActivity extends Activity {
                 if (!isAlive()) return;
                 // Signed in, but we can't tell if onboarding is done. Don't guess: offer a retry.
                 render(State.PROFILE_ERROR, getString(messageFor(failure)));
+                if (failure == UserProfileRepository.Failure.NETWORK) {
+                    // Reading the profile is safe to repeat: retry by itself when back online.
+                    OfflineOverlay.show(GoogleLoginActivity.this, () -> {
+                        FirebaseUser u = GoogleAuthClient.currentUser();
+                        if (u != null) loadProfileAndRoute(u);
+                    }, true);
+                }
+            }
+        });
+    }
+
+    private void saveDinerRoleThenContinue(FirebaseUser user) {
+        profiles.saveDinerRole(user.getUid(), new UserProfileRepository.SaveCallback() {
+            @Override
+            public void onSaved() {
+                if (isAlive()) AppNavigator.openAllowLocationAfterSignIn(GoogleLoginActivity.this);
+            }
+
+            @Override
+            public void onSaveFailed(UserProfileRepository.Failure failure, Exception error) {
+                if (isAlive()) render(State.PROFILE_ERROR, getString(messageFor(failure)));
             }
         });
     }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Appearance selector: System / Light / Dark pills  (NEW in phase 4)
+    Location: app/src/main/res/layout/view_appearance_selector.xml
+    Shared by Registration and Settings (same look as the Settings reference), wired up by
+    AppearanceSelector.java. The selected pill is filled; the others are outlined.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/segment_system"
+        style="@style/AsanniSegment">
+
+        <ImageView
+            style="@style/AsanniSegmentIcon"
+            android:src="@drawable/ic_brightness_auto" />
+
+        <!-- [EDIT TEXT] Appearance option: System -->
+        <TextView
+            style="@style/AsanniSegmentLabel"
+            android:text="@string/appearance_system" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/segment_light"
+        style="@style/AsanniSegment"
+        android:layout_marginStart="8dp">
+
+        <ImageView
+            style="@style/AsanniSegmentIcon"
+            android:src="@drawable/ic_light_mode" />
+
+        <!-- [EDIT TEXT] Appearance option: Light -->
+        <TextView
+            style="@style/AsanniSegmentLabel"
+            android:text="@string/appearance_light" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/segment_dark"
+        style="@style/AsanniSegment"
+        android:layout_marginStart="8dp">
+
+        <ImageView
+            style="@style/AsanniSegmentIcon"
+            android:src="@drawable/ic_dark_mode" />
+
+        <!-- [EDIT TEXT] Appearance option: Dark -->
+        <TextView
+            style="@style/AsanniSegmentLabel"
+            android:text="@string/appearance_dark" />
+    </LinearLayout>
+</LinearLayout>

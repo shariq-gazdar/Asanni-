@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Home  (MODIFIED in phase 5)
+    Location: app/src/main/res/layout/activity_home.xml
+
+    Phase 5: the menu button + side drawer are REMOVED. The user's round profile picture sits in
+    the top-right corner and opens Settings. The rest of Home stays BLANK on purpose; future diner
+    content goes inside @id/home_content.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asanni_welcome_background">
+
+    <LinearLayout
+        android:id="@+id/home_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp">
+
+        <!-- Header: only the profile button, aligned to the end (right) -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Profile button: 48dp touch target that works even if the picture fails to load -->
+            <FrameLayout
+                android:id="@+id/button_profile"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_gravity="end"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/home_profile_button"
+                android:focusable="true">
+
+                <!-- [UI ASSET] Replace with the user profile placeholder from the ui folder.
+                     Shown: picture saved on this phone > Google photo > initials >
+                     res/drawable/asanni_avatar_default.xml -->
+                <ImageView
+                    android:id="@+id/home_avatar"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:clipToOutline="true"
+                    android:elevation="2dp"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/asanni_avatar_default" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <!-- Main content area: empty on purpose (future diner home). -->
+        <FrameLayout
+            android:id="@+id/home_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+</FrameLayout>

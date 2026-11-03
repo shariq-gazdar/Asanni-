@@ -89,7 +89,9 @@
         <activity
             android:name=".ui.HomeActivity"
             android:exported="false"
-            android:theme="@style/AsanniScreenTheme" />
+            android:theme="@style/AsanniScreenTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
 
         <activity
             android:name=".ui.SettingsActivity"
@@ -101,6 +103,17 @@
             android:exported="false"
             android:theme="@style/AsanniScreenTheme"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.RestaurantListActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".ui.RestaurantDetailActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme" />
 
     </application>
 

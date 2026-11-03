@@ -126,9 +126,8 @@
     <string name="notification_permission_settings_hint">Turn on notifications for ASANNI, then come back, or just continue.</string>
 
     <!-- ========================= HOME (phase 5: profile button, no drawer) ========================= -->
-    <!-- [EDIT TEXT] Home profile button (spoken by screen readers) -->
-    <string name="home_profile_button">Open settings</string>
-    <string name="home_profile_button_named">%1$s, open settings</string>
+    <!-- Phase 6: the Home profile button strings moved; Settings is now the Profile tab
+         (see strings_discover.xml: nav_profile, nav_profile_description). -->
 
     <!-- ========================= SETTINGS (from the reference) ========================= -->
     <!-- [EDIT TEXT] Settings page title -->

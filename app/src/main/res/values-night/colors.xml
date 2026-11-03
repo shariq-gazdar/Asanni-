@@ -57,4 +57,35 @@
     <color name="asanni_intro_background">#9C1227</color>
     <color name="asanni_intro_wordmark">#FFFBF0</color>
     <color name="asanni_intro_hourglass">#000000</color>
+
+    <!-- colors_discover.xml (phase 6): Home, Discover, See All, restaurant details -->
+    <color name="asanni_discover_background">#121110</color>
+    <color name="asanni_discover_card">#1E1C1A</color>
+    <color name="asanni_discover_card_stroke">#2A2724</color>
+    <color name="asanni_discover_muted">#A39C94</color>
+    <color name="asanni_report_background">#26221F</color>
+    <color name="asanni_report_title">#F3EFEA</color>
+    <color name="asanni_report_subtitle">#A39C94</color>
+    <color name="asanni_live_fill">#1C3328</color>
+    <color name="asanni_live_text">#7FD3A6</color>
+    <color name="asanni_report_offline_fill">#3A3632</color>
+    <color name="asanni_report_offline_text">#D8D4CE</color>
+    <color name="asanni_badge_free_fill">#1C3328</color>
+    <color name="asanni_badge_free_text">#7FD3A6</color>
+    <color name="asanni_badge_wait_fill">#3A2A16</color>
+    <color name="asanni_badge_wait_text">#F2B65A</color>
+    <color name="asanni_badge_neutral_fill">#2A2724</color>
+    <color name="asanni_badge_neutral_text">#A39C94</color>
+    <color name="asanni_badge_closed_fill">#3A2224</color>
+    <color name="asanni_badge_closed_text">#F08A8F</color>
+    <color name="asanni_nav_background">#171513</color>
+    <color name="asanni_nav_border">#2A2724</color>
+    <color name="asanni_nav_indicator">#3A2224</color>
+    <color name="asanni_nav_inactive">#A39C94</color>
+    <color name="asanni_coach_background">#F3EFEA</color>
+    <color name="asanni_coach_text">#121110</color>
+    <color name="asanni_coach_subtext">#5E5852</color>
+    <color name="asanni_skeleton">#2A2724</color>
+    <color name="asanni_image_placeholder">#2A2724</color>
+    <color name="asanni_image_placeholder_icon">#8C857D</color>
 </resources>

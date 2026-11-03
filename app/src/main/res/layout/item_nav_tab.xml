@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    One bottom-navigation item (NEW in phase 6). Location: app/src/main/res/layout/item_nav_tab.xml
+    Icon + label are set in BottomNavBar.java. Selected = pink pill behind the icon, accent color
+    and a medium-weight label (so it isn't shown by color alone).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_horizontal"
+    android:minHeight="56dp"
+    android:orientation="vertical"
+    android:paddingTop="6dp"
+    android:paddingBottom="4dp">
+
+    <FrameLayout
+        android:layout_width="56dp"
+        android:layout_height="32dp">
+
+        <View
+            android:id="@+id/nav_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@drawable/bg_nav_indicator" />
+
+        <ImageView
+            android:id="@+id/nav_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:tint="@color/asanni_nav_inactive" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/nav_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:importantForAccessibility="no"
+        android:maxLines="1"
+        android:textColor="@color/asanni_nav_inactive"
+        android:textSize="12sp" />
+</LinearLayout>

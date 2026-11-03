@@ -1,65 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    ASANNI - Home  (MODIFIED in phase 5)
+    ASANNI - Home  (REWRITTEN in phase 6)
     Location: app/src/main/res/layout/activity_home.xml
 
-    Phase 5: the menu button + side drawer are REMOVED. The user's round profile picture sits in
-    the top-right corner and opens Settings. The rest of Home stays BLANK on purpose; future diner
-    content goes inside @id/home_content.
+    Four sections with a bottom navigation bar, in this order: Discover, Map, Saved, Profile.
+      Discover  @id/section_discover (layout/view_discover.xml)
+      Map       @id/section_map      intentionally blank in phase 6 (map comes later)
+      Saved     @id/section_saved    intentionally blank in phase 6 (saved restaurants come later)
+      Profile   opens the existing Settings page (no duplicate screen)
+    All sections stay in memory, so switching tabs never reloads Discover.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/asanni_welcome_background">
+    android:background="@color/asanni_discover_background">
 
     <LinearLayout
-        android:id="@+id/home_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="12dp">
+        android:orientation="vertical">
 
-        <!-- Header: only the profile button, aligned to the end (right) -->
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- Profile button: 48dp touch target that works even if the picture fails to load -->
-            <FrameLayout
-                android:id="@+id/button_profile"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_gravity="end"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@string/home_profile_button"
-                android:focusable="true">
-
-                <!-- [UI ASSET] Replace with the user profile placeholder from the ui folder.
-                     Shown: picture saved on this phone > Google photo > initials >
-                     res/drawable/asanni_avatar_default.xml -->
-                <ImageView
-                    android:id="@+id/home_avatar"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/bg_avatar_circle"
-                    android:clipToOutline="true"
-                    android:elevation="2dp"
-                    android:importantForAccessibility="no"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/asanni_avatar_default" />
-            </FrameLayout>
-        </FrameLayout>
-
-        <!-- Main content area: empty on purpose (future diner home). -->
-        <FrameLayout
-            android:id="@+id/home_content"
+            android:id="@+id/home_sections"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <include
+                android:id="@+id/section_discover"
+                layout="@layout/view_discover" />
+
+            <!-- MAP (phase 6: blank on purpose; no map tiles, API keys or fake pins) -->
+            <FrameLayout
+                android:id="@+id/section_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/map_placeholder_description"
+                android:focusable="true"
+                android:visibility="gone" />
+
+            <!-- SAVED (phase 6: blank on purpose; no fake saved restaurants) -->
+            <FrameLayout
+                android:id="@+id/section_saved"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/saved_placeholder_description"
+                android:focusable="true"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- Bottom navigation. Bottom padding for the system navigation bar is added in code. -->
+        <LinearLayout
+            android:id="@+id/home_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_nav_bar"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="6dp">
+
+            <include android:id="@+id/nav_discover" layout="@layout/item_nav_tab" />
+            <include android:id="@+id/nav_map" layout="@layout/item_nav_tab" />
+            <include android:id="@+id/nav_saved" layout="@layout/item_nav_tab" />
+            <include android:id="@+id/nav_profile" layout="@layout/item_nav_tab" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Discover section of Home  (NEW in phase 6)
+    Location: app/src/main/res/layout/view_discover.xml   Logic: ui/DiscoverSection.java
+
+    Built from the Discover reference image, top to bottom:
+      1. Greeting + browsing location (tap to change) .......... profile picture (not clickable)
+      2. Search bar with filter button
+      3. Live report card (count from real restaurant documents)
+      4. "In <area>" + Featured nearby + See all
+      5. One big Featured card + two small cards
+      (while searching, 4-5 are replaced by the search results)
+    Texts: res/values/strings_discover.xml ([EDIT TEXT]). Colors: res/values/colors_discover.xml.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/discover_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/discover_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/discover_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="28dp">
+
+            <!-- ============ 1. HEADER ============ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/discover_greeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/asanni_discover_muted"
+                        android:textSize="13sp" />
+
+                    <!-- Browsing location: tap the row (or the arrow) to change it -->
+                    <LinearLayout
+                        android:id="@+id/discover_location_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-4dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:minHeight="44dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_location_pin"
+                            android:tint="@color/asanni_welcome_accent" />
+
+                        <TextView
+                            android:id="@+id/discover_location_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:maxWidth="230dp"
+                            android:textColor="@color/asanni_welcome_ink"
+                            android:textSize="16sp" />
+
+                        <!-- The dropdown arrow the first-time tip points at -->
+                        <ImageView
+                            android:id="@+id/discover_location_arrow"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="6dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_expand_more"
+                            android:tint="@color/asanni_welcome_ink" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Profile picture: shown only (NOT clickable in phase 6; Settings is the Profile tab).
+                     [UI ASSET] Placeholder when no picture: res/drawable/asanni_avatar_default.xml
+                     (initials are drawn when a name is known). -->
+                <ImageView
+                    android:id="@+id/discover_avatar"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:clickable="false"
+                    android:clipToOutline="true"
+                    android:contentDescription="@string/discover_avatar_description"
+                    android:focusable="false"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/asanni_avatar_default" />
+            </LinearLayout>
+
+            <!-- ============ 2. SEARCH ============ -->
+            <LinearLayout
+                android:id="@+id/discover_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_discover_search"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="18dp"
+                android:paddingEnd="4dp">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/asanni_discover_muted" />
+
+                <EditText
+                    android:id="@+id/discover_search_input"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/discover_search_hint"
+                    android:imeOptions="actionSearch|flagNoExtractUi"
+                    android:importantForAutofill="no"
+                    android:inputType="text|textNoSuggestions"
+                    android:maxLength="60"
+                    android:maxLines="1"
+                    android:textColor="@color/asanni_welcome_ink"
+                    android:textColorHint="@color/asanni_discover_muted"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/discover_search_clear"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/discover_search_clear"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_close"
+                    android:tint="@color/asanni_discover_muted"
+                    android:visibility="gone" />
+
+                <FrameLayout
+                    android:id="@+id/discover_filter_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:contentDescription="@string/discover_filters"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_tune"
+                        android:tint="@color/asanni_welcome_ink" />
+
+                    <View
+                        android:id="@+id/discover_filter_dot"
+                        android:layout_width="9dp"
+                        android:layout_height="9dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_filter_dot"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- ============ 3. LIVE REPORT ============ -->
+            <LinearLayout
+                android:id="@+id/discover_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_report_card"
+                android:gravity="center_vertical"
+                android:minHeight="70dp"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="14dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/report_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:accessibilityLiveRegion="polite"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:textColor="@color/asanni_report_title"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/report_subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:textColor="@color/asanni_report_subtitle"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- LIVE (connected to Firestore) / OFFLINE (showing the saved copy) -->
+                <LinearLayout
+                    android:id="@+id/report_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_report_chip_live"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:id="@+id/report_chip_dot"
+                        android:layout_width="7dp"
+                        android:layout_height="7dp"
+                        android:layout_marginEnd="8dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/bg_status_dot"
+                        android:tint="@color/asanni_live_text" />
+
+                    <TextView
+                        android:id="@+id/report_chip_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.04"
+                        android:text="@string/report_chip_live"
+                        android:textColor="@color/asanni_live_text"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/discover_offline_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/ic_wifi_off"
+                android:drawablePadding="6dp"
+                android:drawableTint="@color/asanni_discover_muted"
+                android:gravity="center_vertical"
+                android:text="@string/offline_saved_note"
+                android:textColor="@color/asanni_discover_muted"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- ============ 4 + 5. FEATURED ============ -->
+            <LinearLayout
+                android:id="@+id/discover_featured"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/discover_eyebrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:letterSpacing="0.04"
+                    android:textAllCaps="true"
+                    android:textColor="@color/asanni_welcome_accent"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:accessibilityHeading="true"
+                        android:text="@string/discover_featured_title"
+                        android:textColor="@color/asanni_welcome_ink"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/discover_see_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="-8dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="@string/discover_see_all"
+                        android:textColor="@color/asanni_welcome_accent"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Big card: highest-ranked restaurant -->
+                <LinearLayout
+                    android:id="@+id/featured_big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_restaurant_card"
+                    android:clickable="true"
+                    android:elevation="2dp"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="134dp"
+                        android:background="@drawable/bg_restaurant_image_top"
+                        android:clipToOutline="true">
+
+                        <!-- [UI ASSET] Restaurant logo placeholder; actual restaurant logos come from
+                             Firestore (desktop app). Fallback: res/drawable/restaurant_placeholder.xml
+                             A real logo is shown whole (not cropped), centred on the soft background. -->
+                        <ImageView
+                            android:id="@+id/featured_big_logo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:importantForAccessibility="no"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/restaurant_placeholder" />
+
+                        <!-- Optional restaurant photo (only if the desktop data has one). When it loads,
+                             it fills the area and the logo moves into the small badge below. -->
+                        <ImageView
+                            android:id="@+id/featured_big_cover"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:importantForAccessibility="no"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/featured_big_logo_badge"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom|start"
+                            android:layout_margin="14dp"
+                            android:background="@drawable/bg_restaurant_logo_frame"
+                            android:clipToOutline="true"
+                            android:elevation="3dp"
+                            android:importantForAccessibility="no"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="20dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="18dp"
+                        android:paddingBottom="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/featured_big_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:textColor="@color/asanni_welcome_ink"
+                                    android:textSize="18sp" />
+
+                                <TextView
+                                    android:id="@+id/featured_big_meta"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:textColor="@color/asanni_discover_muted"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
+
+                            <include
+                                android:id="@+id/featured_big_badge"
+                                layout="@layout/view_badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp" />
+                        </LinearLayout>
+
+                        <!-- Distance (only from the phone's GPS) + when availability was updated -->
+                        <LinearLayout
+                            android:id="@+id/featured_big_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/featured_big_info_icon"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginEnd="8dp"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_navigation_outline"
+                                android:tint="@color/asanni_discover_muted" />
+
+                            <TextView
+                                android:id="@+id/featured_big_info_text"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/asanni_discover_muted"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Two small cards: next most relevant restaurants -->
+                <LinearLayout
+                    android:id="@+id/featured_small_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <include
+                        android:id="@+id/featured_small_1"
+                        layout="@layout/item_restaurant_small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Space
+                        android:layout_width="14dp"
+                        android:layout_height="1dp" />
+
+                    <include
+                        android:id="@+id/featured_small_2"
+                        layout="@layout/item_restaurant_small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ============ SEARCH RESULTS (replace Featured while searching) ============ -->
+            <LinearLayout
+                android:id="@+id/discover_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/results_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="26dp"
+                    android:layout_marginBottom="12dp"
+                    android:accessibilityHeading="true"
+                    android:accessibilityLiveRegion="polite"
+                    android:textColor="@color/asanni_welcome_ink"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/results_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/results_see_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:textColor="@color/asanni_welcome_accent"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- ============ LOADING (skeleton) ============ -->
+            <LinearLayout
+                android:id="@+id/discover_skeleton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/loading_description"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="90dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/bg_skeleton" />
+
+                <View
+                    android:layout_width="190dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_skeleton" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_skeleton" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_skeleton" />
+
+                    <Space
+                        android:layout_width="14dp"
+                        android:layout_height="1dp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_skeleton" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ============ EMPTY / ERROR / OFFLINE ============ -->
+            <include
+                android:id="@+id/discover_state"
+                layout="@layout/view_discover_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ============ FIRST-TIME LOCATION TIP (positioned in code under the arrow) ============ -->
+    <LinearLayout
+        android:id="@+id/coach_location"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/coach_pointer"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_coach_pointer" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_coach_bubble"
+            android:elevation="6dp"
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:id="@+id/coach_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/coach_location_title"
+                android:textColor="@color/asanni_coach_text"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:lineSpacingMultiplier="1.15"
+                android:text="@string/coach_location_text"
+                android:textColor="@color/asanni_coach_subtext"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/coach_dismiss"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_coach_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:minWidth="88dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:text="@string/coach_location_dismiss"
+                android:textColor="@color/asanni_welcome_on_accent"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

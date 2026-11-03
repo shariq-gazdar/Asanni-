@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Badge: tables free (NEW in phase 6) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/asanni_badge_free_fill" />
+    <corners android:radius="100dp" />
+</shape>

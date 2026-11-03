@@ -9,14 +9,18 @@ import com.asanni.app.R;
 /**
  * Every screen-to-screen move in one place, so destinations are easy to change later.
  *
- * Location: app/src/main/java/com/asanni/app/ui/AppNavigator.java  (MODIFIED in phase 4)
+ * Location: app/src/main/java/com/asanni/app/ui/AppNavigator.java  (MODIFIED in phase 6)
  *
  *   Get Started --"Get started"--> Choose (diner)
  *   Get Started --"Log in"-------> Google Login --> OnboardingRouter decides:
  *        Choose -> Allow Location (-> Manual Location) -> Registration (-> Phone verification)
  *        -> Notification explanation -> Home
- *   Home --menu--> drawer --Settings--> Settings --profile row--> Info
- *                                                --address row--> Manual Location (edit mode)
+ *   Home (phase 6: bottom navigation Discover | Map | Saved | Profile)
+ *     Profile tab ------------> Settings --profile row--> Info
+ *                                        --address row--> Manual Location (edit mode)
+ *     Discover location arrow -> Manual Location (edit mode) -> back to Discover
+ *     Discover See all -------> Restaurant list --> Restaurant details
+ *     Discover restaurant card -> Restaurant details
  *   Info --Sign out--> Get Started
  */
 final class AppNavigator {
@@ -26,6 +30,17 @@ final class AppNavigator {
     static final String EXTRA_PREFILL_AREA_ID = "com.asanni.app.extra.PREFILL_AREA_ID";
     /** Manual Location opened from Settings: after saving, just go back. */
     static final String EXTRA_EDIT_MODE = "com.asanni.app.extra.EDIT_MODE";
+
+    // Phase 6: restaurant list / details
+    static final String EXTRA_CITY_ID = "com.asanni.app.extra.CITY_ID";
+    static final String EXTRA_CITY_NAME = "com.asanni.app.extra.CITY_NAME";
+    static final String EXTRA_AREA_ID = "com.asanni.app.extra.AREA_ID";
+    static final String EXTRA_AREA_NAME = "com.asanni.app.extra.AREA_NAME";
+    static final String EXTRA_QUERY = "com.asanni.app.extra.QUERY";
+    static final String EXTRA_FILTERS = "com.asanni.app.extra.FILTERS";
+    static final String EXTRA_USER_LAT = "com.asanni.app.extra.USER_LAT";
+    static final String EXTRA_USER_LNG = "com.asanni.app.extra.USER_LNG";
+    static final String EXTRA_RESTAURANT_ID = "com.asanni.app.extra.RESTAURANT_ID";
 
     static final int REQUEST_EDIT_ADDRESS = 5101;
     static final int REQUEST_VERIFY_PHONE = 5102;
@@ -90,7 +105,7 @@ final class AppNavigator {
         startClearingBackStack(from, new Intent(from, NotificationPermissionActivity.class));
     }
 
-    /** [NAVIGATION] The diner home screen (blank for now, with the menu). */
+    /** [NAVIGATION] The diner home screen (phase 6: Discover / Map / Saved / Profile). */
     static void openHome(Activity from) {
         startClearingBackStack(from, new Intent(from, HomeActivity.class));
     }
@@ -101,6 +116,44 @@ final class AppNavigator {
 
     static void openInfo(Activity from) {
         start(from, new Intent(from, InfoActivity.class));
+    }
+
+    /** See All: every matching restaurant in the browsing area, same search + filters as Discover. */
+    static void openRestaurantList(Activity from, com.asanni.app.restaurants.LocationScope scope, String query,
+                                   com.asanni.app.restaurants.DiscoverFilters filters, Double userLat, Double userLng) {
+        Intent intent = new Intent(from, RestaurantListActivity.class);
+        putScope(intent, scope);
+        intent.putExtra(EXTRA_QUERY, query);
+        intent.putExtra(EXTRA_FILTERS, filters.encode());
+        putPosition(intent, userLat, userLng);
+        start(from, intent);
+    }
+
+    /** Restaurant details (read-only information from the desktop app). */
+    static void openRestaurantDetail(Activity from, String restaurantId, com.asanni.app.restaurants.LocationScope scope,
+                                     Double userLat, Double userLng) {
+        Intent intent = new Intent(from, RestaurantDetailActivity.class);
+        intent.putExtra(EXTRA_RESTAURANT_ID, restaurantId);
+        putScope(intent, scope);
+        putPosition(intent, userLat, userLng);
+        start(from, intent);
+    }
+
+    private static void putScope(Intent intent, com.asanni.app.restaurants.LocationScope scope) {
+        if (scope == null) return;
+        intent.putExtra(EXTRA_CITY_ID, scope.city.id);
+        intent.putExtra(EXTRA_CITY_NAME, scope.city.name);
+        if (scope.area != null) {
+            intent.putExtra(EXTRA_AREA_ID, scope.area.id);
+            intent.putExtra(EXTRA_AREA_NAME, scope.area.name);
+        }
+    }
+
+    private static void putPosition(Intent intent, Double lat, Double lng) {
+        if (lat != null && lng != null) {
+            intent.putExtra(EXTRA_USER_LAT, lat.doubleValue());
+            intent.putExtra(EXTRA_USER_LNG, lng.doubleValue());
+        }
     }
 
     static void openGetStartedAfterSignOut(Activity from) {

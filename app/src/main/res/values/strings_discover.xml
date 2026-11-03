@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/strings_discover.xml  (NEW in phase 6)
+    Texts for Home (bottom navigation), Discover, See All and restaurant details.
+    \' = apostrophe, \" = quote, %1$s / %1$d = a value filled in by the app (keep them).
+    Restaurant names, counts, distances and user names are filled in at runtime, never stored here.
+-->
+<resources>
+    <!-- ========================= BOTTOM NAVIGATION ========================= -->
+    <!-- [EDIT TEXT] Bottom navigation labels (order: Discover, Map, Saved, Profile) -->
+    <string name="nav_discover">Discover</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_profile">Profile</string>
+    <!-- Screen readers: "Discover, tab, 1 of 4, selected" style descriptions -->
+    <string name="nav_item_description">%1$s, tab %2$d of 4</string>
+    <string name="nav_item_selected">%1$s, tab %2$d of 4, selected</string>
+    <string name="nav_profile_description">Profile, tab 4 of 4. Opens settings</string>
+    <!-- Map and Saved are intentionally empty in phase 6 (screen readers only) -->
+    <string name="map_placeholder_description">Map. Coming in a later update.</string>
+    <string name="saved_placeholder_description">Saved restaurants. Coming in a later update.</string>
+
+    <!-- ========================= GREETING ========================= -->
+    <!-- [EDIT TEXT] Discover page greeting. Morning 5:00 AM-11:59 AM, Afternoon 12:00 PM-4:59 PM,
+         Evening 5:00 PM-4:59 AM (change the hours in Greeting.java) -->
+    <string name="greeting_morning_named">Good Morning, %1$s</string>
+    <string name="greeting_afternoon_named">Good Afternoon, %1$s</string>
+    <string name="greeting_evening_named">Good Evening, %1$s</string>
+    <string name="greeting_morning">Good Morning</string>
+    <string name="greeting_afternoon">Good Afternoon</string>
+    <string name="greeting_evening">Good Evening</string>
+
+    <!-- ========================= LOCATION ========================= -->
+    <!-- [EDIT TEXT] Shown instead of the location when the profile has none -->
+    <string name="discover_location_missing">Choose your location</string>
+    <string name="discover_location_description">Browsing location: %1$s. Double tap to change.</string>
+    <string name="discover_avatar_description">Your profile picture</string>
+    <!-- [EDIT TEXT] Location tutorial (first visit only) -->
+    <string name="coach_location_title">Change your location</string>
+    <string name="coach_location_text">You can change your location here to discover restaurants in other areas.</string>
+    <string name="coach_location_dismiss">Got it</string>
+
+    <!-- ========================= SEARCH + FILTERS ========================= -->
+    <!-- [EDIT TEXT] Search bar hint -->
+    <string name="discover_search_hint">Restaurant, cuisine or area</string>
+    <string name="discover_search_clear">Clear search</string>
+    <string name="discover_filters">Filters</string>
+    <string name="discover_filters_on">Filters, 1 on</string>
+    <!-- [EDIT TEXT] Filter sheet -->
+    <string name="filter_title">Filters</string>
+    <string name="filter_status_heading">Status</string>
+    <string name="filter_status_all">All</string>
+    <string name="filter_status_all_detail">Every restaurant in this area</string>
+    <string name="filter_status_active">Active</string>
+    <string name="filter_status_active_detail">Open now, as reported by the restaurant</string>
+    <string name="filter_status_inactive">Not active</string>
+    <string name="filter_status_inactive_detail">Closed now, as reported by the restaurant</string>
+    <!-- Shown when no restaurant in the area reports open/closed yet (Active / Not active disabled) -->
+    <string name="filter_status_unavailable">Restaurants in this area aren\'t reporting whether they\'re open yet, so only All is available.</string>
+    <string name="filter_apply">Show results</string>
+    <string name="filter_reset">Reset</string>
+
+    <!-- ========================= LIVE REPORT ========================= -->
+    <!-- [EDIT TEXT] Report card title: registered restaurants in the selected area -->
+    <plurals name="report_title">
+        <item quantity="one">%1$d restaurant in %2$s</item>
+        <item quantity="other">%1$d restaurants in %2$s</item>
+    </plurals>
+    <string name="report_title_zero">No restaurants in %1$s yet</string>
+    <!-- [EDIT TEXT] Report subtitles (what the number means) -->
+    <plurals name="report_live_tables">
+        <item quantity="one">%1$d with live tables</item>
+        <item quantity="other">%1$d with live tables</item>
+    </plurals>
+    <string name="report_open_now">%1$d open now</string>
+    <string name="report_no_live">Live tables not shared yet</string>
+    <string name="report_offline">Offline · showing saved results</string>
+    <string name="report_loading">Checking restaurants…</string>
+    <!-- [EDIT TEXT] Report chip -->
+    <string name="report_chip_live">LIVE</string>
+    <string name="report_chip_offline">OFFLINE</string>
+    <string name="report_chip_live_description">Updating live</string>
+    <string name="report_chip_offline_description">Offline, showing saved results</string>
+
+    <!-- ========================= FEATURED ========================= -->
+    <!-- [EDIT TEXT] Small red label above "Featured nearby" (area name added) -->
+    <string name="discover_eyebrow">In %1$s</string>
+    <!-- [EDIT TEXT] Section title + link -->
+    <string name="discover_featured_title">Featured nearby</string>
+    <string name="discover_see_all">See all</string>
+    <string name="discover_see_all_description">See all restaurants in %1$s</string>
+
+    <!-- [EDIT TEXT] Availability badges -->
+    <plurals name="badge_tables_available">
+        <item quantity="one">%1$d table available</item>
+        <item quantity="other">%1$d tables available</item>
+    </plurals>
+    <plurals name="badge_free_short">
+        <item quantity="one">%1$d free</item>
+        <item quantity="other">%1$d free</item>
+    </plurals>
+    <string name="badge_full">No tables free</string>
+    <string name="badge_wait">%1$d min wait</string>
+    <string name="badge_wait_short">%1$d min</string>
+    <string name="badge_closed">Closed</string>
+    <string name="badge_open">Open now</string>
+    <string name="badge_unavailable">Availability unavailable</string>
+    <string name="badge_unavailable_short">No live data</string>
+
+    <!-- [EDIT TEXT] Distance + freshness -->
+    <string name="distance_m">%1$d m</string>
+    <string name="distance_km">%1$s km</string>
+    <string name="distance_from_you">%1$s from you</string>
+    <string name="updated_just_now">Updated just now</string>
+    <plurals name="updated_minutes">
+        <item quantity="one">Updated %1$d min ago</item>
+        <item quantity="other">Updated %1$d min ago</item>
+    </plurals>
+    <plurals name="updated_hours">
+        <item quantity="one">Updated %1$d hour ago</item>
+        <item quantity="other">Updated %1$d hours ago</item>
+    </plurals>
+    <string name="updated_days">Updated %1$s</string>
+    <string name="meta_separator">" · "</string>
+    <string name="restaurant_card_description">%1$s. %2$s</string>
+
+    <!-- ========================= SEARCH RESULTS + STATES ========================= -->
+    <plurals name="search_results_title">
+        <item quantity="one">%1$d result in %2$s</item>
+        <item quantity="other">%1$d results in %2$s</item>
+    </plurals>
+    <string name="search_see_all_results">See all %1$d results</string>
+    <!-- [EDIT TEXT] Empty restaurant search message -->
+    <string name="empty_search_title">No matches for \"%1$s\"</string>
+    <string name="empty_search_text">Try a different name or cuisine, or clear the filters.</string>
+    <string name="empty_search_action">Clear search</string>
+    <!-- [EDIT TEXT] No restaurants in the selected area -->
+    <string name="empty_area_title">No restaurants found in this area.</string>
+    <string name="empty_area_text">Try changing your location.</string>
+    <string name="empty_area_action">Change location</string>
+    <!-- [EDIT TEXT] Filter removed everything -->
+    <string name="empty_filter_title">No restaurants match this filter</string>
+    <string name="empty_filter_text">Show all restaurants in this area instead.</string>
+    <string name="empty_filter_action">Show all</string>
+    <!-- [EDIT TEXT] Errors (never technical) -->
+    <string name="error_restaurants_offline_title">You\'re offline</string>
+    <string name="error_restaurants_offline_text">Connect to the internet to see restaurants in %1$s.</string>
+    <string name="error_restaurants_title">Restaurants can\'t be shown right now</string>
+    <string name="error_restaurants_text">Please try again in a moment.</string>
+    <string name="error_retry">Try again</string>
+    <string name="no_location_title">Choose a location to start</string>
+    <string name="no_location_text">Pick your city and area to see restaurants there.</string>
+    <string name="offline_saved_note">Offline. Showing saved results.</string>
+    <string name="loading_description">Loading restaurants</string>
+
+    <!-- ========================= SEE ALL ========================= -->
+    <string name="list_title">Restaurants in %1$s</string>
+    <string name="list_back_to_discover">Back to Discover</string>
+    <plurals name="list_count">
+        <item quantity="one">%1$d restaurant</item>
+        <item quantity="other">%1$d restaurants</item>
+    </plurals>
+
+    <!-- ========================= RESTAURANT DETAILS ========================= -->
+    <string name="detail_status_heading">Right now</string>
+    <string name="detail_open">Open now</string>
+    <string name="detail_closed">Closed now</string>
+    <string name="detail_open_unknown">Opening status not shared</string>
+    <string name="detail_accepting">Accepting diners</string>
+    <string name="detail_not_accepting">Not accepting diners right now</string>
+    <plurals name="detail_tables_of_total">
+        <item quantity="one">%1$d of %2$d table available</item>
+        <item quantity="other">%1$d of %2$d tables available</item>
+    </plurals>
+    <string name="detail_tables_stale">Table availability not current</string>
+    <string name="detail_location_heading">Location</string>
+    <string name="detail_cuisine_heading">Cuisine</string>
+    <string name="detail_call">Call restaurant</string>
+    <string name="detail_not_found">This restaurant is no longer available.</string>
+    <string name="detail_logo_description">%1$s logo</string>
+</resources>

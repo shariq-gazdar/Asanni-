@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/colors_discover.xml  (NEW in phase 6)
+    [COLOR] Light-theme colors for Home (bottom navigation), Discover, See All and restaurant
+    details, sampled from the Discover reference image. Dark versions: res/values-night/colors.xml
+-->
+<resources>
+    <color name="asanni_discover_background">#E4E2DD</color>
+    <color name="asanni_discover_card">#F1F0EB</color>
+    <color name="asanni_discover_card_stroke">#E9E7E1</color>
+    <color name="asanni_discover_muted">#6E6A64</color>
+
+    <!-- Live report card (black in the reference) -->
+    <color name="asanni_report_background">#111111</color>
+    <color name="asanni_report_title">#FFFFFF</color>
+    <color name="asanni_report_subtitle">#B5B2AC</color>
+    <color name="asanni_live_fill">#D6ECDF</color>
+    <color name="asanni_live_text">#1F6E4C</color>
+    <color name="asanni_report_offline_fill">#3A3835</color>
+    <color name="asanni_report_offline_text">#D8D4CE</color>
+
+    <!-- Availability badges -->
+    <color name="asanni_badge_free_fill">#D6E8DC</color>
+    <color name="asanni_badge_free_text">#1C6B4B</color>
+    <color name="asanni_badge_wait_fill">#F6E0C6</color>
+    <color name="asanni_badge_wait_text">#A85F17</color>
+    <color name="asanni_badge_neutral_fill">#E5E3DE</color>
+    <color name="asanni_badge_neutral_text">#6E6A64</color>
+    <color name="asanni_badge_closed_fill">#F3DADB</color>
+    <color name="asanni_badge_closed_text">#A6262D</color>
+
+    <!-- Bottom navigation -->
+    <color name="asanni_nav_background">#F9F8F5</color>
+    <color name="asanni_nav_border">#E2DFD9</color>
+    <color name="asanni_nav_indicator">#F7CDD0</color>
+    <color name="asanni_nav_inactive">#6E6A64</color>
+
+    <!-- First-time location tip -->
+    <color name="asanni_coach_background">#14110F</color>
+    <color name="asanni_coach_text">#FFFFFF</color>
+    <color name="asanni_coach_subtext">#C9C4BD</color>
+
+    <!-- Loading skeletons + image placeholders -->
+    <color name="asanni_skeleton">#D8D5CF</color>
+    <color name="asanni_image_placeholder">#DEDAD3</color>
+    <color name="asanni_image_placeholder_icon">#8A847C</color>
+</resources>

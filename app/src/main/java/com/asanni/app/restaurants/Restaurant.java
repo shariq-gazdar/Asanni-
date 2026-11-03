@@ -49,6 +49,12 @@ public final class Restaurant {
     /** Epoch millis of the last availability/document update; null = unknown. */
     public final Long updatedAtMillis;
     public final String phone;
+    /** PHASE 8: price in PKR (null = not given / invalid). */
+    public final Double price;
+    /** PHASE 8: true = per person, false = not per-head pricing, null = not given. */
+    public final Boolean perHead;
+    /** PHASE 8: development test data (fixture or isTestData = true). Never a real business. */
+    public final boolean isTestData;
     /** Field names found in the document (for the Logcat schema report). */
     final Set<String> fieldNames;
 
@@ -72,6 +78,9 @@ public final class Restaurant {
         featured = b.featured;
         updatedAtMillis = b.updatedAt;
         phone = b.phone;
+        price = b.price;
+        perHead = b.perHead;
+        isTestData = b.testData;
         fieldNames = b.fieldNames;
     }
 
@@ -206,6 +215,11 @@ public final class Restaurant {
         b.featured = Boolean.TRUE.equals(bool(first(data, RestaurantSchema.FEATURED)));
         b.updatedAt = millis(first(data, RestaurantSchema.UPDATED_AT));
         b.phone = phone(first(data, RestaurantSchema.PHONE));
+        // PHASE 8
+        Double price = number(first(data, RestaurantSchema.PRICE));
+        b.price = price != null && !price.isNaN() && !price.isInfinite() && price >= 0 && price < 10_000_000 ? price : null;
+        b.perHead = bool(first(data, RestaurantSchema.PER_HEAD)); // missing stays null (never "true")
+        b.testData = Boolean.TRUE.equals(bool(first(data, RestaurantSchema.TEST_MARKER)));
         return new Restaurant(b);
     }
 
@@ -241,7 +255,9 @@ public final class Restaurant {
         if (o instanceof Map) o = first(asMap(o), new String[]{"url", "downloadUrl", "src", "base64", "data"});
         if (!(o instanceof String)) return null;
         String s = ((String) o).trim();
-        if (s.startsWith("https://") || s.startsWith("data:image/")) return s;
+        if (s.startsWith("data:image/")) return s;
+        // A full https URL WITH a host ("https://" alone or "coverphoto.png" can't be downloaded).
+        if (s.startsWith("https://")) return s.length() > 8 && s.substring(8).matches("[A-Za-z0-9.-]+\\.[A-Za-z]{2,}([:/?#].*)?") ? s : null;
         if (s.startsWith("http://")) return null; // cleartext is blocked on Android 9+; don't try
         if (s.length() > 100 && s.matches("[A-Za-z0-9+/=\\r\\n]+")) return s; // raw base64
         return null; // e.g. gs:// paths or local file names: can't be loaded without Storage access
@@ -421,6 +437,9 @@ public final class Restaurant {
         boolean featured;
         Long updatedAt;
         String phone;
+        Double price;
+        Boolean perHead;
+        boolean testData;
         Set<String> fieldNames;
     }
 }

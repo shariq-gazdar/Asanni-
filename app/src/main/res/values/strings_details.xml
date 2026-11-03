@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/strings_details.xml  (NEW in phase 8)
+    Texts for Restaurant Details, Get Details (restaurant information), Saved, reviews and
+    Get Directions. %1$s / %1$d = values filled in by the app. Names, prices, table counts, wait
+    times, ratings and addresses always come from Firestore, never from here.
+-->
+<resources>
+    <!-- ========================= TOP ========================= -->
+    <string name="detail_back">Back</string>
+    <string name="detail_save">Save restaurant</string>
+    <string name="detail_unsave">Remove from saved</string>
+    <string name="detail_cover_description">Cover photo of %1$s</string>
+    <!-- [EDIT TEXT] Restaurant name fallback (name missing in the data) -->
+    <string name="detail_name_fallback">Restaurant</string>
+    <!-- [EDIT TEXT] Shown only for the development dummy restaurant -->
+    <string name="detail_test_banner">TEST DATA · development dummy restaurant, not a real business</string>
+
+    <!-- ========================= REVIEWS (read-only) ========================= -->
+    <!-- [EDIT TEXT] No reviews yet -->
+    <string name="reviews_none">No reviews yet</string>
+    <!-- %1$s = average (one decimal), %2$d = number of reviews -->
+    <plurals name="reviews_summary_description">
+        <item quantity="one">Rated %1$s out of 5 from %2$d review</item>
+        <item quantity="other">Rated %1$s out of 5 from %2$d reviews</item>
+    </plurals>
+
+    <!-- ========================= DESCRIPTION ========================= -->
+    <!-- [EDIT TEXT] Price: perHead = true. %1$s = formatted amount, e.g. "2,500" -->
+    <string name="price_per_person">PKR %1$s per person</string>
+    <!-- [EDIT TEXT] Price: perHead = false (not free; just not charged per person) -->
+    <string name="price_variable">Variable pricing</string>
+    <!-- [EDIT TEXT] Price: amount given but perHead not set -->
+    <string name="price_from">PKR %1$s</string>
+
+    <!-- ========================= AVAILABILITY BOX ========================= -->
+    <plurals name="avail_tables_free">
+        <item quantity="one">%1$d table free</item>
+        <item quantity="other">%1$d tables free</item>
+    </plurals>
+    <string name="avail_no_tables">No tables free</string>
+    <!-- [EDIT TEXT] Availability unavailable -->
+    <string name="avail_unavailable">Availability unavailable</string>
+    <string name="avail_unavailable_detail">This restaurant hasn\'t shared live table availability yet.</string>
+    <!-- %1$s = "updated 1 min ago" -->
+    <string name="avail_live">LIVE · %1$s</string>
+    <string name="avail_test">TEST DATA · %1$s</string>
+    <string name="avail_live_no_time">LIVE</string>
+    <!-- [EDIT TEXT] Stale availability -->
+    <string name="avail_outdated">Availability may be outdated · %1$s</string>
+    <string name="avail_icon_description">Live availability</string>
+    <string name="updated_lower_just_now">updated just now</string>
+    <plurals name="updated_lower_minutes">
+        <item quantity="one">updated %1$d min ago</item>
+        <item quantity="other">updated %1$d min ago</item>
+    </plurals>
+    <plurals name="updated_lower_hours">
+        <item quantity="one">last updated %1$d hour ago</item>
+        <item quantity="other">last updated %1$d hours ago</item>
+    </plurals>
+    <string name="updated_lower_date">last updated %1$s</string>
+
+    <!-- ========================= DISTANCE + WAIT BOXES ========================= -->
+    <!-- [EDIT TEXT] Missing location message -->
+    <string name="distance_unavailable">Location unavailable</string>
+    <string name="distance_unavailable_detail">Turn on location to see distance</string>
+    <string name="distance_restaurant_unknown">Restaurant location not shared</string>
+    <!-- Straight-line distance (no route requested) -->
+    <string name="distance_straight">Straight-line distance</string>
+    <!-- [EDIT TEXT] Under the straight-line distance (no route is requested by opening the page) -->
+    <string name="distance_straight_sub">Straight line · driving time with directions</string>
+    <!-- [EDIT TEXT] Driving time needs a route: only after Get Directions -->
+    <string name="distance_drive_hint">Driving time available with directions</string>
+    <!-- %1$s = "12 min" from the routing service -->
+    <string name="distance_drive_time">%1$s drive</string>
+    <string name="wait_none">No wait</string>
+    <string name="wait_minutes">%1$d min wait</string>
+    <!-- [EDIT TEXT] Wait time not shared -->
+    <string name="wait_unknown">Wait time not shared</string>
+    <string name="wait_reported">Reported by the restaurant</string>
+    <string name="wait_dine_in_now">Dine-in now</string>
+    <string name="wait_outdated">May be outdated</string>
+
+    <!-- ========================= ADDRESS ========================= -->
+    <!-- [EDIT TEXT] Address section heading (was "Directions" in the reference) -->
+    <string name="address_heading">Address</string>
+    <string name="address_missing">Address not shared yet</string>
+    <string name="address_copied">Address copied</string>
+    <string name="address_copy_hint">Long-press to copy the address</string>
+
+    <!-- ========================= BUTTONS ========================= -->
+    <!-- [EDIT TEXT] Get Details button -->
+    <string name="detail_get_details">Get details</string>
+    <!-- [EDIT TEXT] Get Directions button -->
+    <string name="detail_get_directions">Get directions</string>
+    <string name="detail_finding_route">Finding route…</string>
+    <!-- [EDIT TEXT] Directions problems -->
+    <string name="directions_no_restaurant_location">Directions are unavailable: this restaurant hasn\'t shared its map location yet.</string>
+    <string name="directions_no_user_location">Directions need your current location. Turn on location and try again.</string>
+    <string name="directions_gps_off">Your phone\'s location is off. Turn it on to get directions.</string>
+    <string name="directions_failed">Couldn\'t get a road route right now. Please try again.</string>
+    <string name="directions_offline">You\'re offline, so a road route can\'t be calculated.</string>
+    <string name="directions_retry">Retry</string>
+    <string name="directions_open_maps_app">Open in maps app</string>
+    <string name="save_failed">Couldn\'t update your saved list. Please try again.</string>
+    <string name="save_pending">Saved on this phone. It will sync when you\'re online.</string>
+    <string name="save_signed_out">Please sign in again to save restaurants.</string>
+
+    <!-- ========================= GET DETAILS (restaurant information page) ========================= -->
+    <string name="rinfo_title">Restaurant information</string>
+    <string name="rinfo_heading_status">Right now</string>
+    <string name="rinfo_heading_food">Food &amp; price</string>
+    <string name="rinfo_heading_place">Place</string>
+    <string name="rinfo_heading_contact">Contact</string>
+    <string name="rinfo_cuisines">Cuisines</string>
+    <string name="rinfo_price">Price</string>
+    <string name="rinfo_area">Area</string>
+    <string name="rinfo_city">City</string>
+    <string name="rinfo_address">Address</string>
+    <string name="rinfo_tables">Tables</string>
+    <string name="rinfo_open">Open now</string>
+    <string name="rinfo_accepting">Accepting diners</string>
+    <string name="rinfo_wait">Wait time</string>
+    <string name="rinfo_updated">Availability updated</string>
+    <string name="rinfo_phone">Phone</string>
+    <string name="rinfo_yes">Yes</string>
+    <string name="rinfo_no">No</string>
+    <string name="rinfo_not_shared">Not shared</string>
+    <string name="rinfo_call">Call</string>
+    <!-- %1$d free of %2$d total -->
+    <string name="rinfo_tables_value">%1$d free of %2$d</string>
+    <!-- [EDIT TEXT] Honest note: only real data is shown -->
+    <string name="rinfo_note">ASANNI shows only what the restaurant has shared. Menus, opening hours and facilities will appear here when restaurants add them.</string>
+
+    <!-- ========================= SAVED TAB ========================= -->
+    <!-- [EDIT TEXT] Saved tab -->
+    <string name="saved_title">Saved</string>
+    <plurals name="saved_count">
+        <item quantity="one">%1$d restaurant</item>
+        <item quantity="other">%1$d restaurants</item>
+    </plurals>
+    <string name="saved_empty_title">No saved restaurants yet</string>
+    <string name="saved_empty_text">Tap the bookmark on a restaurant to keep it here.</string>
+    <string name="saved_error_title">Your saved list can\'t be shown right now</string>
+    <string name="saved_error_text">Please check your connection and try again.</string>
+    <string name="saved_missing_name">No longer available</string>
+    <string name="saved_missing_text">This restaurant was removed or is not listed right now.</string>
+    <string name="saved_remove">Remove %1$s from saved</string>
+    <!-- [EDIT TEXT] Saved list stopped updating (tap = retry) -->
+    <string name="saved_refresh_failed">Couldn\'t refresh · Tap to retry</string>
+    <string name="saved_loading_name">Loading…</string>
+    <!-- Restaurant details couldn't be read (offline / error); tapping opens Details, which retries -->
+    <string name="saved_unloaded_name">Saved restaurant</string>
+    <string name="saved_unloaded_text">Couldn\'t load details right now. Tap to open.</string>
+    <string name="saved_loading">Loading your saved restaurants</string>
+</resources>

@@ -35,6 +35,9 @@ package com.asanni.app.restaurants;
  *   data:image / base64 text. Ask the desktop developer to store complete public URLs.
  *
  * THE MOBILE APP ONLY READS this collection. It never writes to restaurant documents.
+ *
+ * PHASE 8: only ADDED price, perHead and the isTestData marker (section "PHASE 8 additions").
+ * Nothing above was changed.
  */
 public final class RestaurantSchema {
 
@@ -124,6 +127,18 @@ public final class RestaurantSchema {
     static final String[] UPDATED_AT = {"availabilityUpdatedAt"};
     /** Stored without '+', e.g. "922135000000". Add '+' before dialing. */
     static final String[] PHONE = {"phone"};
+
+    // ------------------------------------------------------------------ PHASE 8 additions (only these lines are new)
+
+    /** Price amount (number, or numeric text such as "2500"). PKR. Missing = not shown. */
+    static final String[] PRICE = {"price"};
+    /** Boolean: true = price is per person; false = not per-head pricing (shown as "Variable pricing"). */
+    static final String[] PER_HEAD = {"perHead"};
+    /**
+     * Development test marker. Documents (or local fixtures) with isTestData = true are labelled
+     * "TEST DATA" everywhere and are hidden in release builds (see DevTestData.java).
+     */
+    static final String[] TEST_MARKER = {"isTestData"};
 
     // ------------------------------------------------------------------ NOT in the desktop schema yet
     // Kept as candidate lists so they work automatically if the desktop app adds them later.

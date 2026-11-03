@@ -110,6 +110,12 @@ public final class RestaurantRepository {
 
     /** One document by ID (used by the detail screen when nothing is loaded yet). */
     public void fetchOne(String id, final Observer o) {
+        if (DevTestData.active() && DevTestData.isTestId(id)) { // [DEV TEST DATA] local fixture
+            List<Restaurant> one = new ArrayList<>();
+            one.add(DevTestData.fixture());
+            o.onRestaurants(one, false);
+            return;
+        }
         FirebaseFirestore.getInstance().collection(RestaurantSchema.COLLECTION).document(id).get()
                 .addOnSuccessListener(doc -> {
                     Restaurant r = doc.exists() ? parse(doc) : null;
@@ -118,6 +124,87 @@ public final class RestaurantRepository {
                     o.onRestaurants(list, doc.getMetadata().isFromCache());
                 })
                 .addOnFailureListener(e -> o.onRestaurantsFailed(classify(e)));
+    }
+
+    // ------------------------------------------------------------------ phase 8: single restaurants
+
+    /** Stops a watchOne() listener. */
+    public interface Watch {
+        void stop();
+    }
+
+    /**
+     * Live updates for ONE restaurant document (Restaurant Details). Independent of the city
+     * listener, so opening a restaurant from another city never disturbs Discover's data.
+     * Delivers an empty list when the document doesn't exist or is disabled.
+     */
+    public Watch watchOne(final String id, final Observer o) {
+        if (DevTestData.active() && DevTestData.isTestId(id)) { // [DEV TEST DATA] local fixture
+            List<Restaurant> one = new ArrayList<>();
+            one.add(DevTestData.fixture());
+            main.post(() -> o.onRestaurants(one, false));
+            return () -> { };
+        }
+        final ListenerRegistration reg = FirebaseFirestore.getInstance()
+                .collection(RestaurantSchema.COLLECTION).document(id)
+                .addSnapshotListener(MetadataChanges.INCLUDE, (doc, e) -> {
+                    if (e != null) {
+                        o.onRestaurantsFailed(classify(e));
+                        return;
+                    }
+                    if (doc == null) return;
+                    List<Restaurant> list = new ArrayList<>();
+                    Restaurant r = doc.exists() ? parse(doc) : null;
+                    if (r != null && !r.isHiddenFromDiners()) list.add(r);
+                    o.onRestaurants(list, doc.getMetadata().isFromCache());
+                });
+        return reg::remove;
+    }
+
+    public interface ManyCallback {
+        /** Found restaurants by ID (missing / disabled IDs are simply absent). */
+        void onRestaurants(java.util.Map<String, Restaurant> byId, boolean complete);
+    }
+
+    /**
+     * Several restaurants by ID (Saved tab): uses what is already loaded, then reads the rest in
+     * batches of 30 (Firestore's "in" limit) - never the whole collection, never one read per card.
+     */
+    public void fetchMany(List<String> ids, final ManyCallback cb) {
+        final java.util.Map<String, Restaurant> found = new java.util.LinkedHashMap<>();
+        final List<String> missing = new ArrayList<>();
+        for (String id : ids) {
+            Restaurant r = findLoaded(id);
+            if (r != null && r.isHiddenFromDiners()) r = null; // disabled: read the server's answer below
+            if (r == null && DevTestData.active() && DevTestData.isTestId(id)) r = DevTestData.fixture();
+            if (r != null) found.put(id, r);
+            else if (!DevTestData.isTestId(id)) missing.add(id);
+        }
+        if (missing.isEmpty()) {
+            cb.onRestaurants(found, true);
+            return;
+        }
+        final int batches = (missing.size() + 29) / 30;
+        final int[] left = {batches};
+        final boolean[] ok = {true};
+        for (int i = 0; i < missing.size(); i += 30) {
+            List<String> chunk = missing.subList(i, Math.min(missing.size(), i + 30));
+            FirebaseFirestore.getInstance().collection(RestaurantSchema.COLLECTION)
+                    .whereIn(com.google.firebase.firestore.FieldPath.documentId(), new ArrayList<Object>(chunk))
+                    .get()
+                    .addOnSuccessListener(snap -> {
+                        for (DocumentSnapshot d : snap.getDocuments()) {
+                            Restaurant r = parse(d);
+                            if (r != null && !r.isHiddenFromDiners()) found.put(r.id, r);
+                        }
+                        if (--left[0] == 0) cb.onRestaurants(found, ok[0]);
+                    })
+                    .addOnFailureListener(e -> {
+                        ok[0] = false;
+                        Log.w(TAG, "Saved restaurants read failed: " + e.getClass().getSimpleName());
+                        if (--left[0] == 0) cb.onRestaurants(found, false);
+                    });
+        }
     }
 
     // ------------------------------------------------------------------------------------------
@@ -159,6 +246,7 @@ public final class RestaurantRepository {
                     + "); set RestaurantSchema.SERVER_CITY_FIELD to filter by city on the server");
         }
         reportSchemaOnce(list, snap.size());
+        list = DevTestData.addTo(list); // [DEV TEST DATA] dummy restaurant, debug builds only
         latest = Collections.unmodifiableList(list);
         latestFromCache = snap.getMetadata().isFromCache();
         lastFailure = null;

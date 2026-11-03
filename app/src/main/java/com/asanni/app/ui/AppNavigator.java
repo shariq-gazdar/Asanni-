@@ -21,6 +21,10 @@ import com.asanni.app.R;
  *     Discover location arrow -> Manual Location (edit mode) -> back to Discover
  *     Discover See all -------> Restaurant list --> Restaurant details
  *     Discover restaurant card -> Restaurant details
+ *   Phase 8: Restaurant details (from Discover / See All / Map / Saved)
+ *     Back -> wherever it was opened from · Get details -> Restaurant information
+ *     Get directions -> Map with the route (Back -> Restaurant details)
+ *     Saved tab card -> Restaurant details
  *   Info --Sign out--> Get Started
  */
 final class AppNavigator {
@@ -41,6 +45,9 @@ final class AppNavigator {
     static final String EXTRA_USER_LAT = "com.asanni.app.extra.USER_LAT";
     static final String EXTRA_USER_LNG = "com.asanni.app.extra.USER_LNG";
     static final String EXTRA_RESTAURANT_ID = "com.asanni.app.extra.RESTAURANT_ID";
+    // Phase 8: Get directions -> Map
+    static final String EXTRA_ROUTE_TO = "com.asanni.app.extra.ROUTE_TO";
+    static final String EXTRA_ROUTE_TOKEN = "com.asanni.app.extra.ROUTE_TOKEN";
 
     static final int REQUEST_EDIT_ADDRESS = 5101;
     static final int REQUEST_VERIFY_PHONE = 5102;
@@ -151,6 +158,43 @@ final class AppNavigator {
         putScope(intent, scope);
         putPosition(intent, userLat, userLng);
         start(from, intent);
+    }
+
+    /** Phase 8: Restaurant Details "Get details" -> restaurant information (real fields only). */
+    static void openRestaurantInformation(Activity from, String restaurantId) {
+        Intent intent = new Intent(from, RestaurantInfoActivity.class);
+        intent.putExtra(EXTRA_RESTAURANT_ID, restaurantId);
+        start(from, intent);
+    }
+
+    /**
+     * Phase 8: "Get directions" pressed on Restaurant Details -> the Map with that restaurant
+     * selected and its route drawn. The Map draws a route ONLY when it receives EXTRA_ROUTE_TO
+     * (never just because it was opened or a restaurant was selected).
+     * CLEAR_TOP + SINGLE_TOP: when Details was opened FROM the Map, Details closes and that same
+     * Map (with its search + filters) receives the route in onNewIntent - Back then goes to
+     * Discover as usual. Opened from Discover / Saved, a new Map opens above Details, and Back
+     * returns to Details.
+     */
+    static void openMapWithRoute(Activity from, String restaurantId, com.asanni.app.restaurants.LocationScope scope,
+                                 double fromLat, double fromLng) {
+        Intent intent = new Intent(from, MapActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        putScope(intent, scope);
+        intent.putExtra(EXTRA_ROUTE_TO, restaurantId);
+        intent.putExtra(EXTRA_USER_LAT, fromLat);
+        intent.putExtra(EXTRA_USER_LNG, fromLng);
+        intent.putExtra(EXTRA_ROUTE_TOKEN, nextRouteToken()); // each press handled exactly once
+        start(from, intent);
+    }
+
+    private static long lastRouteToken;
+
+    /** Increasing token: the Map ignores any token not newer than the last one it handled. */
+    private static synchronized long nextRouteToken() {
+        long t = Math.max(System.currentTimeMillis(), lastRouteToken + 1);
+        lastRouteToken = t;
+        return t;
     }
 
     private static void putScope(Intent intent, com.asanni.app.restaurants.LocationScope scope) {

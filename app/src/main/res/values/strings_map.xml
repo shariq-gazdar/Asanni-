@@ -94,24 +94,23 @@
     <!-- [EDIT TEXT] Route information labels -->
     <string name="route_mode_driving">Car</string>
     <string name="route_mode_walking">Walk</string>
-    <string name="route_mode_cycling">Bike</string>
-    <string name="route_recommended">Fastest</string>
-    <string name="route_alternative">Alternative %1$d</string>
+    <!-- PHASE 8: one route from the routing package (GraphHopper first) -->
+    <string name="route_label_drive">Driving route</string>
+    <string name="route_label_walk">Walking route</string>
+    <string name="route_mode_selected">selected</string>
+    <string name="route_target_missing">This restaurant isn\'t on the map right now.</string>
     <!-- %1$s = time, %2$s = distance -->
     <string name="route_summary">%1$s · %2$s</string>
     <string name="route_minutes">%1$d min</string>
     <string name="route_hours_minutes">%1$d h %2$d min</string>
-    <!-- Honest note: openrouteservice has NO live traffic -->
+    <!-- Honest note: the routing services used have NO live traffic -->
     <string name="route_estimate_note">Estimated time without live traffic. For live traffic, open it in your maps app.</string>
-    <string name="route_loading">Finding routes…</string>
+    <string name="route_loading">Finding route…</string>
     <string name="route_close">Close route</string>
     <string name="route_need_location">Turn on location to get directions from where you are.</string>
     <string name="route_need_coordinates">This restaurant has no map location yet, so directions aren\'t possible.</string>
-    <string name="route_not_configured">In-app routes aren\'t set up yet. You can open directions in your maps app.</string>
-    <string name="route_failed">Couldn\'t find a route right now.</string>
+    <string name="route_failed">Couldn\'t get a road route right now. Try again, or open it in your maps app.</string>
     <string name="route_failed_offline">You\'re offline, so a route can\'t be found.</string>
-    <string name="route_failed_unroutable">No road route was found to this place.</string>
-    <string name="route_failed_limit">Too many route requests today. Try again later or use your maps app.</string>
     <string name="route_retry">Retry</string>
     <string name="no_maps_app">No maps app found on this phone.</string>
     <string name="map_attribution_note">Map data © OpenStreetMap contributors</string>

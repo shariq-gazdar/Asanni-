@@ -37,10 +37,11 @@ import com.asanni.app.auth.GoogleAuthClient;
 import com.asanni.app.location.DeviceLocationHelper;
 import com.asanni.app.map.MapConfig;
 import com.asanni.app.map.MarkerIcons;
-import com.asanni.app.map.OpenRouteServiceClient;
-import com.asanni.app.map.RouteResult;
-import com.asanni.app.map.RouteService;
-import com.asanni.app.map.TravelMode;
+// PHASE 8: routes come from the existing routing package (GraphHopper first) - no second provider.
+import com.asanni.app.routing.ExternalNavigation;
+import com.asanni.app.routing.Route;
+import com.asanni.app.routing.Routeconfig;
+import com.asanni.app.routing.Routeservice;
 import com.asanni.app.network.ConnectivityMonitor;
 import com.asanni.app.restaurants.DiscoverFilters;
 import com.asanni.app.restaurants.LocationScope;
@@ -113,6 +114,9 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
     private static final String STATE_FILTERS = "map_filters";
     private static final String STATE_SELECTED = "map_selected";
     private static final String STATE_CAMERA_MOVED = "map_camera_moved";
+    private static final String STATE_ROUTE_TOKEN = "map_route_token";   // PHASE 8
+    private static final String STATE_ROUTE_TO = "map_route_to";         // PHASE 8
+    private static final String STATE_ROUTE_FROM = "map_route_from";     // PHASE 8
     /** [TIMING] Refresh the blue dot this often while the map is on screen (no background tracking). */
     private static final long LOCATION_REFRESH_MS = 20_000L;
     private static final long SEARCH_DEBOUNCE_MS = 250L;
@@ -158,12 +162,16 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
     private boolean locationComponentReady;
     private boolean resumed;
 
-    private RouteService routeService;
-    private RouteResult route;
-    private int routeIndex;
-    private TravelMode routeMode = TravelMode.DRIVING;
+    // PHASE 8: one route from Routeservice (GraphHopper -> OSRM -> ORS, see routing/Routeconfig).
+    private Routeservice.Request routeRequest;
+    private int routeGeneration;          // a newer request / close makes older answers ignored
+    private Route route;
+    private Routeconfig.Profile routeMode = Routeconfig.Profile.DRIVING;
     private String routeRestaurantId;
     private boolean routeVisible;
+    private long handledRouteToken;       // each "Get directions" press is handled exactly once
+    private String pendingRouteTo;        // waiting for the restaurant list before routing
+    private double[] routeOrigin;         // fresh fix passed by Restaurant Details (lat, lng)
 
     private boolean panelExpanded;
     private ValueAnimator panelAnimator;
@@ -222,9 +230,9 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         applyInsets();
 
         deviceLocation = new DeviceLocationHelper(this);
-        routeService = new OpenRouteServiceClient(MapConfig.routingKey(this));
         bindViews();
         readState(savedInstanceState);
+        handleRouteIntent(getIntent()); // PHASE 8: only Details' "Get directions" sends this
 
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
@@ -288,7 +296,7 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
     protected void onDestroy() {
         super.onDestroy();
         main.removeCallbacksAndMessages(null);
-        if (routeService != null) routeService.cancel();
+        cancelRouteRequest();
         if (deviceLocation != null) deviceLocation.release();
         if (mapView != null) mapView.onDestroy();
     }
@@ -301,6 +309,67 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         out.putString(STATE_FILTERS, filters.encode());
         out.putString(STATE_SELECTED, selectedId);
         out.putBoolean(STATE_CAMERA_MOVED, userMovedCamera || cameraPlaced); // MapView restores the view itself
+        out.putLong(STATE_ROUTE_TOKEN, handledRouteToken);
+        // A route the user asked for is asked for again after recreation (answered from the cache).
+        String routeTo = pendingRouteTo != null ? pendingRouteTo : (routeVisible ? routeRestaurantId : null);
+        out.putString(STATE_ROUTE_TO, routeTo);
+        if (routeOrigin != null) out.putDoubleArray(STATE_ROUTE_FROM, routeOrigin);
+    }
+
+    /** PHASE 8: Map is reused (REORDER_TO_FRONT) when Details asks for directions again. */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (mapView == null) return;
+        handleRouteIntent(intent);
+    }
+
+    /**
+     * PHASE 8: a route is calculated ONLY for an explicit "Get directions" press (Details sends
+     * EXTRA_ROUTE_TO + a unique token). Opening the Map or selecting a marker never routes.
+     */
+    private void handleRouteIntent(Intent in) {
+        if (in == null || !in.hasExtra(AppNavigator.EXTRA_ROUTE_TO)) return;
+        long token = in.getLongExtra(AppNavigator.EXTRA_ROUTE_TOKEN, 0L);
+        // Not newer than the last handled press (rotation, or an old launch intent after the
+        // process was restored) = already handled: never routes again without a new press.
+        if (token <= 0L || token <= handledRouteToken) return;
+        handledRouteToken = token;
+        pendingRouteTo = in.getStringExtra(AppNavigator.EXTRA_ROUTE_TO);
+        if (in.hasExtra(AppNavigator.EXTRA_USER_LAT) && in.hasExtra(AppNavigator.EXTRA_USER_LNG)) {
+            double la = in.getDoubleExtra(AppNavigator.EXTRA_USER_LAT, Double.NaN);
+            double lo = in.getDoubleExtra(AppNavigator.EXTRA_USER_LNG, Double.NaN);
+            routeOrigin = validCoordinate(la, lo) ? new double[]{la, lo} : null;
+        }
+        routeMode = Routeconfig.Profile.DRIVING; // Details asks for driving directions
+        tryPendingRoute();
+    }
+
+    private static boolean validCoordinate(double la, double lo) {
+        return !Double.isNaN(la) && !Double.isNaN(lo) && la >= -90 && la <= 90 && lo >= -180 && lo <= 180
+                && !(la == 0 && lo == 0);
+    }
+
+    /** Selects the requested restaurant and routes to it once the restaurant list is loaded. */
+    private void tryPendingRoute() {
+        if (pendingRouteTo == null || restaurants == null) return;
+        final String id = pendingRouteTo;
+        pendingRouteTo = null;
+        Restaurant r = findIn(RestaurantQuery.registered(restaurants), id);
+        if (r == null) {
+            android.widget.Toast.makeText(this, R.string.route_target_missing, android.widget.Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (findIn(markerSet(System.currentTimeMillis()), id) == null) {
+            // Hidden by the Map's own filters/search: show everything so the route is visible.
+            filters = DiscoverFilters.defaults();
+            query = "";
+            main.removeCallbacks(applySearch);
+            searchInput.setText("");
+        }
+        select(id, false);
+        requestRoute();
     }
 
     /** System Back = the back arrow: return to Discover (keyboard / offline page close first). */
@@ -371,7 +440,9 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         });
         hero.setOnClickListener(v -> {
             Restaurant r = heroRestaurant();
-            if (r != null) select(r.id, true);
+            if (r == null) return;
+            if (r.id.equals(selectedId)) openDetails(); // PHASE 8: second tap opens Restaurant Details
+            else select(r.id, true);
         });
 
         // Legend chips (non-interactive): same colors as the markers and badges.
@@ -418,6 +489,9 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
             filters = DiscoverFilters.decode(saved.getString(STATE_FILTERS));
             selectedId = saved.getString(STATE_SELECTED);
             userMovedCamera = saved.getBoolean(STATE_CAMERA_MOVED, false);
+            handledRouteToken = saved.getLong(STATE_ROUTE_TOKEN, 0L);
+            pendingRouteTo = saved.getString(STATE_ROUTE_TO);
+            routeOrigin = saved.getDoubleArray(STATE_ROUTE_FROM);
         } else {
             query = nonNull(in.getStringExtra(AppNavigator.EXTRA_QUERY));
             filters = DiscoverFilters.decode(in.getStringExtra(AppNavigator.EXTRA_FILTERS));
@@ -576,6 +650,7 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         failure = null;
         renderAll();
         maybePlaceCamera();
+        tryPendingRoute(); // PHASE 8
     }
 
     @Override
@@ -745,9 +820,8 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
 
     /** Travel time of the current route to this restaurant (from the routing provider only). */
     private String routeTimeFor(Restaurant r) {
-        if (route == null || !r.id.equals(routeRestaurantId) || route.routes.isEmpty()) return null;
-        Double s = route.routes.get(Math.min(routeIndex, route.routes.size() - 1)).durationSeconds;
-        return s == null ? null : formatDuration(s);
+        if (route == null || !r.id.equals(routeRestaurantId) || route.durationSeconds < 0) return null;
+        return formatDuration(route.durationSeconds);
     }
 
     private void setPanelExpanded(boolean expand) {
@@ -856,15 +930,6 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
                 select(f.getStringProperty("id"), true);
             }
             return true;
-        }
-        if (routeVisible) {
-            List<Feature> lines = map.queryRenderedFeatures(box, LYR_ROUTE_ALT);
-            if (!lines.isEmpty() && lines.get(0).hasProperty("idx")) {
-                routeIndex = lines.get(0).getNumberProperty("idx").intValue();
-                drawRoute();
-                bindRouteOptions();
-                return true;
-            }
         }
         if (panelExpanded) setPanelExpanded(false);
         return false;
@@ -990,16 +1055,15 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
     private void openInMapsApp() {
         Restaurant r = selectedId != null && restaurants != null ? findIn(RestaurantQuery.registered(restaurants), selectedId) : null;
         if (r == null || navigating) return;
-        Uri uri;
-        if (r.hasCoordinates()) {
-            uri = Uri.parse(String.format(Locale.US, "geo:%f,%f?q=%f,%f(%s)", r.latitude, r.longitude,
-                    r.latitude, r.longitude, Uri.encode(r.name)));
-        } else if (r.address != null) {
-            uri = Uri.parse("geo:0,0?q=" + Uri.encode(r.address));
-        } else {
+        if (r.hasCoordinates()) { // PHASE 8: the routing package's hand-off (Google Maps, else any maps app)
+            ExternalNavigation.openDirections(this, r.latitude, r.longitude, routeMode);
+            return;
+        }
+        if (r.address == null) { // no map position and no address: nothing honest to hand over
             setRouteStatus(getString(R.string.route_need_coordinates), false);
             return;
         }
+        Uri uri = Uri.parse("geo:0,0?q=" + Uri.encode(r.address));
         try {
             navigating = true;
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
@@ -1014,15 +1078,15 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
     private void buildModeChips() {
         LinearLayout modes = findViewById(R.id.route_modes);
         modes.removeAllViews();
-        for (final TravelMode m : TravelMode.values()) {
+        // PHASE 8: only the modes the routing package supports (Car + Walk).
+        for (final Routeconfig.Profile m : Routeconfig.Profile.values()) {
             TextView chip = (TextView) LayoutInflater.from(this).inflate(R.layout.item_route_mode, modes, false);
-            chip.setText(m == TravelMode.DRIVING ? R.string.route_mode_driving
-                    : m == TravelMode.WALKING ? R.string.route_mode_walking : R.string.route_mode_cycling);
+            chip.setText(m == Routeconfig.Profile.WALKING ? R.string.route_mode_walking : R.string.route_mode_driving);
             chip.setTag(m);
             chip.setOnClickListener(v -> {
                 if (routeMode == m) return;
                 routeMode = m;
-                requestRoute();
+                requestRoute(); // an explicit tap on a travel mode
             });
             modes.addView(chip);
         }
@@ -1033,32 +1097,46 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         LinearLayout modes = findViewById(R.id.route_modes);
         for (int i = 0; i < modes.getChildCount(); i++) {
             View chip = modes.getChildAt(i);
-            chip.setSelected(chip.getTag() == routeMode);
+            boolean on = chip.getTag() == routeMode;
+            chip.setSelected(on);
+            chip.setContentDescription(((TextView) chip).getText() + (on ? ", " + getString(R.string.route_mode_selected) : ""));
         }
     }
 
+    private void cancelRouteRequest() {
+        routeGeneration++;
+        if (routeRequest != null) routeRequest.cancel();
+        routeRequest = null;
+    }
+
+    /** Called only after an explicit user action (Get directions, a mode chip, Retry). */
     private void requestRoute() {
         Restaurant r = selectedId != null && restaurants != null ? findIn(RestaurantQuery.registered(restaurants), selectedId) : null;
         if (r == null) return;
-        routeService.cancel(); // an older request (other mode) must not overwrite what we show now
+        cancelRouteRequest(); // an older request (other mode) must not overwrite what we show now
         routeVisible = true;
         routeRestaurantId = r.id;
         route = null;
-        routeIndex = 0;
         updateModeChips();
         drawRoute();
         renderAll();
-        if (!r.hasCoordinates()) {
+        if (!r.hasCoordinates() || !validCoordinate(r.latitude, r.longitude)) {
             setRouteStatus(getString(R.string.route_need_coordinates), false);
             return;
         }
-        if (userLocation == null) {
+        double fromLat;
+        double fromLng;
+        if (routeOrigin != null) {
+            // The fresh fix Restaurant Details just used: same start = same route, answered from
+            // Routeservice's cache (no second GraphHopper credit, same distance as Details showed).
+            fromLat = routeOrigin[0];
+            fromLng = routeOrigin[1];
+        } else if (userLocation != null) {
+            fromLat = userLocation.getLatitude();
+            fromLng = userLocation.getLongitude();
+        } else {
             setRouteStatus(getString(R.string.route_need_location), false);
             onMyLocationClicked(); // asks for permission / GPS with an explanation
-            return;
-        }
-        if (MapConfig.routingKey(this) == null) {
-            setRouteStatus(getString(R.string.route_not_configured), false);
             return;
         }
         if (!ConnectivityMonitor.get(this).mayHaveInternet()) {
@@ -1067,40 +1145,30 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         }
         setRouteStatus(getString(R.string.route_loading), false);
         final String forId = r.id;
-        routeService.route(userLocation.getLatitude(), userLocation.getLongitude(), r.latitude, r.longitude, routeMode,
-                new RouteService.Callback() {
-                    @Override
-                    public void onRoutes(RouteResult result) {
-                        if (isDestroyed() || !routeVisible || !forId.equals(routeRestaurantId)) return;
-                        route = result;
-                        routeIndex = 0; // index 0 = fastest (sorted by the provider's duration)
-                        setRouteStatus(null, false);
-                        drawRoute();
-                        bindRouteOptions();
-                        renderAll();
-                        fitRoute();
-                    }
-
-                    @Override
-                    public void onRouteFailed(RouteService.Failure f) {
-                        if (isDestroyed() || !routeVisible || !forId.equals(routeRestaurantId)) return;
-                        int msg;
-                        switch (f) {
-                            case NOT_CONFIGURED: msg = R.string.route_not_configured; break;
-                            case OFFLINE: msg = R.string.route_failed_offline; break;
-                            case NO_ROUTE: msg = R.string.route_failed_unroutable; break;
-                            case LIMIT_REACHED: msg = R.string.route_failed_limit; break;
-                            default: msg = R.string.route_failed; break;
-                        }
-                        setRouteStatus(getString(msg), f != RouteService.Failure.NOT_CONFIGURED);
-                    }
-                });
+        final int gen = routeGeneration;
+        routeRequest = Routeservice.get().request(fromLat, fromLng, r.latitude, r.longitude, routeMode, result -> {
+            if (gen != routeGeneration || isDestroyed() || !routeVisible || !forId.equals(routeRestaurantId)) return;
+            routeRequest = null;
+            // Routeservice returns a straight line (approximate) when every provider failed.
+            // That is not a road route, so it is never drawn as one: show the error + Retry.
+            if (result == null || result.approximate || result.points == null || result.points.size() < 2) {
+                setRouteStatus(getString(R.string.route_failed), true);
+                return;
+            }
+            route = result;
+            setRouteStatus(null, false);
+            drawRoute();
+            bindRouteOptions();
+            renderAll();
+            fitRoute();
+        });
     }
 
     private void setRouteStatus(String text, boolean retry) {
         TextView status = findViewById(R.id.route_status);
         status.setVisibility(text == null ? View.GONE : View.VISIBLE);
         status.setText(text);
+        if (text != null) status.announceForAccessibility(text);
         findViewById(R.id.route_retry).setVisibility(retry ? View.VISIBLE : View.GONE);
         if (text != null) {
             ((LinearLayout) findViewById(R.id.route_options)).removeAllViews();
@@ -1112,29 +1180,22 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         LinearLayout options = findViewById(R.id.route_options);
         options.removeAllViews();
         if (route == null) return;
-        for (int i = 0; i < route.routes.size(); i++) {
-            final int index = i;
-            RouteResult.Route rt = route.routes.get(i);
-            View row = LayoutInflater.from(this).inflate(R.layout.item_route_option, options, false);
-            ((TextView) row.findViewById(R.id.route_label)).setText(i == 0
-                    ? getString(R.string.route_recommended) : getString(R.string.route_alternative, i));
-            String time = rt.durationSeconds != null ? formatDuration(rt.durationSeconds) : null;
-            String dist = rt.distanceMeters != null ? RestaurantViews.distance(this, rt.distanceMeters / 1000.0) : null;
-            ((TextView) row.findViewById(R.id.route_summary)).setText(time != null && dist != null
-                    ? getString(R.string.route_summary, time, dist) : RestaurantViews.join(this, time, dist));
-            row.findViewById(R.id.route_swatch).setBackgroundColor(getColor(i == routeIndex
-                    ? R.color.asanni_route_main : R.color.asanni_route_alt));
-            row.setSelected(i == routeIndex);
-            row.setOnClickListener(v -> {
-                routeIndex = index;
-                drawRoute();
-                bindRouteOptions();
-                renderAll();
-            });
-            options.addView(row);
-        }
-        // openrouteservice never includes live traffic: always say the time is an estimate.
-        findViewById(R.id.route_note).setVisibility(route.trafficAware ? View.GONE : View.VISIBLE);
+        View row = LayoutInflater.from(this).inflate(R.layout.item_route_option, options, false);
+        ((TextView) row.findViewById(R.id.route_label)).setText(
+                routeMode == Routeconfig.Profile.WALKING ? R.string.route_label_walk : R.string.route_label_drive);
+        String time = route.durationSeconds >= 0 ? formatDuration(route.durationSeconds) : null;
+        String dist = RestaurantViews.distance(this, route.distanceMeters / 1000.0);
+        ((TextView) row.findViewById(R.id.route_summary)).setText(time != null
+                ? getString(R.string.route_summary, time, dist) : dist);
+        row.findViewById(R.id.route_swatch).setBackgroundColor(getColor(R.color.asanni_route_main));
+        row.setSelected(true);
+        options.addView(row);
+        // No provider used here includes live traffic: always say so, plus the required attribution.
+        TextView note = findViewById(R.id.route_note);
+        note.setText(route.attribution != null && !route.attribution.isEmpty()
+                ? getString(R.string.route_estimate_note) + "\n" + route.attribution
+                : getString(R.string.route_estimate_note));
+        note.setVisibility(View.VISIBLE);
     }
 
     private void drawRoute() {
@@ -1143,23 +1204,20 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         if (src == null) return;
         List<Feature> lines = new ArrayList<>();
         if (routeVisible && route != null) {
-            for (int i = route.routes.size() - 1; i >= 0; i--) { // chosen route drawn last (on top)
-                List<Point> pts = new ArrayList<>();
-                for (double[] c : route.routes.get(i).coordinates) pts.add(Point.fromLngLat(c[0], c[1]));
-                Feature f = Feature.fromGeometry(LineString.fromLngLats(pts));
-                f.addBooleanProperty("sel", i == routeIndex);
-                f.addNumberProperty("idx", i);
-                lines.add(f);
-            }
+            List<Point> pts = new ArrayList<>();
+            for (double[] c : route.points) pts.add(Point.fromLngLat(c[1], c[0])); // Route = [lat, lng]
+            Feature f = Feature.fromGeometry(LineString.fromLngLats(pts));
+            f.addBooleanProperty("sel", true);
+            f.addNumberProperty("idx", 0);
+            lines.add(f);
         }
         src.setGeoJson(FeatureCollection.fromFeatures(lines));
     }
 
     private void fitRoute() {
-        if (map == null || route == null || route.routes.isEmpty()) return;
+        if (map == null || route == null) return;
         List<LatLng> pts = new ArrayList<>();
-        for (double[] c : route.routes.get(routeIndex).coordinates) pts.add(new LatLng(c[1], c[0]));
-        if (userLocation != null) pts.add(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()));
+        for (double[] c : route.points) pts.add(new LatLng(c[0], c[1]));
         if (pts.size() < 2) return;
         int[] pad = cameraPadding();
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds.Builder().includes(pts).build(),
@@ -1167,11 +1225,12 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
     }
 
     private void closeRoute() {
-        if (routeService != null) routeService.cancel();
+        cancelRouteRequest();
         boolean wasVisible = routeVisible;
         routeVisible = false;
         route = null;
         routeRestaurantId = null;
+        routeOrigin = null; // a later route starts from the Map's own live position
         drawRoute();
         if (wasVisible && searchInput != null) renderPanel(System.currentTimeMillis());
     }
@@ -1361,7 +1420,7 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
             enableLocationComponent();
             if (!DeviceLocationHelper.isLocationEnabled(this)) showGpsOffBanner();
             else refreshLocation(true);
-            if (routeVisible) requestRoute();
+            if (routeVisible && route == null) requestRoute(); // was waiting for permission
         }
         // Denied: browsing continues; the my-location button explains how to turn it on later.
     }

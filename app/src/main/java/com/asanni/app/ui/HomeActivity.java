@@ -43,6 +43,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
     private View[] sections;
     private BottomNavBar nav;
     private DiscoverSection discover;
+    private SavedSection savedSection; // PHASE 8
     private int current = TAB_DISCOVER;
     private boolean started;
     private ProfileData pendingOnboarding; // incomplete profile found while in the background
@@ -65,6 +66,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
         nav = new BottomNavBar(new View[]{findViewById(R.id.nav_discover), findViewById(R.id.nav_map),
                 findViewById(R.id.nav_saved), findViewById(R.id.nav_profile)}, this::onTabSelected);
         discover = new DiscoverSection(this, findViewById(R.id.section_discover));
+        savedSection = new SavedSection(this, findViewById(R.id.section_saved)); // PHASE 8
 
         if (savedInstanceState != null) {
             int saved = savedInstanceState.getInt(STATE_TAB, TAB_DISCOVER);
@@ -106,6 +108,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
     protected void onDestroy() {
         super.onDestroy();
         if (discover != null) discover.release();
+        if (savedSection != null) savedSection.release(); // PHASE 8
     }
 
     @Override
@@ -214,6 +217,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
     /** Discover listens to Firestore only while it is visible and Home is on screen. */
     private void updateDiscoverActive() {
         if (discover != null) discover.setActive(started && current == TAB_DISCOVER);
+        if (savedSection != null) savedSection.setActive(started && current == TAB_SAVED); // PHASE 8
     }
 
     // ------------------------------------------------------------------ profile

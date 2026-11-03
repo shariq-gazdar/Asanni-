@@ -31,6 +31,7 @@ public abstract class AsanniActivity extends Activity {
         appliedAppearance = AppearanceManager.current(this);
         super.onCreate(savedInstanceState);
         ConnectivityMonitor.get(this); // phase 5: one app-wide network monitor (no polling)
+        com.asanni.app.restaurants.DevTestData.install(this); // [DEV TEST DATA] debug-build check
     }
 
     /** Phase 5: Back closes the offline page first (the screen below stays as it was). */

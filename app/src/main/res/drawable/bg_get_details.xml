@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Get details" button: white pill, dark text (NEW in phase 8) -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="#22000000">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/asanni_map_control" />
+            <stroke android:width="1dp" android:color="@color/asanni_discover_card_stroke" />
+            <corners android:radius="100dp" />
+        </shape>
+    </item>
+</ripple>

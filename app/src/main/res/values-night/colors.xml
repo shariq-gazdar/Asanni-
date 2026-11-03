@@ -94,4 +94,9 @@
     <color name="asanni_map_control">#2A2724</color>
     <color name="asanni_map_panel">#1E1C1A</color>
     <color name="asanni_marker_selected_ring">#F3EFEA</color>
+
+    <!-- Phase 8 (restaurant details) -->
+    <color name="asanni_avail_live_fill">#1C3328</color>
+    <color name="asanni_avail_live_text">#7FD3A6</color>
+    <color name="asanni_detail_round_button">#E62A2724</color>
 </resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    [UI ASSET] Restaurant COVER placeholder (NEW in phase 8). Replace using an image from ui/.
+    Shown on Restaurant Details (and Saved cards) when a restaurant has no usable coverUrl, or while
+    the real cover loads. The real coverUrl from Firestore always replaces it when it loads.
+    Drawn in XML: warm ASANNI red gradient, soft "table" circles, a fork-and-knife mark and the
+    ASANNI wordmark. To use a photo instead: DELETE this file and add
+    app/src/main/res/drawable-nodpi/restaurant_cover_placeholder.jpg (same name, no code change).
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="315"
+                android:endColor="#3B0D14"
+                android:startColor="#9C1227"
+                android:type="linear" />
+        </shape>
+    </item>
+    <!-- soft round "tables" -->
+    <item android:width="220dp" android:height="220dp" android:gravity="top|start" android:left="-70dp" android:top="-60dp">
+        <shape android:shape="oval"><solid android:color="#14FFFFFF" /></shape>
+    </item>
+    <item android:width="150dp" android:height="150dp" android:gravity="bottom|end" android:right="-30dp" android:bottom="-40dp">
+        <shape android:shape="oval"><solid android:color="#12FFFFFF" /></shape>
+    </item>
+    <item android:width="70dp" android:height="70dp" android:gravity="top|end" android:right="70dp" android:top="40dp">
+        <shape android:shape="oval">
+            <solid android:color="#00000000" />
+            <stroke android:width="2dp" android:color="#22FFFFFF" />
+        </shape>
+    </item>
+    <!-- plate with fork and knife -->
+    <item android:width="96dp" android:height="96dp" android:gravity="center" android:bottom="26dp">
+        <shape android:shape="oval">
+            <solid android:color="#1FFFFFFF" />
+            <stroke android:width="2dp" android:color="#40FFFBF0" />
+        </shape>
+    </item>
+    <item android:width="44dp" android:height="44dp" android:gravity="center" android:bottom="26dp"
+        android:drawable="@drawable/ic_cover_cutlery" />
+    <!-- typography: the ASANNI wordmark -->
+    <item android:width="120dp" android:height="16dp" android:gravity="center" android:top="96dp"
+        android:drawable="@drawable/intro_logo_wordmark" />
+</layer-list>

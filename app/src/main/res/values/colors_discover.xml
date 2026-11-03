@@ -63,4 +63,9 @@
     <!-- Map tint applied to the OpenFreeMap "positron" style (beige like the reference) -->
     <color name="asanni_map_land">#EFE8DA</color>
     <color name="asanni_map_water">#BFD9DD</color>
+
+    <!-- ===================== Phase 8: restaurant details ===================== -->
+    <color name="asanni_avail_live_fill">#D3E7DC</color>
+    <color name="asanni_avail_live_text">#1F6E4C</color>
+    <color name="asanni_detail_round_button">#EBFFFFFF</color>
 </resources>

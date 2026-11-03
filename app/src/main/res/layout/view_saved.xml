@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Saved tab of Home  (NEW in phase 8; was intentionally blank in phase 6)
+    Location: app/src/main/res/layout/view_saved.xml   Logic: ui/SavedSection.java
+    The signed-in user's saved restaurants (users/{uid}/savedRestaurants). Tap a card -> the same
+    Restaurant Details screen; the bookmark on a card removes it.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/saved_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp">
+
+        <!-- [EDIT TEXT] saved_title -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:accessibilityHeading="true"
+            android:text="@string/saved_title"
+            android:textColor="@color/asanni_welcome_ink"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/saved_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:accessibilityLiveRegion="polite"
+            android:textColor="@color/asanni_discover_muted"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/saved_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="16dp" />
+
+        <ProgressBar
+            android:id="@+id/saved_progress"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="48dp"
+            android:contentDescription="@string/saved_loading"
+            android:indeterminateTint="@color/asanni_welcome_accent"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/saved_state"
+            layout="@layout/view_discover_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

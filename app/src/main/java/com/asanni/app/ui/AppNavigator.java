@@ -129,6 +129,20 @@ final class AppNavigator {
         start(from, intent);
     }
 
+    /**
+     * Phase 7: full-screen Map (opened from the Map tab). REORDER_TO_FRONT + singleTop in the
+     * manifest = never two Map screens in the stack, even with fast double taps.
+     */
+    static void openMap(Activity from, com.asanni.app.restaurants.LocationScope scope, String query,
+                        com.asanni.app.restaurants.DiscoverFilters filters) {
+        Intent intent = new Intent(from, MapActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        putScope(intent, scope);
+        intent.putExtra(EXTRA_QUERY, query);
+        intent.putExtra(EXTRA_FILTERS, filters.encode());
+        start(from, intent);
+    }
+
     /** Restaurant details (read-only information from the desktop app). */
     static void openRestaurantDetail(Activity from, String restaurantId, com.asanni.app.restaurants.LocationScope scope,
                                      Double userLat, Double userLng) {
@@ -154,6 +168,19 @@ final class AppNavigator {
             intent.putExtra(EXTRA_USER_LAT, lat.doubleValue());
             intent.putExtra(EXTRA_USER_LNG, lng.doubleValue());
         }
+    }
+
+    /** Phase 7: launch routing (LaunchRouter) for a signed-out user. */
+    static void openGetStartedFromLaunch(Activity from) {
+        Intent intent = new Intent(from, GetStartedActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        from.startActivity(intent, ActivityOptions.makeCustomAnimation(from, R.anim.intro_enter, R.anim.intro_exit).toBundle());
+    }
+
+    /** Phase 7: brand-new account whose profile couldn't be created offline: the existing login
+     *  screen shows its retry / offline page (the only case that still shows it at launch). */
+    static void openGoogleLoginFromLaunch(Activity from) {
+        startClearingBackStack(from, new Intent(from, GoogleLoginActivity.class));
     }
 
     static void openGetStartedAfterSignOut(Activity from) {

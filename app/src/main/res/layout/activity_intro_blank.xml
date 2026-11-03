@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Phase 7: shown for a moment when Android re-opens Get Started for a user who is already signed
+    in (e.g. after the app was closed in the background). LaunchRouter then opens Discover or the
+    missing onboarding step. Location: app/src/main/res/layout/activity_intro_blank.xml
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asanni_welcome_background">
+
+    <ProgressBar
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/intro_waiting"
+        android:indeterminateTint="@color/asanni_welcome_accent" />
+</FrameLayout>

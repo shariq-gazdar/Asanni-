@@ -40,9 +40,14 @@ public class GetStartedActivity extends AsanniActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // [NAVIGATION] Already signed in -> don't show Get Started again; continue the session.
+        // [NAVIGATION] Already signed in -> don't show Get Started again; continue the session
+        // (phase 7: straight to Discover / the missing onboarding step, see LaunchRouter).
         if (GoogleAuthClient.currentUser() != null) {
-            GetStartedNavigator.resumeSignedInSession(this);
+            setContentView(R.layout.activity_intro_blank);
+            resumeRouter = GetStartedNavigator.resumeSignedInSession(d -> {
+                pendingDecision = d;
+                if (visible) applyPendingDecision();
+            });
             return;
         }
 
@@ -91,9 +96,24 @@ public class GetStartedActivity extends AsanniActivity {
         findViewById(R.id.button_login).setOnClickListener(v -> GetStartedNavigator.onLoginClicked(this));
     }
 
+    /** Phase 7: signed-in user restored onto Get Started -> decision applied only while visible. */
+    private LaunchRouter resumeRouter;
+    private LaunchRouter.Decision pendingDecision;
+    private boolean visible;
+
+    private void applyPendingDecision() {
+        if (pendingDecision == null || isFinishing() || isDestroyed()) return;
+        LaunchRouter.Decision d = pendingDecision;
+        pendingDecision = null;
+        LaunchRouter.apply(this, d);
+        finish();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+        visible = true;
+        applyPendingDecision();
         if (animator == null) return; // activity was redirected in onCreate
 
         if (!entrancePlayed) {
@@ -107,6 +127,7 @@ public class GetStartedActivity extends AsanniActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        visible = false;
         if (animator == null) return;
         animator.stopDotPulse(liveDot); // no background work while the screen isn't visible
     }
@@ -119,6 +140,7 @@ public class GetStartedActivity extends AsanniActivity {
 
     @Override
     protected void onDestroy() {
+        if (resumeRouter != null) resumeRouter.cancel();
         if (animator != null) {
             animator.cancelEntrance();
             animator.stopDotPulse(liveDot);

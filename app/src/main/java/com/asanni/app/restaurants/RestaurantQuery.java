@@ -12,16 +12,46 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * Pure logic shared by Discover and See All: location matching, status filter, search and the
- * deterministic ranking. No Android or network code here (unit-testable).
+ * Pure logic shared by Discover, See All and Map: location matching, filters, search and the
+ * deterministic ranking. No Android or network code here (unit-testable). Phase 7: search() is
+ * the single entry point every screen uses, so all search bars behave the same.
  *
- * Location: app/src/main/java/com/asanni/app/restaurants/RestaurantQuery.java  (NEW in phase 6)
+ * Location: app/src/main/java/com/asanni/app/restaurants/RestaurantQuery.java
+ *           (NEW in phase 6, MODIFIED in phase 7: search(), more filters, all registered/in city)
  */
 public final class RestaurantQuery {
 
     private RestaurantQuery() {}
 
     // ------------------------------------------------------------------ location
+
+    /** Every registered restaurant (disabled ones removed), without duplicate IDs. Map markers. */
+    public static List<Restaurant> registered(List<Restaurant> all) {
+        List<Restaurant> out = new ArrayList<>();
+        if (all == null) return out;
+        Set<String> seen = new HashSet<>();
+        for (Restaurant r : all) {
+            if (r != null && !r.isHiddenFromDiners() && seen.add(r.id)) out.add(r);
+        }
+        return out;
+    }
+
+    /** The whole city of the browsing location (Map search: city-wide, own area ranked first). */
+    public static List<Restaurant> inCity(List<Restaurant> all, LocationScope scope) {
+        if (scope == null) return new ArrayList<>();
+        return inScope(all, new LocationScope(scope.city, null));
+    }
+
+    /** True when the restaurant is in the selected city AND area (whole city: just the city). */
+    public static boolean isInScope(Restaurant r, LocationScope scope) {
+        if (r == null || scope == null || !matchesCity(r, scope.city)) return false;
+        return scope.isWholeCity() || matchesArea(r, scope.city, scope.area);
+    }
+
+    /** True when the restaurant is in the selected AREA (always true for a whole-city scope). */
+    public static boolean inSelectedArea(Restaurant r, LocationScope scope) {
+        return scope == null || scope.isWholeCity() || matchesArea(r, scope.city, scope.area);
+    }
 
     /** Restaurants in the selected city/area, without disabled accounts or duplicate IDs. */
     public static List<Restaurant> inScope(List<Restaurant> all, LocationScope scope) {
@@ -83,25 +113,122 @@ public final class RestaurantQuery {
         return false;
     }
 
-    public static List<Restaurant> apply(List<Restaurant> scoped, DiscoverFilters f, String query) {
+    /** At least one restaurant reports a current free-table count ("Available now" can work). */
+    public static boolean supportsAvailableNow(List<Restaurant> scoped, long now) {
+        for (Restaurant r : scoped) if (r.hasCurrentAvailability(now)) return true;
+        return false;
+    }
+
+    /** GPS known and at least one restaurant has coordinates ("Under 3 km" can work). */
+    public static boolean supportsDistance(List<Restaurant> scoped, Double lat, Double lng) {
+        if (lat == null || lng == null) return false;
+        for (Restaurant r : scoped) if (r.hasCoordinates()) return true;
+        return false;
+    }
+
+    /** The cuisines actually listed by these restaurants, sorted (for the Cuisine filter). */
+    public static List<String> cuisines(List<Restaurant> scoped) {
+        java.util.TreeMap<String, String> byKey = new java.util.TreeMap<>();
+        for (Restaurant r : scoped) {
+            for (String c : r.cuisines) {
+                String k = c.toLowerCase(Locale.ROOT);
+                if (!byKey.containsKey(k)) byKey.put(k, c);
+            }
+        }
+        return new ArrayList<>(byKey.values());
+    }
+
+    public static List<Restaurant> apply(List<Restaurant> scoped, DiscoverFilters f, String query,
+                                         Double userLat, Double userLng, long now) {
         List<Restaurant> out = new ArrayList<>();
         List<String> tokens = tokens(query);
         for (Restaurant r : scoped) {
-            if (passes(r, f) && matchesSearch(r, tokens)) out.add(r);
+            if (passes(r, f, userLat, userLng, now) && matchesSearch(r, tokens)) out.add(r);
         }
         return out;
     }
 
-    static boolean passes(Restaurant r, DiscoverFilters f) {
+    static boolean passes(Restaurant r, DiscoverFilters f, Double userLat, Double userLng, long now) {
         if (f == null) return true;
-        switch (f.status) {
-            case ACTIVE:
-                return Boolean.TRUE.equals(r.openNow);
-            case NOT_ACTIVE:
-                return Boolean.FALSE.equals(r.openNow);
-            default:
-                return true;
+        if (f.status == DiscoverFilters.Status.ACTIVE && !Boolean.TRUE.equals(r.openNow)) return false;
+        if (f.status == DiscoverFilters.Status.NOT_ACTIVE && !Boolean.FALSE.equals(r.openNow)) return false;
+        if (f.availableNow && !(r.hasCurrentAvailability(now) && r.freeTables > 0)) return false;
+        if (f.maxDistanceKm != null) {
+            Double km = distanceKm(r, userLat, userLng);
+            // Without GPS or coordinates the distance is unknown: the restaurant can't be "under 3 km".
+            if (km == null || km > f.maxDistanceKm) return false;
         }
+        if (f.cuisine != null) {
+            boolean has = false;
+            for (String c : r.cuisines) if (c.equalsIgnoreCase(f.cuisine)) has = true;
+            if (!has) return false;
+        }
+        return true;
+    }
+
+    // ------------------------------------------------------------------ search (shared entry point)
+
+    /**
+     * THE search used by Discover, See All and Map: filters, then orders the result.
+     *   Empty query  -> rank() (live availability, open, featured, free tables, distance, ...)
+     *   With a query -> 1. how well the NAME matches (exact > starts with > a word starts with >
+     *                      contains > cuisine/area/address only), 2. in the selected area,
+     *                      3. then rank() as the tie-break.
+     * Deterministic: same data + same query = same order.
+     */
+    public static List<Restaurant> search(List<Restaurant> candidates, LocationScope scope, DiscoverFilters f,
+                                          String query, Double userLat, Double userLng, long now) {
+        List<Restaurant> out = apply(candidates, f, query, userLat, userLng, now);
+        rank(out, userLat, userLng, now); // base order (stable sort keeps it for equal text scores)
+        final String q = TextNormalizer.normalize(query == null ? "" : query);
+        if (q.isEmpty() && (scope == null || scope.isWholeCity())) return out;
+        final LocationScope sc = scope;
+        Collections.sort(out, new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant a, Restaurant b) {
+                int c = Integer.compare(nameScore(b, q), nameScore(a, q));
+                if (c != 0) return c;
+                return Boolean.compare(inSelectedArea(b, sc), inSelectedArea(a, sc));
+            }
+        });
+        return out;
+    }
+
+    /**
+     * Map panel without a query ("Nearest live tables"): restaurants with a CURRENT free table
+     * first, nearest first (needs GPS); then everything else in the existing order.
+     */
+    public static void nearestLiveFirst(List<Restaurant> list, final Double userLat, final Double userLng,
+                                        final long now) {
+        if (userLat == null || userLng == null) return;
+        Collections.sort(list, new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant a, Restaurant b) {
+                boolean la = a.hasCurrentAvailability(now) && a.freeTables > 0;
+                boolean lb = b.hasCurrentAvailability(now) && b.freeTables > 0;
+                if (la != lb) return la ? -1 : 1;
+                if (!la) return 0; // keep rank() order for the rest (stable sort)
+                Double da = distanceKm(a, userLat, userLng);
+                Double db = distanceKm(b, userLat, userLng);
+                if (da == null && db == null) return 0;
+                if (da == null) return 1;
+                if (db == null) return -1;
+                return Double.compare(da, db);
+            }
+        });
+    }
+
+    /** 5 exact name, 4 name starts with, 3 a word of the name starts with, 2 name contains, 1 other. */
+    static int nameScore(Restaurant r, String normalizedQuery) {
+        if (normalizedQuery.isEmpty()) return 0;
+        String name = TextNormalizer.normalize(r.name);
+        if (name.equals(normalizedQuery)) return 5;
+        if (name.startsWith(normalizedQuery)) return 4;
+        for (String word : r.name.toLowerCase(Locale.ROOT).split("[^\\p{L}\\p{N}]+")) {
+            if (!word.isEmpty() && TextNormalizer.normalize(word).startsWith(normalizedQuery)) return 3;
+        }
+        if (name.contains(normalizedQuery)) return 2;
+        return 1;
     }
 
     private static List<String> tokens(String query) {

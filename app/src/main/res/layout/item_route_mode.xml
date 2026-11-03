@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Travel mode chip (Car / Walk / Bike), only modes the routing provider supports (NEW in phase 7). -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/AsanniChip"
+    android:layout_height="38dp"
+    android:paddingStart="18dp"
+    android:paddingEnd="18dp" />

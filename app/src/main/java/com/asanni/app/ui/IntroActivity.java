@@ -25,17 +25,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ASANNI intro: the launch animation from the reference video, then Get Started.
+ * ASANNI intro: the launch animation from the reference video, then the right first screen.
  *
- * Location: app/src/main/java/com/asanni/app/ui/IntroActivity.java  (NEW in phase 5)
+ * Location: app/src/main/java/com/asanni/app/ui/IntroActivity.java  (NEW in phase 5,
+ *           MODIFIED in phase 7: account-aware routing via LaunchRouter)
  *
- * Launch -> (Android's own splash on 12+, plain red) -> THIS intro (2.6 s) -> Get Started.
+ * Launch -> (Android's own splash on 12+, plain red) -> THIS intro (2.6 s) ->
+ *     signed in ....... Discover (or the missing onboarding step)   - no login / "setting up" page
+ *     signed out ...... Get Started -> existing sign-in + onboarding
+ * The account check runs DURING the animation. Only if it is still running when the animation
+ * ends, a small "Opening your account…" line appears (never longer than LaunchRouter.HARD_LIMIT_MS).
  * Shown only when the app is opened from the launcher; it never appears between other screens,
- * and it finishes itself, so Back never returns to it. Get Started keeps its existing logic
- * (signed-in users are sent on to the login router, exactly as before).
- *
- * No fake loading: the duration is the video's. If the user leaves mid-animation, or the screen is
- * recreated, it goes straight to Get Started instead of replaying (never stuck, never twice).
+ * and it finishes itself, so Back never returns to it. If the user leaves mid-animation, or the
+ * screen is recreated, it doesn't replay.
  */
 public class IntroActivity extends Activity {
 
@@ -63,7 +65,11 @@ public class IntroActivity extends Activity {
     private static final String STATE_SHOWN = "intro_shown";
 
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private final Runnable goNext = this::openGetStarted;
+    private final Runnable goNext = this::onIntroFinished;
+    private final LaunchRouter router = new LaunchRouter();
+    private LaunchRouter.Decision decision; // null until the account check is done
+    private boolean introFinished;
+    private boolean stopped;     // in the background: navigation waits for onStart (Android blocks background starts)
     private AnimatorSet animation;
     private boolean leftMidway;  // user left the app during the intro
     private boolean navigated;   // Get Started already opened (only once)
@@ -92,6 +98,10 @@ public class IntroActivity extends Activity {
         wordmark = findViewById(R.id.intro_wordmark);
         smallHourglass = findViewById(R.id.intro_small_hourglass);
         tagline = findViewById(R.id.intro_tagline);
+        router.start(d -> {
+            decision = d;
+            if (introFinished) openNext();
+        });
 
         if (savedInstanceState != null && savedInstanceState.getBoolean(STATE_SHOWN)) {
             showFinalFrame(); // recreated (e.g. after process death): no replay
@@ -153,14 +163,30 @@ public class IntroActivity extends Activity {
         tagline.setAlpha(1f);
     }
 
-    /** [NAVIGATION] Intro -> existing Get Started (which keeps its own signed-in routing). */
-    private void openGetStarted() {
-        if (navigated || isFinishing() || isDestroyed()) return;
+    /** The animation is over: go on if the account check is done, else show the waiting line. */
+    private void onIntroFinished() {
+        introFinished = true;
+        if (decision != null) {
+            openNext();
+            return;
+        }
+        View waiting = findViewById(R.id.intro_waiting);
+        waiting.setVisibility(View.VISIBLE);
+        waiting.animate().alpha(1f).setStartDelay(400).setDuration(250).start(); // only if it's slow
+    }
+
+    /** [NAVIGATION] Intro -> Discover / onboarding step / Get Started (see LaunchRouter). */
+    private void openNext() {
+        if (navigated || stopped || isFinishing() || isDestroyed() || decision == null) return;
         navigated = true;
-        Intent intent = new Intent(this, GetStartedActivity.class);
-        startActivity(intent, ActivityOptions.makeCustomAnimation(
-                this, R.anim.intro_enter, R.anim.intro_exit).toBundle());
-        finish(); // Back from Get Started must not show the intro again
+        if (decision.kind == LaunchRouter.Kind.SIGNED_OUT) {
+            Intent intent = new Intent(this, GetStartedActivity.class);
+            startActivity(intent, ActivityOptions.makeCustomAnimation(
+                    this, R.anim.intro_enter, R.anim.intro_exit).toBundle());
+        } else {
+            LaunchRouter.apply(this, decision);
+        }
+        finish(); // Back must not show the intro again
     }
 
     private boolean reducedMotion() {
@@ -190,8 +216,9 @@ public class IntroActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
+        stopped = true;
         if (!navigated && !isFinishing()) {
-            // Left during the intro: stop it. Coming back goes straight to Get Started.
+            // Left during the intro: stop it. Coming back goes straight on (no replay).
             leftMidway = true;
             handler.removeCallbacks(goNext);
             if (animation != null) animation.cancel();
@@ -201,6 +228,7 @@ public class IntroActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        stopped = false;
         if (leftMidway) {
             leftMidway = false;
             showFinalFrame();
@@ -217,6 +245,7 @@ public class IntroActivity extends Activity {
     @Override
     protected void onDestroy() {
         handler.removeCallbacks(goNext);
+        router.cancel();
         if (animation != null) {
             animation.removeAllListeners();
             animation.cancel();

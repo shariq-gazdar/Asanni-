@@ -28,6 +28,7 @@
 
         <LinearLayout
             android:id="@+id/discover_content"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -120,19 +121,24 @@
                     android:src="@drawable/asanni_avatar_default" />
             </LinearLayout>
 
-            <!-- ============ 2. SEARCH ============ -->
+            <!-- ============ 2. SEARCH (phase 7: redesigned from the "Find a restaurant" reference) ============
+                 White pill; red 1.5 dp outline + red search icon while you search; round clear (x)
+                 button; filter button kept. The reference's top-right Map button is NOT here on
+                 purpose: Map is in the bottom navigation. -->
             <LinearLayout
                 android:id="@+id/discover_search_bar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/bg_discover_search"
+                android:background="@drawable/bg_search_idle"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="18dp"
+                android:paddingStart="20dp"
                 android:paddingEnd="4dp">
 
+                <!-- [UI ASSET] Search icon: res/drawable/ic_search.xml -->
                 <ImageView
+                    android:id="@+id/discover_search_icon"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:importantForAccessibility="no"
@@ -143,7 +149,7 @@
                     android:id="@+id/discover_search_input"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="14dp"
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="@string/discover_search_hint"
@@ -154,16 +160,17 @@
                     android:maxLines="1"
                     android:textColor="@color/asanni_welcome_ink"
                     android:textColorHint="@color/asanni_discover_muted"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
 
+                <!-- [UI ASSET] Clear icon (circle with x): res/drawable/ic_clear_circle.xml -->
                 <ImageView
                     android:id="@+id/discover_search_clear"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/discover_search_clear"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_close"
+                    android:padding="11dp"
+                    android:src="@drawable/ic_clear_circle"
                     android:tint="@color/asanni_discover_muted"
                     android:visibility="gone" />
 
@@ -195,6 +202,68 @@
                         android:visibility="gone" />
                 </FrameLayout>
             </LinearLayout>
+
+            <!-- Quick filter chips from the reference: Available now / Under 3 km / Cuisine.
+                 Each chip only appears when real data supports it (shared DiscoverFilters). -->
+            <HorizontalScrollView
+                android:id="@+id/discover_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="-20dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:scrollbars="none"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/chip_available"
+                        style="@style/AsanniChip"
+                        android:text="@string/chip_available_now" />
+
+                    <TextView
+                        android:id="@+id/chip_distance"
+                        style="@style/AsanniChip"
+                        android:text="@string/chip_under_km" />
+
+                    <LinearLayout
+                        android:id="@+id/chip_cuisine"
+                        style="@style/AsanniChip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp">
+
+                        <ImageView
+                            android:id="@+id/chip_cuisine_icon"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="6dp"
+                            android:duplicateParentState="true"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_expand_more"
+                            android:tint="@color/chip_text" />
+
+                        <TextView
+                            android:id="@+id/chip_cuisine_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:duplicateParentState="true"
+                            android:importantForAccessibility="no"
+                            android:maxLines="1"
+                            android:text="@string/chip_cuisine"
+                            android:textColor="@color/chip_text"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <!-- ============ 3. LIVE REPORT ============ -->
             <LinearLayout
@@ -508,16 +577,36 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/results_title"
+                <!-- Phase 7: "24 restaurants" + how they are sorted (reference: "Nearest first") -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="26dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="12dp"
-                    android:accessibilityHeading="true"
-                    android:accessibilityLiveRegion="polite"
-                    android:textColor="@color/asanni_welcome_ink"
-                    android:textSize="18sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/results_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:accessibilityHeading="true"
+                        android:accessibilityLiveRegion="polite"
+                        android:textColor="@color/asanni_welcome_ink"
+                        android:textSize="20sp" />
+
+                    <!-- [EDIT TEXT] sort_best_match / sort_live_nearest / sort_live_first -->
+                    <TextView
+                        android:id="@+id/results_sort"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/asanni_welcome_accent"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/results_list"
@@ -538,6 +627,17 @@
                     android:textSize="15sp"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <!-- Phase 7 (reference footer): time of the last LIVE answer from Firestore -->
+            <TextView
+                android:id="@+id/discover_refreshed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textColor="@color/asanni_discover_muted"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <!-- ============ LOADING (skeleton) ============ -->
             <LinearLayout

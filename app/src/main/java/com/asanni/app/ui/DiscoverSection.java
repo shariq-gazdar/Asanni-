@@ -95,6 +95,16 @@ final class DiscoverSection implements RestaurantRepository.Observer {
     private final View small2;
     private final View results;
     private final TextView resultsTitle;
+    private final TextView resultsSort;
+    private final View searchBar;
+    private final ImageView searchIcon;
+    private final View chips;
+    private final View chipAvailable;
+    private final View chipDistance;
+    private final View chipCuisine;
+    private final TextView chipCuisineText;
+    private final TextView refreshed;
+    private long lastServerAnswerAt; // time of the last LIVE answer from Firestore (footer)
     private final LinearLayout resultsList;
     private final TextView resultsSeeAll;
     private final View skeleton;
@@ -177,6 +187,15 @@ final class DiscoverSection implements RestaurantRepository.Observer {
         small2 = root.findViewById(R.id.featured_small_2);
         results = root.findViewById(R.id.discover_results);
         resultsTitle = root.findViewById(R.id.results_title);
+        resultsSort = root.findViewById(R.id.results_sort);
+        searchBar = root.findViewById(R.id.discover_search_bar);
+        searchIcon = root.findViewById(R.id.discover_search_icon);
+        chips = root.findViewById(R.id.discover_chips);
+        chipAvailable = root.findViewById(R.id.chip_available);
+        chipDistance = root.findViewById(R.id.chip_distance);
+        chipCuisine = root.findViewById(R.id.chip_cuisine);
+        chipCuisineText = root.findViewById(R.id.chip_cuisine_text);
+        refreshed = root.findViewById(R.id.discover_refreshed);
         resultsList = root.findViewById(R.id.results_list);
         resultsSeeAll = root.findViewById(R.id.results_see_all);
         skeleton = root.findViewById(R.id.discover_skeleton);
@@ -198,6 +217,7 @@ final class DiscoverSection implements RestaurantRepository.Observer {
             public void afterTextChanged(Editable s) {
                 query = s.toString();
                 searchClear.setVisibility(query.isEmpty() ? View.GONE : View.VISIBLE);
+                updateSearchBarLook();
                 main.removeCallbacks(applySearch);
                 main.postDelayed(applySearch, query.isEmpty() ? 0 : SEARCH_DEBOUNCE_MS);
             }
@@ -210,6 +230,23 @@ final class DiscoverSection implements RestaurantRepository.Observer {
                 return true;
             }
             return false;
+        });
+        searchInput.setOnFocusChangeListener((v, hasFocus) -> updateSearchBarLook());
+        // Quick filter chips (same DiscoverFilters as the filter sheet and the Map).
+        chipAvailable.setOnClickListener(v -> {
+            filters = filters.withAvailableNow(!filters.availableNow);
+            render();
+        });
+        chipDistance.setOnClickListener(v -> {
+            filters = filters.withMaxDistanceKm(filters.maxDistanceKm == null ? DiscoverFilters.NEAR_KM : null);
+            render();
+        });
+        chipCuisine.setOnClickListener(v -> {
+            hideKeyboard();
+            FilterSheet.showCuisines(activity, filters, RestaurantQuery.cuisines(scoped()), f -> {
+                filters = f;
+                render();
+            });
         });
         EntranceAnimator press = new EntranceAnimator(activity.getContentResolver());
         press.attachPressFeedback(bigCard);
@@ -330,6 +367,7 @@ final class DiscoverSection implements RestaurantRepository.Observer {
         fromCache = cached;
         failure = null;
         if (!cached) {
+            lastServerAnswerAt = System.currentTimeMillis();
             serverWaitExpired = false;
             serverWaitScheduled = false;
             main.removeCallbacks(serverWaitTimeout);
@@ -356,10 +394,18 @@ final class DiscoverSection implements RestaurantRepository.Observer {
     private void openFilters() {
         hideKeyboard();
         List<Restaurant> scoped = scoped();
-        FilterSheet.show(activity, filters, RestaurantQuery.supportsStatusFilter(scoped), f -> {
+        FilterSheet.show(activity, filters, FilterSheet.Options.from(scoped, userLat, userLng,
+                System.currentTimeMillis()), f -> {
             filters = f;
             render();
         });
+    }
+
+    /** Map tab: the full-screen map with Discover's browsing area, search text and filters. */
+    void openMap() {
+        hideKeyboard();
+        coach.hide();
+        AppNavigator.openMap(activity, scope, query, filters);
     }
 
     private void openSeeAll() {
@@ -426,6 +472,8 @@ final class DiscoverSection implements RestaurantRepository.Observer {
 
         boolean online = ConnectivityMonitor.get(activity).isOnline();
         offlineNote.setVisibility(View.GONE);
+        refreshed.setVisibility(View.GONE);
+        chips.setVisibility(View.GONE); // shown again by bindChips() when there is data
 
         // 0. The profile itself couldn't be loaded (offline, nothing saved on this phone yet).
         if (profile == null && profileUnavailable) {
@@ -499,8 +547,10 @@ final class DiscoverSection implements RestaurantRepository.Observer {
             return;
         }
 
-        List<Restaurant> filtered = RestaurantQuery.apply(scoped, filters, query);
-        RestaurantQuery.rank(filtered, userLat, userLng, now);
+        bindChips(scoped, now);
+        bindRefreshed();
+        // Shared search (same function as See All and Map): filters + deterministic order.
+        List<Restaurant> filtered = RestaurantQuery.search(scoped, scope, filters, query, userLat, userLng, now);
         boolean searching = !query.trim().isEmpty();
 
         // 5. Searching: results replace Featured.
@@ -675,8 +725,10 @@ final class DiscoverSection implements RestaurantRepository.Observer {
     }
 
     private void bindResults(List<Restaurant> ranked, long now) {
-        resultsTitle.setText(activity.getResources().getQuantityString(R.plurals.search_results_title,
-                ranked.size(), ranked.size(), scope.shortLabel()));
+        resultsTitle.setText(activity.getResources().getQuantityString(R.plurals.results_count,
+                ranked.size(), ranked.size()));
+        // Honest sort label: how RestaurantQuery.search() actually ordered the list.
+        resultsSort.setText(R.string.sort_best_match);
         int shown = Math.min(ranked.size(), MAX_INLINE_RESULTS);
         LayoutInflater inflater = LayoutInflater.from(activity);
         // Reuse existing rows; add/remove only the difference (cheap on every key press).
@@ -696,6 +748,46 @@ final class DiscoverSection implements RestaurantRepository.Observer {
         }
         resultsSeeAll.setVisibility(ranked.size() > shown ? View.VISIBLE : View.GONE);
         resultsSeeAll.setText(activity.getString(R.string.search_see_all_results, ranked.size()));
+    }
+
+    // ------------------------------------------------------------------ phase 7: search bar + chips
+
+    /** Reference look: red outline + red icon while searching, quiet outline otherwise. */
+    private void updateSearchBarLook() {
+        boolean activeSearch = searchInput.hasFocus() || !query.isEmpty();
+        searchBar.setBackgroundResource(activeSearch ? R.drawable.bg_search_active : R.drawable.bg_search_idle);
+        searchIcon.setColorFilter(activity.getColor(activeSearch ? R.color.asanni_welcome_accent : R.color.asanni_discover_muted));
+    }
+
+    /** Shows only the chips the data supports; drops a chip's filter if it stopped being possible. */
+    private void bindChips(List<Restaurant> scoped, long now) {
+        boolean live = RestaurantQuery.supportsAvailableNow(scoped, now) || filters.availableNow;
+        boolean near = RestaurantQuery.supportsDistance(scoped, userLat, userLng);
+        List<String> cuisines = RestaurantQuery.cuisines(scoped);
+        if (!near && filters.maxDistanceKm != null) filters = filters.withMaxDistanceKm(null); // GPS gone
+        chipAvailable.setVisibility(live ? View.VISIBLE : View.GONE);
+        chipDistance.setVisibility(near ? View.VISIBLE : View.GONE);
+        chipCuisine.setVisibility(!cuisines.isEmpty() ? View.VISIBLE : View.GONE);
+        chips.setVisibility(live || near || !cuisines.isEmpty() ? View.VISIBLE : View.GONE);
+        chipAvailable.setSelected(filters.availableNow);
+        chipDistance.setSelected(filters.maxDistanceKm != null);
+        chipCuisine.setSelected(filters.cuisine != null);
+        chipCuisineText.setText(filters.cuisine != null ? filters.cuisine : activity.getString(R.string.chip_cuisine));
+        chipCuisine.setContentDescription(filters.cuisine != null
+                ? activity.getString(R.string.chip_cuisine_selected, filters.cuisine)
+                : activity.getString(R.string.chip_cuisine_description));
+        filterDot.setVisibility(filters.activeCount() > 0 ? View.VISIBLE : View.GONE);
+    }
+
+    /** Reference footer "Live availability refreshed at 9:41 PM" (only after a real server answer). */
+    private void bindRefreshed() {
+        if (lastServerAnswerAt == 0 || fromCache) {
+            refreshed.setVisibility(View.GONE);
+            return;
+        }
+        refreshed.setVisibility(View.VISIBLE);
+        refreshed.setText(activity.getString(R.string.refreshed_at,
+                android.text.format.DateFormat.getTimeFormat(activity).format(new java.util.Date(lastServerAnswerAt))));
     }
 
     // ------------------------------------------------------------------ small helpers

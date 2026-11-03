@@ -127,7 +127,8 @@ public class RestaurantListActivity extends AsanniActivity implements Restaurant
         findViewById(R.id.list_filter_button).setOnClickListener(v -> {
             hideKeyboard();
             List<Restaurant> scoped = scoped();
-            FilterSheet.show(this, filters, RestaurantQuery.supportsStatusFilter(scoped), f -> {
+            FilterSheet.show(this, filters, FilterSheet.Options.from(scoped, userLat, userLng,
+                    System.currentTimeMillis()), f -> {
                 filters = f;
                 render();
             });
@@ -270,8 +271,9 @@ public class RestaurantListActivity extends AsanniActivity implements Restaurant
         }
 
         List<Restaurant> scoped = scoped();
-        List<Restaurant> filtered = RestaurantQuery.apply(scoped, filters, query);
-        RestaurantQuery.rank(filtered, userLat, userLng, System.currentTimeMillis());
+        // Shared search (same function as Discover and Map).
+        List<Restaurant> filtered = RestaurantQuery.search(scoped, scope, filters, query, userLat, userLng,
+                System.currentTimeMillis());
         setRows(filtered);
         String countText = getResources().getQuantityString(R.plurals.list_count, filtered.size(), filtered.size());
         count.setText(fromCache ? RestaurantViews.join(this, countText, getString(R.string.offline_saved_note)) : countText);

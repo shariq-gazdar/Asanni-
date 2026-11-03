@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/strings_map.xml  (NEW in phase 7)
+    Texts for the Map screen, routing, Discover's quick filter chips and the filter sheet additions.
+    %1$s / %1$d = a value filled in by the app (keep them). Restaurant names, distances and travel
+    times always come from Firestore / the routing service, never from here.
+-->
+<resources>
+    <!-- ========================= DISCOVER CHIPS + FILTER SHEET ========================= -->
+    <!-- [EDIT TEXT] Quick filter chips (reference: Available now / Under 3 km / Cuisine) -->
+    <string name="chip_available_now">Available now</string>
+    <string name="chip_under_km">Under 3 km</string>
+    <string name="chip_cuisine">Cuisine</string>
+    <string name="chip_cuisine_description">Cuisine filter. Double tap to choose.</string>
+    <string name="chip_cuisine_selected">Cuisine: %1$s. Double tap to change.</string>
+    <string name="filter_availability_heading">Availability</string>
+    <string name="filter_available_detail">A table is free right now (live data)</string>
+    <string name="filter_distance_heading">Distance</string>
+    <string name="filter_distance_detail">Within 3 km of your current location</string>
+    <string name="filter_cuisine_heading">Cuisine</string>
+    <string name="filter_cuisine_any">Any cuisine</string>
+    <!-- [EDIT TEXT] Search results header ("24 restaurants" + how they are sorted) -->
+    <plurals name="results_count">
+        <item quantity="one">%1$d restaurant</item>
+        <item quantity="other">%1$d restaurants</item>
+    </plurals>
+    <string name="sort_best_match">Best match</string>
+    <!-- [EDIT TEXT] Footer: time of the last live answer from the database -->
+    <string name="refreshed_at">Last live update at %1$s</string>
+
+    <!-- ========================= MAP SCREEN ========================= -->
+    <string name="map_back">Back to Discover</string>
+    <!-- [EDIT TEXT] Map search hint ("Explore Karachi"); %1$s = your city -->
+    <string name="map_search_hint">Explore %1$s</string>
+    <string name="map_search_hint_plain">Search restaurants</string>
+    <string name="map_filters">Filters</string>
+    <string name="map_my_location">Show my location</string>
+    <!-- [EDIT TEXT] Map loading message -->
+    <string name="map_loading">Loading map…</string>
+    <!-- [EDIT TEXT] Map couldn't load -->
+    <string name="map_error_title">The map couldn\'t load</string>
+    <string name="map_error_text">Check your internet connection and try again. Restaurants are still listed below.</string>
+    <string name="map_retry">Try again</string>
+    <!-- [EDIT TEXT] Shown while a user filter limits the markers -->
+    <string name="map_filter_notice">Filters on: some restaurants are hidden</string>
+    <string name="map_filter_clear">Show all</string>
+
+    <!-- [EDIT TEXT] Result panel -->
+    <string name="map_panel_nearest">Nearest live tables</string>
+    <string name="map_panel_area">Restaurants in %1$s</string>
+    <string name="map_panel_results">Results for \"%1$s\"</string>
+    <plurals name="map_panel_count">
+        <item quantity="one">%1$d place</item>
+        <item quantity="other">%1$d places</item>
+    </plurals>
+    <string name="map_panel_expand">Show more results</string>
+    <string name="map_panel_collapse">Show fewer results</string>
+    <!-- [EDIT TEXT] No restaurants found -->
+    <string name="map_no_results">No restaurants match your search.</string>
+    <string name="map_no_restaurants">No registered restaurants to show yet.</string>
+    <string name="map_loading_restaurants">Loading restaurants…</string>
+    <string name="map_restaurants_offline">You\'re offline. Restaurants will appear when you\'re back online.</string>
+    <string name="map_restaurants_error">Restaurants can\'t be shown right now.</string>
+    <!-- [EDIT TEXT] Restaurant without coordinates -->
+    <string name="map_location_unavailable">Location unavailable for this restaurant.</string>
+    <plurals name="map_missing_coordinates">
+        <item quantity="one">%1$d restaurant has no map location yet, so it is only in the list.</item>
+        <item quantity="other">%1$d restaurants have no map location yet, so they are only in the list.</item>
+    </plurals>
+    <!-- [EDIT TEXT] Marker legend (same colors as the markers) -->
+    <string name="legend_free">Free now</string>
+    <string name="legend_wait">Wait time</string>
+    <string name="legend_full">Full</string>
+    <string name="marker_cluster_description">%1$d restaurants here. Double tap to zoom in.</string>
+
+    <!-- [EDIT TEXT] Actions for the selected restaurant -->
+    <string name="map_directions">Directions</string>
+    <string name="map_details">Details</string>
+    <string name="map_open_in_maps">Open in maps app</string>
+
+    <!-- [EDIT TEXT] Location permission explanation -->
+    <string name="map_location_title">Show where you are?</string>
+    <string name="map_location_text">ASANNI uses your location only while the map is open, to show you and give directions. It isn\'t shared with restaurants.</string>
+    <string name="map_location_allow">Allow</string>
+    <string name="map_location_not_now">Not now</string>
+    <string name="map_location_denied">Location is off for ASANNI. You can still browse restaurants; turn it on in Settings to see yourself on the map.</string>
+    <string name="map_location_open_settings">Settings</string>
+    <string name="map_gps_off_title">Your phone\'s location is off</string>
+    <string name="map_gps_off_text">Turn it on to see where you are and get directions.</string>
+    <string name="map_gps_turn_on">Turn on</string>
+    <string name="map_location_waiting">Finding your location…</string>
+
+    <!-- ========================= ROUTING ========================= -->
+    <!-- [EDIT TEXT] Route information labels -->
+    <string name="route_mode_driving">Car</string>
+    <string name="route_mode_walking">Walk</string>
+    <string name="route_mode_cycling">Bike</string>
+    <string name="route_recommended">Fastest</string>
+    <string name="route_alternative">Alternative %1$d</string>
+    <!-- %1$s = time, %2$s = distance -->
+    <string name="route_summary">%1$s · %2$s</string>
+    <string name="route_minutes">%1$d min</string>
+    <string name="route_hours_minutes">%1$d h %2$d min</string>
+    <!-- Honest note: openrouteservice has NO live traffic -->
+    <string name="route_estimate_note">Estimated time without live traffic. For live traffic, open it in your maps app.</string>
+    <string name="route_loading">Finding routes…</string>
+    <string name="route_close">Close route</string>
+    <string name="route_need_location">Turn on location to get directions from where you are.</string>
+    <string name="route_need_coordinates">This restaurant has no map location yet, so directions aren\'t possible.</string>
+    <string name="route_not_configured">In-app routes aren\'t set up yet. You can open directions in your maps app.</string>
+    <string name="route_failed">Couldn\'t find a route right now.</string>
+    <string name="route_failed_offline">You\'re offline, so a route can\'t be found.</string>
+    <string name="route_failed_unroutable">No road route was found to this place.</string>
+    <string name="route_failed_limit">Too many route requests today. Try again later or use your maps app.</string>
+    <string name="route_retry">Retry</string>
+    <string name="no_maps_app">No maps app found on this phone.</string>
+    <string name="map_attribution_note">Map data © OpenStreetMap contributors</string>
+</resources>

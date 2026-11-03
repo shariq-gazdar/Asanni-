@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One route choice ("Fastest · 12 min · 4.3 km") (NEW in phase 7). Location: res/layout/item_route_option.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/bg_route_option"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:minHeight="52dp"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp">
+
+    <View
+        android:id="@+id/route_swatch"
+        android:layout_width="18dp"
+        android:layout_height="5dp"
+        android:background="@color/asanni_route_main" />
+
+    <TextView
+        android:id="@+id/route_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/asanni_welcome_ink"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/route_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/asanni_discover_muted"
+        android:textSize="14sp" />
+</LinearLayout>

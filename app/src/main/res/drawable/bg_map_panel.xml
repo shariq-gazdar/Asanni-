@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Floating results panel at the bottom of the map (NEW in phase 7) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/asanni_map_panel" />
+    <corners android:radius="28dp" />
+</shape>

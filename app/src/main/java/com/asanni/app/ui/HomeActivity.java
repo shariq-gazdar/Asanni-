@@ -19,7 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
  * Location: app/src/main/java/com/asanni/app/ui/HomeActivity.java  (REWRITTEN in phase 6)
  *
  *   Discover  restaurant discovery (DiscoverSection); opens by default
- *   Map       intentionally blank in phase 6 (future map goes into @id/section_map)
+ *   Map       phase 7: opens the full-screen MapActivity (no bottom navigation there);
+ *             its back arrow / Back returns here with Discover exactly as it was
  *   Saved     intentionally blank in phase 6 (future saved list goes into @id/section_saved)
  *   Profile   opens the EXISTING Settings page; coming back re-selects the previous section
  *
@@ -44,6 +45,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
     private DiscoverSection discover;
     private int current = TAB_DISCOVER;
     private boolean started;
+    private ProfileData pendingOnboarding; // incomplete profile found while in the background
     private boolean navigating; // prevents opening Settings / the location form twice
 
     @Override
@@ -66,7 +68,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
 
         if (savedInstanceState != null) {
             int saved = savedInstanceState.getInt(STATE_TAB, TAB_DISCOVER);
-            current = saved >= TAB_DISCOVER && saved <= TAB_SAVED ? saved : TAB_DISCOVER;
+            current = saved == TAB_SAVED ? TAB_SAVED : TAB_DISCOVER; // Map/Profile are their own screens
         }
         showSection(current, false);
     }
@@ -76,6 +78,11 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
         super.onStart();
         started = true;
         updateDiscoverActive();
+        if (pendingOnboarding != null) {
+            ProfileData p = pendingOnboarding;
+            pendingOnboarding = null;
+            OnboardingRouter.route(this, p);
+        }
     }
 
     @Override
@@ -83,7 +90,8 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
         super.onResume();
         navigating = false;
         if (nav == null) return;
-        nav.select(current, nav.selected() == TAB_PROFILE); // back from Settings: previous tab again
+        // Back from Settings / Map: the previous tab is selected again.
+        nav.select(current, nav.selected() == TAB_PROFILE || nav.selected() == TAB_MAP);
         loadProfile();
     }
 
@@ -153,6 +161,14 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
     // ------------------------------------------------------------------ tabs
 
     private void onTabSelected(int tab) {
+        if (tab == TAB_MAP) {
+            // [NAVIGATION] Map tab -> full-screen map (its own screen; Back returns to Discover).
+            if (navigating) return;
+            navigating = true;
+            nav.select(TAB_MAP, true);
+            discover.openMap();
+            return;
+        }
         if (tab == TAB_PROFILE) {
             // [NAVIGATION] Profile tab -> the existing Settings page (not a duplicate).
             if (navigating) return;
@@ -202,6 +218,16 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
 
     // ------------------------------------------------------------------ profile
 
+    /** Profile known: continue unfinished onboarding (only when visible), else show Discover. */
+    private void onProfileLoaded(ProfileData p, FirebaseUser user) {
+        if (p.status() != com.asanni.app.auth.UserProfile.Status.COMPLETE) {
+            if (started) OnboardingRouter.route(this, p);
+            else pendingOnboarding = p; // Android blocks starting screens from the background
+            return;
+        }
+        discover.onProfile(p, user);
+    }
+
     private void loadProfile() {
         final FirebaseUser user = GoogleAuthClient.currentUser();
         if (user == null) {
@@ -212,12 +238,28 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
             @Override
             public void onProfileReady(ProfileData p) {
                 if (isFinishing() || isDestroyed()) return;
-                discover.onProfile(p, user);
+                // Phase 7: launch may open Home before the profile was known (offline). If it turns
+                // out onboarding isn't finished, continue it now (never loops: only when incomplete).
+                onProfileLoaded(p, user);
             }
 
             @Override
             public void onProfileFailed(UserProfileRepository.Failure f, Exception e) {
                 if (isFinishing() || isDestroyed()) return;
+                if (f == UserProfileRepository.Failure.UNKNOWN && e == null) {
+                    // Signed in but no profile document yet (new account, created while offline):
+                    // create it with the existing ensureProfile() (never overwrites) and continue onboarding.
+                    profiles.ensureProfile(user, new UserProfileRepository.ProfileCallback() {
+                        @Override public void onProfileReady(ProfileData p) {
+                            if (!isFinishing() && !isDestroyed()) onProfileLoaded(p, user);
+                        }
+
+                        @Override public void onProfileFailed(UserProfileRepository.Failure f2, Exception e2) {
+                            if (!isFinishing() && !isDestroyed()) discover.onProfileUnavailable(user);
+                        }
+                    });
+                    return;
+                }
                 // No profile copy at all (e.g. offline on a fresh install): keep Home usable with the
                 // Google photo; Discover shows an offline/error message with Try again.
                 discover.onProfileUnavailable(user);

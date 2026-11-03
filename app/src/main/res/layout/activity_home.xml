@@ -5,7 +5,7 @@
 
     Four sections with a bottom navigation bar, in this order: Discover, Map, Saved, Profile.
       Discover  @id/section_discover (layout/view_discover.xml)
-      Map       @id/section_map      intentionally blank in phase 6 (map comes later)
+      Map       opens the full-screen map (ui/MapActivity.java, layout/activity_map.xml) since phase 7
       Saved     @id/section_saved    intentionally blank in phase 6 (saved restaurants come later)
       Profile   opens the existing Settings page (no duplicate screen)
     All sections stay in memory, so switching tabs never reloads Discover.
@@ -31,7 +31,8 @@
                 android:id="@+id/section_discover"
                 layout="@layout/view_discover" />
 
-            <!-- MAP (phase 6: blank on purpose; no map tiles, API keys or fake pins) -->
+            <!-- MAP: unused since phase 7 - the Map tab opens the full-screen MapActivity instead.
+                 Kept (empty) so the section indexes stay the same. -->
             <FrameLayout
                 android:id="@+id/section_map"
                 android:layout_width="match_parent"

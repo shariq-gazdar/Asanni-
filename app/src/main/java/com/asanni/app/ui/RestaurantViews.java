@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asanni.app.R;
+import com.asanni.app.restaurants.Availability;
 import com.asanni.app.restaurants.LocationScope;
 import com.asanni.app.restaurants.Restaurant;
 import com.asanni.app.restaurants.RestaurantImageLoader;
@@ -29,22 +30,9 @@ final class RestaurantViews {
 
     // ------------------------------------------------------------------ badge
 
-    private enum Kind { FREE, WAIT, FULL, CLOSED, UNKNOWN }
-
-    private static Kind kind(Restaurant r, long now) {
-        if (r.hasCurrentAvailability(now)) {
-            if (r.freeTables > 0) return Kind.FREE;
-            if (r.waitMinutes != null && r.waitMinutes > 0) return Kind.WAIT;
-            return Boolean.FALSE.equals(r.openNow) ? Kind.CLOSED : Kind.FULL;
-        }
-        if (Boolean.FALSE.equals(r.openNow)) return Kind.CLOSED;
-        if (r.waitMinutes != null && r.waitMinutes > 0 && isFresh(r, now)) return Kind.WAIT;
-        return Kind.UNKNOWN;
-    }
-
-    /** No timestamp = can't tell (allowed); a timestamp older than the window = stale. */
-    private static boolean isFresh(Restaurant r, long now) {
-        return r.updatedAtMillis == null || now - r.updatedAtMillis <= RestaurantSchema.AVAILABILITY_FRESH_MS;
+    // Phase 7: the state itself lives in restaurants/Availability (shared with map markers).
+    private static Availability.Kind kind(Restaurant r, long now) {
+        return Availability.of(r, now);
     }
 
     /** Long text, always used for screen readers ("8 tables available"). */
@@ -83,7 +71,7 @@ final class RestaurantViews {
     /** @param badge an included layout/view_badge.xml */
     static void bindBadge(View badge, Restaurant r, long now, boolean longForm) {
         Context c = badge.getContext();
-        Kind k = kind(r, now);
+        Availability.Kind k = kind(r, now);
         int bg;
         int fg;
         switch (k) {
@@ -112,7 +100,7 @@ final class RestaurantViews {
         text.setTextColor(color);
         dot.setColorFilter(color);
         // Dot only for live states; the text itself always carries the meaning (not color alone).
-        dot.setVisibility(k == Kind.FREE || k == Kind.WAIT ? View.VISIBLE : View.GONE);
+        dot.setVisibility(k == Availability.Kind.FREE || k == Availability.Kind.WAIT ? View.VISIBLE : View.GONE);
         badge.setContentDescription(badgeLong(c, r, now));
     }
 
@@ -122,7 +110,9 @@ final class RestaurantViews {
     static String area(Restaurant r, LocationScope scope) {
         String a = r.areaLabel();
         if (a != null) return a;
-        return scope != null ? scope.shortLabel() : null;
+        // Only fall back to the selected area's name when the restaurant really is in it (the Map
+        // lists the whole city / all registered restaurants).
+        return scope != null && RestaurantQuery.isInScope(r, scope) ? scope.shortLabel() : null;
     }
 
     /** "Contemporary · Clifton" (missing parts are left out). */

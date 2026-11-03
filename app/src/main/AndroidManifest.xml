@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
@@ -114,6 +114,14 @@
             android:name=".ui.RestaurantDetailActivity"
             android:exported="false"
             android:theme="@style/AsanniScreenTheme" />
+
+        <activity
+            android:name=".ui.MapActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/AsanniScreenTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
     </application>
 

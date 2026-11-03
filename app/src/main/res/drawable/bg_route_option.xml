@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One route choice; red outline when selected (NEW in phase 7) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/asanni_discover_card" />
+            <stroke android:width="1.5dp" android:color="@color/asanni_welcome_accent" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/asanni_discover_card" />
+            <stroke android:width="1dp" android:color="@color/asanni_discover_card_stroke" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+</selector>

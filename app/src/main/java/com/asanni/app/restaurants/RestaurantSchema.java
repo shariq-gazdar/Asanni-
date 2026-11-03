@@ -3,17 +3,36 @@ package com.asanni.app.restaurants;
 /**
  * [CONFIG] How the Android app reads the restaurant-owner documents written by the DESKTOP app.
  *
- * Location: app/src/main/java/com/asanni/app/restaurants/RestaurantSchema.java  (NEW in phase 6)
+ * Location: app/src/main/java/com/asanni/app/restaurants/RestaurantSchema.java
  *
- * WHY THIS FILE EXISTS
- *   The desktop developer owns the restaurant database. Its exact field names were not available
- *   when phase 6 was written, so instead of guessing ONE name per field, each value is looked up
- *   under a short list of common names (first match wins). Missing fields are simply "unknown";
- *   nothing is ever invented.
+ * SCHEMA STATUS (updated 3 Nov 2026)
+ *   The real desktop document has been confirmed. It is FLAT (no nested maps) and looks like:
  *
- *   When the real schema is confirmed, put the real field name FIRST in each list (or delete the
- *   others). On every load the app writes a one-line "schema report" to Logcat (tag
- *   AsanniRestaurants) listing which field names it actually found, so you can check this quickly.
+ *     name                  "Restaurant Name"            (string)
+ *     logoUrl               "https://..."                (string)
+ *     coverUrl              "coverphoto.png"             (string)   <- see IMAGE NOTE below
+ *     cuisines              ["French", "Cafe"]           (array of strings)
+ *     cityId                "karachi"                    (string, same IDs as the ASANNI catalogue)
+ *     areaId                "karachi-clifton"            (string, same IDs as the ASANNI catalogue)
+ *     address               "Block 5, Clifton, Karachi"  (string)
+ *     location              [24.81 N, 67.03 E]           (GeoPoint)
+ *     isEnabled             true                         (boolean, registration)
+ *     isOpen                true                         (boolean, open right now)
+ *     acceptingDiners       true                         (boolean)
+ *     availableTables       8                            (int64)
+ *     totalTables           12                           (int64)
+ *     waitMinutes           15                           (int64)
+ *     availabilityUpdatedAt 3 Nov 2026 18:13:43 UTC+5    (Timestamp)
+ *     phone                 "922135000000"               (string, no '+')
+ *
+ *   Confirmed fields now have ONE name each, so nothing can be read from the wrong field.
+ *   Fields the desktop app does NOT write yet (featured, account status, per-table records, ...)
+ *   keep their candidate lists, so they start working automatically if the desktop app adds them.
+ *
+ * IMAGE NOTE
+ *   coverUrl "coverphoto.png" is a bare file name and logoUrl "https://" has no host. Neither can be
+ *   downloaded by the phone. Images are only loaded from a full http(s) URL with a host, or from
+ *   data:image / base64 text. Ask the desktop developer to store complete public URLs.
  *
  * THE MOBILE APP ONLY READS this collection. It never writes to restaurant documents.
  */
@@ -23,18 +42,18 @@ public final class RestaurantSchema {
 
     // ------------------------------------------------------------------ collection & query
 
-    /** [CONFIG] Firestore collection the desktop app writes restaurants to. */
-    public static final String COLLECTION = "resturant-owner";
+    /**
+     * [CONFIG] Firestore collection the desktop app writes restaurants to.
+     * Must match the name shown in the Firebase console EXACTLY (case and spelling).
+     */
+    public static final String COLLECTION = "restaurantOwner";
 
     /**
-     * [CONFIG] Optional server-side city filter. Leave null until the desktop schema is confirmed.
-     *   null  -> the app reads at most MAX_DOCUMENTS restaurants once (live listener) and matches
-     *            city/area on the phone. Works with any field naming. Fine for hundreds of restaurants.
-     *   "cityId" (example) -> the app asks Firestore only for restaurants whose cityId equals the
-     *            user's catalogue city ID (e.g. "karachi"). Use this when the collection grows large
-     *            AND the desktop app stores the SAME city IDs as the ASANNI catalogue.
+     * [CONFIG] Server-side city filter. The desktop app stores the same city IDs as the ASANNI
+     * catalogue (cityId = "karachi"), so Firestore now returns only the user's city.
+     * Set to null to go back to reading MAX_DOCUMENTS and matching on the phone.
      */
-    public static final String SERVER_CITY_FIELD = null;
+    public static final String SERVER_CITY_FIELD = "cityId";
 
     /** [CONFIG] Safety cap on documents read by one listener (bounded reads; no full-database download). */
     public static final int MAX_DOCUMENTS = 500;
@@ -43,81 +62,87 @@ public final class RestaurantSchema {
 
     /**
      * [CONFIG] Table counts older than this are treated as "not current" and are NOT shown.
-     * Only used when the document has an availability timestamp.
+     * The desktop app writes availabilityUpdatedAt, so this is active. The desktop app must touch
+     * availabilityUpdatedAt at least this often (even when the count has not changed), otherwise
+     * a quiet restaurant's tables disappear from the app.
      */
     public static final long AVAILABILITY_FRESH_MS = 30 * 60_000L;
 
     /**
      * [CONFIG] If true, a table count WITHOUT any timestamp is never shown (strict).
-     * false (default): shown, but ranked below counts with a fresh timestamp.
+     * The confirmed schema always has availabilityUpdatedAt, so this only affects old documents.
      */
     public static final boolean REQUIRE_AVAILABILITY_TIMESTAMP = false;
 
     /**
-     * [CONFIG] What a plain "isActive" / "active" boolean means in the desktop data. It is ambiguous,
-     * so it is configurable:
-     *   REGISTRATION (default) -> the restaurant account is enabled in the system (false = hidden).
-     *   OPEN_NOW               -> the restaurant is open right now (used by the Active filter).
+     * [CONFIG] What a plain "isActive" / "active" boolean means. The confirmed schema has no such
+     * field (it uses isEnabled + isOpen instead), so this setting currently has no effect.
      */
     public enum ActiveMeaning { REGISTRATION, OPEN_NOW }
     public static final ActiveMeaning ACTIVE_FIELD_MEANING = ActiveMeaning.REGISTRATION;
 
-    // ------------------------------------------------------------------ field names (first match wins)
+    // ------------------------------------------------------------------ CONFIRMED field names
 
-    static final String[] NAME = {"name", "restaurantName", "restaurant_name", "businessName", "title"};
-    /** Logo: https URL, or an image stored as base64 / data:image text. */
-    static final String[] LOGO = {"logoUrl", "logo", "logoURL", "logo_url", "logoImage", "logoBase64"};
+    static final String[] NAME = {"name"};
+    /** Logo: full https URL, or an image stored as base64 / data:image text. */
+    static final String[] LOGO = {"logoUrl"};
     /** Optional wide photo; the top card uses the LOGO as required, the photo only as a backdrop. */
-    static final String[] COVER = {"coverUrl", "coverImage", "cover", "bannerUrl", "imageUrl", "photoUrl"};
-    /** String ("French, Cafe") or list of strings. */
-    static final String[] CUISINE = {"cuisines", "cuisine", "cuisineTypes", "cuisineType", "categories", "category"};
+    static final String[] COVER = {"coverUrl"};
+    /** List of strings, e.g. ["French", "Cafe"]. A plain string also still works. */
+    static final String[] CUISINE = {"cuisines"};
 
-    /** City / area values: a catalogue ID ("karachi", "karachi-clifton") or a name ("Clifton"). */
-    static final String[] CITY = {"cityId", "city", "cityName", "city_name"};
-    static final String[] AREA = {"areaId", "area", "areaName", "area_name", "locality", "neighbourhood", "neighborhood"};
-    static final String[] ADDRESS = {"address", "fullAddress", "streetAddress", "addressLine", "address_line"};
-    /** Maps that may contain city / area / address / coordinates, e.g. location: {city, area, lat, lng}. */
-    static final String[] NESTED = {"location", "address", "addressInfo", "branch"};
+    /** Catalogue IDs: "karachi", "karachi-clifton". */
+    static final String[] CITY = {"cityId"};
+    static final String[] AREA = {"areaId"};
+    static final String[] ADDRESS = {"address"};
+    /**
+     * Maps that may contain city / area / address / coordinates. The confirmed document is flat
+     * ("location" is a GeoPoint and "address" is a string, not maps), so nothing is searched.
+     */
+    static final String[] NESTED = {};
 
-    /** GeoPoint, or a map {lat|latitude, lng|longitude}. */
-    static final String[] GEO = {"geo", "geopoint", "geoPoint", "coordinates", "location", "position", "latLng"};
+    /** GeoPoint. */
+    static final String[] GEO = {"location"};
+    /** Only used if a coordinate is ever stored as a map {lat, lng} instead of a GeoPoint. */
     static final String[] LAT = {"latitude", "lat"};
     static final String[] LNG = {"longitude", "lng", "lon", "long"};
 
-    /** Registration / enabled booleans (true = shown to diners). */
-    static final String[] ENABLED = {"isEnabled", "enabled", "isApproved", "approved"};
+    /** Registration boolean (true = shown to diners). */
+    static final String[] ENABLED = {"isEnabled"};
+    /** Open-right-now boolean. */
+    static final String[] OPEN_NOW = {"isOpen"};
+    /** Accepting diners / walk-ins right now. */
+    static final String[] ACCEPTING = {"acceptingDiners"};
+
+    /** Aggregate number of free tables right now. */
+    static final String[] FREE_TABLES = {"availableTables"};
+    static final String[] TOTAL_TABLES = {"totalTables"};
+
+    /** Current waiting time in minutes. */
+    static final String[] WAIT_MINUTES = {"waitMinutes"};
+    /** When availability was last updated (Firestore Timestamp). */
+    static final String[] UPDATED_AT = {"availabilityUpdatedAt"};
+    /** Stored without '+', e.g. "922135000000". Add '+' before dialing. */
+    static final String[] PHONE = {"phone"};
+
+    // ------------------------------------------------------------------ NOT in the desktop schema yet
+    // Kept as candidate lists so they work automatically if the desktop app adds them later.
+
     /** Inverted booleans (true = hidden). */
     static final String[] DISABLED = {"isDisabled", "disabled", "isSuspended", "suspended", "isBlocked", "isDeleted"};
     /** Ambiguous booleans, interpreted by ACTIVE_FIELD_MEANING. */
     static final String[] ACTIVE = {"isActive", "active"};
     /** Account status strings (e.g. "approved", "suspended"). */
-    static final String[] ACCOUNT_STATUS = {"accountStatus", "approvalStatus", "registrationStatus", "status"};
-
-    /** Open-right-now booleans. */
-    static final String[] OPEN_NOW = {"isOpen", "isOpenNow", "openNow", "open", "currentlyOpen"};
+    static final String[] ACCOUNT_STATUS = {"accountStatus", "approvalStatus", "registrationStatus"};
     /** Open/closed strings (e.g. "open", "closed"). */
-    static final String[] OPEN_STATUS = {"operationalStatus", "openStatus", "businessStatus", "status"};
-    /** Accepting diners / walk-ins right now. */
-    static final String[] ACCEPTING = {"acceptingDiners", "isAcceptingDiners", "acceptingGuests", "isAccepting", "acceptingWalkIns"};
-
-    /** Aggregate number of free tables right now. */
-    static final String[] FREE_TABLES = {"availableTables", "freeTables", "tablesAvailable", "available_tables",
-            "free_tables", "availableTableCount", "vacantTables"};
-    static final String[] TOTAL_TABLES = {"totalTables", "tableCount", "tablesTotal", "total_tables"};
+    static final String[] OPEN_STATUS = {"operationalStatus", "openStatus", "businessStatus"};
     /** Table records stored INSIDE the restaurant document: a list of maps (counted on the phone). */
     static final String[] TABLE_LIST = {"tables"};
     /** Inside each table map: a boolean meaning free, or a status string. */
     static final String[] TABLE_FREE_FLAG = {"isAvailable", "available", "isFree", "free"};
     static final String[] TABLE_BUSY_FLAG = {"isOccupied", "occupied", "isReserved", "reserved"};
     static final String[] TABLE_STATUS = {"status", "state"};
-
-    /** Current waiting time in minutes. */
-    static final String[] WAIT_MINUTES = {"waitMinutes", "waitTime", "waitingTime", "estimatedWait", "wait_minutes"};
     static final String[] FEATURED = {"isFeatured", "featured"};
-    /** When availability / the document was last updated: Timestamp, Date, or epoch millis/seconds. */
-    static final String[] UPDATED_AT = {"availabilityUpdatedAt", "tablesUpdatedAt", "lastAvailabilityUpdate",
-            "liveUpdatedAt", "updatedAt", "lastUpdated", "updated_at"};
-    static final String[] PHONE = {"phone", "phoneNumber", "contactNumber", "contactPhone"};
 
     // ------------------------------------------------------------------ status words (lowercase)
 

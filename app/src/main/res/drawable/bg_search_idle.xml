@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Discover / Map search bar, not in use (NEW in phase 7) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/asanni_search_fill" />
+    <stroke android:width="1dp" android:color="@color/asanni_discover_card_stroke" />
+    <corners android:radius="100dp" />
+</shape>

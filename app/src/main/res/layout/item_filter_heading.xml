@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Section heading inside the filter sheet (NEW in phase 7). -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:accessibilityHeading="true"
+    android:letterSpacing="0.04"
+    android:textAllCaps="true"
+    android:textColor="@color/asanni_discover_muted"
+    android:textSize="12sp" />

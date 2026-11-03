@@ -7,6 +7,8 @@
     <string name="intro_tagline">Taake asanni\nhojaye</string>
     <!-- Spoken by screen readers while the intro plays -->
     <string name="intro_content_description">ASANNI. Taake asanni hojaye.</string>
+    <!-- [EDIT TEXT] Phase 7: only shown if checking the account takes longer than the animation -->
+    <string name="intro_waiting">Opening your account…</string>
 
     <!-- ========================= OFFLINE ========================= -->
     <!-- [EDIT TEXT] Offline page heading -->

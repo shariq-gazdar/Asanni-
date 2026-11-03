@@ -26,12 +26,13 @@ final class GetStartedNavigator {
     }
 
     /**
-     * [NAVIGATION] App opened while already signed in. The login screen sees the existing
-     * session, skips Google, checks the profile and routes on. Get Started is closed so it
-     * can't bounce the user back and forth.
+     * [NAVIGATION] Get Started opened while already signed in (e.g. Android restored this screen).
+     * Phase 7: no detour through the login screen and its "Setting up your profile" message; the
+     * same LaunchRouter as the intro decides (Discover, or the missing onboarding step).
      */
-    static void resumeSignedInSession(Activity from) {
-        AppNavigator.openGoogleLogin(from);
-        from.finish();
+    static LaunchRouter resumeSignedInSession(LaunchRouter.Callback callback) {
+        LaunchRouter router = new LaunchRouter();
+        router.start(callback);
+        return router;
     }
 }

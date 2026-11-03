@@ -88,4 +88,10 @@
     <color name="asanni_skeleton">#2A2724</color>
     <color name="asanni_image_placeholder">#2A2724</color>
     <color name="asanni_image_placeholder_icon">#8C857D</color>
+
+    <!-- Phase 7 (search bar, map controls). Markers and the map itself stay the same in dark mode. -->
+    <color name="asanni_search_fill">#1E1C1A</color>
+    <color name="asanni_map_control">#2A2724</color>
+    <color name="asanni_map_panel">#1E1C1A</color>
+    <color name="asanni_marker_selected_ring">#F3EFEA</color>
 </resources>

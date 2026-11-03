@@ -105,6 +105,22 @@ public final class UserProfileRepository {
                 .addOnFailureListener(e -> callback.onProfileFailed(classify(e, false), e));
     }
 
+    /**
+     * Phase 7: reads ONLY the copy saved on this phone (no network). Used at launch when the
+     * server is slow or unreachable, so a signed-in user still reaches Discover quickly.
+     */
+    public void loadCachedProfile(String uid, ProfileCallback callback) {
+        userDoc(uid).get(com.google.firebase.firestore.Source.CACHE)
+                .addOnSuccessListener(snap -> {
+                    if (!snap.exists()) {
+                        callback.onProfileFailed(Failure.UNKNOWN, null);
+                        return;
+                    }
+                    callback.onProfileReady(ProfileData.from(snap));
+                })
+                .addOnFailureListener(e -> callback.onProfileFailed(Failure.NETWORK, e));
+    }
+
     /** Choose page: role = diner. */
     public void saveDinerRole(String uid, SaveCallback callback) {
         Map<String, Object> c = changes();

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Discover search bar while searching: red outline, as in the reference (NEW in phase 7) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/asanni_search_fill" />
+    <stroke android:width="1.5dp" android:color="@color/asanni_welcome_accent" />
+    <corners android:radius="100dp" />
+</shape>

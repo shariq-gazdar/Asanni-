@@ -83,4 +83,34 @@
             android:textColor="@color/asanni_intro_wordmark"
             android:textSize="8sp" />
     </LinearLayout>
+
+    <!-- Phase 7: shown ONLY if the account check takes longer than the animation (normally never
+         visible). Hidden during the animation, so the intro looks exactly like the video. -->
+    <LinearLayout
+        android:id="@+id/intro_waiting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="72dp"
+        android:alpha="0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:indeterminateTint="@color/asanni_intro_wordmark"
+            android:importantForAccessibility="no" />
+
+        <!-- [EDIT TEXT] intro_waiting -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:accessibilityLiveRegion="polite"
+            android:text="@string/intro_waiting"
+            android:textColor="@color/asanni_intro_wordmark"
+            android:textSize="13sp" />
+    </LinearLayout>
 </FrameLayout>

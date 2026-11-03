@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Filter bottom sheet for Discover and See All (NEW in phase 6).
+    Filter bottom sheet shared by Discover, See All and Map (NEW in phase 6, MODIFIED in phase 7:
+    Available now / Under 3 km / Cuisine sections, scrollable).
     Location: app/src/main/res/layout/dialog_discover_filters.xml   Logic: ui/FilterSheet.java
-    Only filters backed by real restaurant data are offered. [FUTURE FILTERS] add more sections
-    (cuisine, distance, live tables) below the Status section.
+    Only filters backed by real restaurant data are offered (rows are added in code).
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -54,33 +54,54 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:accessibilityHeading="true"
-        android:letterSpacing="0.04"
-        android:text="@string/filter_status_heading"
-        android:textAllCaps="true"
-        android:textColor="@color/asanni_discover_muted"
-        android:textSize="12sp" />
-
-    <include android:id="@+id/filter_all" layout="@layout/item_filter_option" />
-    <include android:id="@+id/filter_active" layout="@layout/item_filter_option" />
-    <include android:id="@+id/filter_inactive" layout="@layout/item_filter_option" />
-
-    <TextView
-        android:id="@+id/filter_unavailable"
+    <ScrollView
+        android:id="@+id/filter_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:background="@drawable/bg_info_box"
-        android:lineSpacingMultiplier="1.15"
-        android:padding="12dp"
-        android:text="@string/filter_status_unavailable"
-        android:textColor="@color/asanni_discover_muted"
-        android:textSize="13sp"
-        android:visibility="gone" />
+        android:fadeScrollbars="true"
+        android:overScrollMode="ifContentScrolls">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:accessibilityHeading="true"
+                android:letterSpacing="0.04"
+                android:text="@string/filter_status_heading"
+                android:textAllCaps="true"
+                android:textColor="@color/asanni_discover_muted"
+                android:textSize="12sp" />
+
+            <include android:id="@+id/filter_all" layout="@layout/item_filter_option" />
+            <include android:id="@+id/filter_active" layout="@layout/item_filter_option" />
+            <include android:id="@+id/filter_inactive" layout="@layout/item_filter_option" />
+
+            <TextView
+                android:id="@+id/filter_unavailable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_info_box"
+                android:lineSpacingMultiplier="1.15"
+                android:padding="12dp"
+                android:text="@string/filter_status_unavailable"
+                android:textColor="@color/asanni_discover_muted"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- Phase 7: Available now / Under 3 km / Cuisine (only when real data supports them) -->
+            <LinearLayout
+                android:id="@+id/filter_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </ScrollView>
 
     <TextView
         android:id="@+id/filter_apply"

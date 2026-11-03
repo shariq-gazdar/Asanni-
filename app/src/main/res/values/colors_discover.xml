@@ -44,4 +44,23 @@
     <color name="asanni_skeleton">#D8D5CF</color>
     <color name="asanni_image_placeholder">#DEDAD3</color>
     <color name="asanni_image_placeholder_icon">#8A847C</color>
+
+    <!-- ===================== Phase 7: search bar, Map ===================== -->
+    <color name="asanni_search_fill">#FBFAF7</color>
+    <!-- Map markers (same meaning as the badges) -->
+    <color name="asanni_marker_free">#1C6B4B</color>
+    <color name="asanni_marker_wait">#B36619</color>
+    <color name="asanni_marker_full">#9B2C33</color>
+    <color name="asanni_marker_closed">#5E5852</color>
+    <color name="asanni_marker_none">#8A847C</color>
+    <color name="asanni_marker_ring">#FFFFFF</color>
+    <color name="asanni_marker_selected_ring">#14110F</color>
+    <color name="asanni_route_main">#A6262D</color>
+    <color name="asanni_route_alt">#8E8A84</color>
+    <!-- Floating map controls + bottom panel -->
+    <color name="asanni_map_control">#FFFFFF</color>
+    <color name="asanni_map_panel">#F7F6F2</color>
+    <!-- Map tint applied to the OpenFreeMap "positron" style (beige like the reference) -->
+    <color name="asanni_map_land">#EFE8DA</color>
+    <color name="asanni_map_water">#BFD9DD</color>
 </resources>

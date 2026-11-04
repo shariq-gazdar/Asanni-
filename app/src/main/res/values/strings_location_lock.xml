@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/strings_location_lock.xml  (NEW in phase 9)
+    [EDIT TEXT] Read-only "Your location" panel (Discover location chip + Settings), and the
+    Premium placeholder page. City / area names come from the Firestore catalogue.
+-->
+<resources>
+    <!-- ========================= YOUR LOCATION ========================= -->
+    <string name="locinfo_title">Your location</string>
+    <string name="locinfo_eyebrow">DETECTED FROM YOUR PHONE</string>
+    <!-- %1$s = date + time -->
+    <string name="locinfo_detected_at">Detected from your phone\'s location · %1$s</string>
+    <string name="locinfo_detected_earlier">Detected from your phone\'s location earlier</string>
+    <string name="locinfo_manual_legacy">Chosen by hand before location was locked. Update it from your current location.</string>
+    <string name="locinfo_missing">No location yet</string>
+    <string name="locinfo_city_wide">Your exact area wasn\'t recognised, so ASANNI uses the whole city.</string>
+    <string name="locinfo_explain">ASANNI uses your phone\'s location to choose your city. You can search restaurants in every area of your city. City and area can\'t be changed by hand.</string>
+    <string name="locinfo_privacy">Only your city and area are saved, never your exact position or home address.</string>
+    <string name="locinfo_update">Update from my current location</string>
+    <string name="locinfo_updating">Finding your location…</string>
+    <string name="locinfo_saving">Saving…</string>
+    <!-- %1$s = "Clifton, Karachi" -->
+    <string name="locinfo_updated">Location updated to %1$s.</string>
+    <string name="locinfo_same">You\'re still in %1$s. Detection time updated.</string>
+    <string name="locinfo_need_permission">ASANNI needs location access to find restaurants in your city. Nothing is shared with restaurants.</string>
+    <string name="locinfo_allow">Allow location</string>
+    <string name="locinfo_blocked">Location access is turned off for ASANNI. Allow it in app settings.</string>
+    <string name="locinfo_open_settings">Open app settings</string>
+    <string name="locinfo_services_off">Your phone\'s location is switched off.</string>
+    <string name="locinfo_turn_on">Turn on location</string>
+    <string name="locinfo_no_fix">Couldn\'t get your position just now. Move near a window and try again.</string>
+    <string name="locinfo_geocode">Couldn\'t work out your city from your position. Check your internet and try again.</string>
+    <string name="locinfo_offline">You\'re offline. Your saved location is still used.</string>
+    <string name="locinfo_outside">ASANNI is only available in Pakistan for now. Your saved location is still used.</string>
+    <string name="locinfo_not_supported">ASANNI isn\'t available in this city yet. Your saved location is still used.</string>
+    <string name="locinfo_failed">Couldn\'t update your location. Your saved location is still used.</string>
+    <string name="locinfo_try_again">Try again</string>
+
+    <!-- Discover / Settings descriptions (replace the old "Double tap to change") -->
+    <string name="discover_location_locked_description">Your location: %1$s. Double tap for details.</string>
+    <string name="settings_location_label">Your location</string>
+    <string name="settings_location_description">Your location, %1$s. Double tap for details.</string>
+    <string name="settings_location_updated">Location updated</string>
+    <string name="coach_location_locked_title">Your city, from your phone</string>
+    <string name="coach_location_locked_text">ASANNI shows restaurants across your whole city. Tap here to see how your location was detected.</string>
+
+    <!-- ========================= PREMIUM (placeholder) ========================= -->
+    <string name="premium_row_label">ASANNI Premium</string>
+    <string name="premium_status_free">Free</string>
+    <string name="premium_status_active">Premium</string>
+    <string name="premium_title">ASANNI Premium</string>
+    <string name="premium_eyebrow">COMING SOON</string>
+    <string name="premium_headline">More from ASANNI is on the way</string>
+    <string name="premium_text">Premium plans aren\'t available yet. When they launch, you\'ll be able to see the plans and prices here, and pay safely through Google Play.</string>
+    <string name="premium_current_free">Your plan: Free. Everything in ASANNI today is free.</string>
+    <!-- %1$s = plan id, %2$s = date -->
+    <string name="premium_current_active">Your plan: %1$s, until %2$s.</string>
+    <string name="premium_back">Back</string>
+</resources>

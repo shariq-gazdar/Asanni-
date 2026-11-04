@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/colors_description.xml  (NEW in phase 9)
+    Description page ("LIVE STATUS · Dine-in availability") + reviews, taken from the reference
+    image: warm grey page, white round buttons, peach / green / red status cards, red button.
+    [COLOR] Dark-theme versions: res/values-night/colors_description.xml (same names).
+-->
+<resources>
+    <color name="desc_background">#E9E7E2</color>
+    <color name="desc_surface">#FFFFFF</color>
+    <color name="desc_ink">#1C1B1A</color>
+    <color name="desc_muted">#77736D</color>
+    <color name="desc_red">#B3262E</color>
+    <color name="desc_on_red">#FFFFFF</color>
+    <color name="desc_divider">#D9D5CF</color>
+    <!-- Status colors: background + text/dot -->
+    <color name="desc_peach_bg">#F9E5CB</color>
+    <color name="desc_peach_text">#B3651F</color>
+    <color name="desc_green_bg">#D6E9DB</color>
+    <color name="desc_green_text">#2D774C</color>
+    <color name="desc_full_bg">#F2D5D4</color>
+    <color name="desc_full_text">#8D2B2B</color>
+    <color name="desc_neutral_bg">#E1DED8</color>
+    <color name="desc_neutral_text">#5F5B55</color>
+    <color name="desc_star">#E3A20B</color>
+    <color name="desc_bar_track">#DCD8D1</color>
+    <color name="desc_reply_bg">#F1EFEB</color>
+</resources>

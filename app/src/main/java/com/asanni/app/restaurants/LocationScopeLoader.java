@@ -39,14 +39,13 @@ public final class LocationScopeLoader {
             @Override
             public void onLoaded(List<CatalogueItem> cities) {
                 final CatalogueItem city = find(cities, cityId, fallbackCity);
-                if (fallbackArea == null) {
-                    callback.onScope(new LocationScope(city, null));
-                    return;
-                }
+                // PHASE 9: always load the city's areas (cached) so city-wide lists can name
+                // each restaurant's own area.
                 catalogue.loadAreas(cityId, new LocationCatalogueRepository.Callback() {
                     @Override
                     public void onLoaded(List<CatalogueItem> areas) {
-                        callback.onScope(new LocationScope(city, find(areas, areaId, fallbackArea)));
+                        callback.onScope(new LocationScope(city,
+                                fallbackArea == null ? null : find(areas, areaId, fallbackArea), areas));
                     }
 
                     @Override

@@ -40,7 +40,9 @@ import java.util.List;
  *   2. One current location -> address (Geocoder) -> matched to the Firestore catalogue.
  *   3. The match is shown as a SUGGESTION ("Use Clifton, Karachi"). Nothing is saved until the
  *      user taps it. Coordinates are never saved.
- * "Enter area manually" always works, needs no permission, and never triggers a request.
+ * PHASE 9: manual city/area entry was REMOVED (location is locked to the phone's live location).
+ * The "Enter area manually" button is hidden; when the area isn't recognised, the city-wide
+ * "All of <city>" catalogue area is suggested instead (never an invented neighbourhood).
  */
 public class AllowLocationActivity extends AsanniActivity {
 
@@ -125,6 +127,7 @@ public class AllowLocationActivity extends AsanniActivity {
         manualButton.setOnClickListener(v -> onManualClicked());
         animator.attachPressFeedback(allowButton);
         animator.attachPressFeedback(manualButton);
+        manualButton.setVisibility(View.GONE); // PHASE 9: no manual city/area selection
 
         render();
     }
@@ -146,18 +149,17 @@ public class AllowLocationActivity extends AsanniActivity {
             case SUGGEST_AREA:
                 saveSuggestion();
                 return;
-            case SUGGEST_CITY:
-                AppNavigator.openManualLocation(this, suggestedCity.id);
+            case SUGGEST_CITY: // PHASE 9: not reached any more (city-wide area is suggested instead)
+                startAllowFlow();
                 return;
             default:
                 startAllowFlow();
         }
     }
 
-    /** [NAVIGATION] Manual entry: never asks for location permission. */
+    /** PHASE 9: manual entry removed; the (hidden) button does nothing. */
     private void onManualClicked() {
-        if (state == State.SAVING) return;
-        AppNavigator.openManualLocation(this, suggestedCity != null ? suggestedCity.id : null);
+        // Location is locked to the phone's live location (LocationInfoActivity explains it).
     }
 
     // ------------------------------------------------------------------ permission
@@ -290,7 +292,13 @@ public class AllowLocationActivity extends AsanniActivity {
                     setState(State.SUGGEST_AREA, getString(R.string.location_suggest_area,
                             suggestedArea.name, city.name) + precision);
                 } else {
-                    setState(State.SUGGEST_CITY,
+                    // PHASE 9: area not recognised -> the whole city ("All of Karachi").
+                    for (CatalogueItem a : areas) if (a.isCityWide) suggestedArea = a;
+                    if (suggestedArea == null) {
+                        setState(State.NO_MATCH, getString(R.string.location_no_city_match));
+                        return;
+                    }
+                    setState(State.SUGGEST_AREA,
                             getString(R.string.location_suggest_city, city.name) + precision);
                 }
             }

@@ -455,14 +455,14 @@ final class DiscoverSection implements RestaurantRepository.Observer {
     }
 
     private void updateLocationDescription() {
-        locationButton.setContentDescription(activity.getString(R.string.discover_location_description,
+        locationButton.setContentDescription(activity.getString(R.string.discover_location_locked_description,
                 locationText.getText()));
     }
 
     // ------------------------------------------------------------------ rendering
 
     private List<Restaurant> scoped() {
-        return restaurants == null || scope == null ? new ArrayList<>() : RestaurantQuery.inScope(restaurants, scope);
+        return restaurants == null || scope == null ? new ArrayList<>() : RestaurantQuery.inCity(restaurants, scope) /* PHASE 9: whole city, own area ranked first */;
     }
 
     private void render() {
@@ -525,7 +525,7 @@ final class DiscoverSection implements RestaurantRepository.Observer {
             boolean offline = !online || failure == RestaurantRepository.Failure.NETWORK || nothingOffline;
             showState(offline ? R.drawable.ic_wifi_off : R.drawable.ic_storefront,
                     activity.getString(offline ? R.string.error_restaurants_offline_title : R.string.error_restaurants_title),
-                    offline ? activity.getString(R.string.error_restaurants_offline_text, scope.shortLabel())
+                    offline ? activity.getString(R.string.error_restaurants_offline_text, scope.city.name)
                             : activity.getString(R.string.error_restaurants_text),
                     activity.getString(R.string.error_retry), this::retry);
             return;
@@ -535,8 +535,8 @@ final class DiscoverSection implements RestaurantRepository.Observer {
         List<Restaurant> scoped = scoped();
         bindReport(RestaurantQuery.stats(scoped, now), now);
         offlineNote.setVisibility(fromCache && !scoped.isEmpty() ? View.VISIBLE : View.GONE);
-        eyebrow.setText(activity.getString(R.string.discover_eyebrow, scope.shortLabel()));
-        seeAll.setContentDescription(activity.getString(R.string.discover_see_all_description, scope.shortLabel()));
+        eyebrow.setText(activity.getString(R.string.discover_eyebrow, scope.city.name));
+        seeAll.setContentDescription(activity.getString(R.string.discover_see_all_description, scope.city.name));
 
         // 4. Nothing in this area at all.
         if (scoped.isEmpty()) {
@@ -608,7 +608,7 @@ final class DiscoverSection implements RestaurantRepository.Observer {
 
     private void bindReport(RestaurantQuery.Stats s, long now) {
         report.setVisibility(View.VISIBLE);
-        String where = scope.shortLabel();
+        String where = scope.city.name;
         reportTitle.setText(s.total == 0
                 ? activity.getString(R.string.report_title_zero, where)
                 : activity.getResources().getQuantityString(R.plurals.report_title, s.total, s.total, where));

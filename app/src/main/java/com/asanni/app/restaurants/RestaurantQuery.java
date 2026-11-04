@@ -42,6 +42,18 @@ public final class RestaurantQuery {
         return inScope(all, new LocationScope(scope.city, null));
     }
 
+    /**
+     * PHASE 9: the catalogue name of the restaurant's OWN area (city-wide results come from many
+     * areas). Null when it can't be matched - never the user's area by default.
+     */
+    public static String areaName(Restaurant r, LocationScope scope) {
+        if (r == null || scope == null || r.areaRaw == null) return null;
+        for (CatalogueItem a : scope.cityAreas) {
+            if (!a.isCityWide && matchesItem(TextNormalizer.normalize(r.areaRaw), a, scope.city)) return a.name;
+        }
+        return null;
+    }
+
     /** True when the restaurant is in the selected city AND area (whole city: just the city). */
     public static boolean isInScope(Restaurant r, LocationScope scope) {
         if (r == null || scope == null || !matchesCity(r, scope.city)) return false;

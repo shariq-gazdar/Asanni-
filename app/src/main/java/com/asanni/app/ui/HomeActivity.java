@@ -44,6 +44,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
     private BottomNavBar nav;
     private DiscoverSection discover;
     private SavedSection savedSection; // PHASE 8
+    private com.asanni.app.location.DeviceLocationHelper autoLocationDevice; // PHASE 9
     private int current = TAB_DISCOVER;
     private boolean started;
     private ProfileData pendingOnboarding; // incomplete profile found while in the background
@@ -109,6 +110,7 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
         super.onDestroy();
         if (discover != null) discover.release();
         if (savedSection != null) savedSection.release(); // PHASE 8
+        if (autoLocationDevice != null) autoLocationDevice.release(); // PHASE 9
     }
 
     @Override
@@ -148,12 +150,15 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
         return this;
     }
 
-    /** [NAVIGATION] Location arrow -> the existing city/area form (edit mode), back to Discover. */
+    /**
+     * [NAVIGATION] Location chip -> read-only "Your location" panel (PHASE 9: location is locked
+     * to the phone's live location; the manual city/area form is no longer reachable).
+     */
     @Override
     public void openLocationPicker(String cityId, String areaId) {
         if (navigating) return;
         navigating = true;
-        AppNavigator.openEditAddress(this, cityId, areaId);
+        AppNavigator.openLocationInfo(this);
     }
 
     @Override
@@ -230,6 +235,12 @@ public class HomeActivity extends AsanniActivity implements DiscoverSection.Host
             return;
         }
         discover.onProfile(p, user);
+        // PHASE 9: detect a move to another area / city (throttled, never asks for permission).
+        if (autoLocationDevice == null) autoLocationDevice = new com.asanni.app.location.DeviceLocationHelper(this);
+        LocationAutoCheck.maybeRun(this, autoLocationDevice, p, () -> {
+            discover.onLocationChanged();
+            loadProfile();
+        });
     }
 
     private void loadProfile() {

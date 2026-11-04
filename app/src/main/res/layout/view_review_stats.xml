@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Rating statistics (NEW in phase 9), used on the Description page and the Reviews page:
+    big average + stars + total on the left, five bars (5 to 1 stars) on the right.
+    Location: app/src/main/res/layout/view_review_stats.xml   Logic: ui/ReviewViews.java
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_desc_card"
+    android:backgroundTint="@color/desc_surface"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:minWidth="96dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/stats_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/desc_ink"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/stats_stars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:letterSpacing="0.05"
+            android:textColor="@color/desc_star"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/stats_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/desc_muted"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/stats_bars"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+</LinearLayout>

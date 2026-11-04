@@ -126,6 +126,29 @@ public final class RestaurantRepository {
                 .addOnFailureListener(e -> o.onRestaurantsFailed(classify(e)));
     }
 
+    /**
+     * PHASE 9: the Description page's refresh button - ONE document read straight from the server
+     * (never the cache, never the whole collection). Fails offline instead of showing old data
+     * as new.
+     */
+    public void refreshOne(String id, final Observer o) {
+        if (DevTestData.active() && DevTestData.isTestId(id)) { // [DEV TEST DATA] local fixture
+            List<Restaurant> one = new ArrayList<>();
+            one.add(DevTestData.fixture());
+            main.post(() -> o.onRestaurants(one, false));
+            return;
+        }
+        FirebaseFirestore.getInstance().collection(RestaurantSchema.COLLECTION).document(id)
+                .get(com.google.firebase.firestore.Source.SERVER)
+                .addOnSuccessListener(doc -> {
+                    Restaurant r = doc.exists() ? parse(doc) : null;
+                    List<Restaurant> list = new ArrayList<>();
+                    if (r != null && !r.isHiddenFromDiners()) list.add(r);
+                    o.onRestaurants(list, false);
+                })
+                .addOnFailureListener(e -> o.onRestaurantsFailed(classify(e)));
+    }
+
     // ------------------------------------------------------------------ phase 8: single restaurants
 
     /** Stops a watchOne() listener. */

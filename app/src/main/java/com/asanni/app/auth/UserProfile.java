@@ -43,6 +43,8 @@ public final class UserProfile {
     public static final String FIELD_AREA_ID = "areaId";
     public static final String FIELD_AREA_NAME = "areaName";
     public static final String FIELD_LOCATION_SOURCE = "locationSource";
+    /** PHASE 9: server time of the last GPS location detection (only written with source "gps"). */
+    public static final String FIELD_LOCATION_UPDATED_AT = "locationUpdatedAt";
     public static final String FIELD_ONBOARDING_COMPLETED = "onboardingCompleted";
     public static final String FIELD_FIRST_NAME = "firstName";
     public static final String FIELD_MIDDLE_NAME = "middleName";

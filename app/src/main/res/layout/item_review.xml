@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    One customer review card (NEW in phase 9), used on the Description page (top five) and the
+    Reviews page. The restaurant owner's reply, when there is one, sits underneath.
+    Location: app/src/main/res/layout/item_review.xml   Logic: ui/ReviewViews.java
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_desc_card"
+    android:backgroundTint="@color/desc_surface"
+    android:orientation="vertical"
+    android:padding="18dp">
+
+    <LinearLayout
+        android:id="@+id/review_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- [UI ASSET] Reviewer picture; fallback = initials (profile/InitialsDrawable.java) -->
+        <ImageView
+            android:id="@+id/review_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_avatar_circle"
+            android:clipToOutline="true"
+            android:importantForAccessibility="no"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/review_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:textColor="@color/desc_ink"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/review_stars"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:textColor="@color/desc_star"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/review_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/desc_muted"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/review_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="@color/desc_ink"
+        android:textIsSelectable="false"
+        android:textSize="15sp" />
+
+    <!-- [EDIT TEXT] review_read_more / review_read_less -->
+    <TextView
+        android:id="@+id/review_more"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:text="@string/review_read_more"
+        android:textColor="@color/desc_red"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <!-- Restaurant owner's reply (written by the owner through the desktop app) -->
+    <LinearLayout
+        android:id="@+id/review_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_desc_card"
+        android:backgroundTint="@color/desc_reply_bg"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="14dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- [EDIT TEXT] review_reply_label ("Response from the restaurant") -->
+            <TextView
+                android:id="@+id/reply_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/desc_ink"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/reply_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/desc_muted"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/reply_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:lineSpacingMultiplier="1.15"
+            android:textColor="@color/desc_ink"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

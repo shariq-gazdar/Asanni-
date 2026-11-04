@@ -169,7 +169,7 @@ public class RestaurantListActivity extends AsanniActivity implements Restaurant
                         finish(); // opened without a location (shouldn't happen): nothing to list
                         return;
                     }
-                    ((TextView) findViewById(R.id.list_title)).setText(getString(R.string.list_title, scope.shortLabel()));
+                    ((TextView) findViewById(R.id.list_title)).setText(getString(R.string.list_title, scope.city.name));
                     if (started) repository.observe(this, scope.city.id);
                     render();
                 });
@@ -233,7 +233,7 @@ public class RestaurantListActivity extends AsanniActivity implements Restaurant
     }
 
     private List<Restaurant> scoped() {
-        return restaurants == null || scope == null ? new ArrayList<>() : RestaurantQuery.inScope(restaurants, scope);
+        return restaurants == null || scope == null ? new ArrayList<>() : RestaurantQuery.inCity(restaurants, scope) /* PHASE 9: whole city, own area ranked first */;
     }
 
     private void render() {
@@ -264,7 +264,7 @@ public class RestaurantListActivity extends AsanniActivity implements Restaurant
             boolean offline = !online || failure == RestaurantRepository.Failure.NETWORK || nothingOffline;
             showState(offline ? R.drawable.ic_wifi_off : R.drawable.ic_storefront,
                     getString(offline ? R.string.error_restaurants_offline_title : R.string.error_restaurants_title),
-                    offline ? getString(R.string.error_restaurants_offline_text, scope.shortLabel())
+                    offline ? getString(R.string.error_restaurants_offline_text, scope.city.name)
                             : getString(R.string.error_restaurants_text),
                     getString(R.string.error_retry), this::retry);
             return;

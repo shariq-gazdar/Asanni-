@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One rating-distribution row: "5" + bar + count (NEW in phase 9). Location: res/layout/item_rating_bar.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="22dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/bar_label"
+        android:layout_width="14dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/desc_muted"
+        android:textSize="13sp" />
+
+    <FrameLayout
+        android:id="@+id/bar_track"
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_desc_bar"
+        android:backgroundTint="@color/desc_bar_track">
+
+        <View
+            android:id="@+id/bar_fill"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_desc_bar"
+            android:backgroundTint="@color/desc_star" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/bar_count"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/desc_muted"
+        android:textSize="12sp" />
+</LinearLayout>

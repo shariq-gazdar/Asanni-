@@ -46,6 +46,7 @@ final class AppNavigator {
     static final String EXTRA_USER_LNG = "com.asanni.app.extra.USER_LNG";
     static final String EXTRA_RESTAURANT_ID = "com.asanni.app.extra.RESTAURANT_ID";
     // Phase 8: Get directions -> Map
+    static final String EXTRA_RESTAURANT_NAME = "com.asanni.app.extra.RESTAURANT_NAME"; // PHASE 9
     static final String EXTRA_ROUTE_TO = "com.asanni.app.extra.ROUTE_TO";
     static final String EXTRA_ROUTE_TOKEN = "com.asanni.app.extra.ROUTE_TOKEN";
 
@@ -160,11 +161,35 @@ final class AppNavigator {
         start(from, intent);
     }
 
-    /** Phase 8: Restaurant Details "Get details" -> restaurant information (real fields only). */
-    static void openRestaurantInformation(Activity from, String restaurantId) {
+    /**
+     * Restaurant Details "Get details" -> Description page (phase 9 design). The browsing scope
+     * and the phone's last position travel along, so "Open directions" behaves like Details.
+     */
+    static void openRestaurantInformation(Activity from, String restaurantId,
+                                          com.asanni.app.restaurants.LocationScope scope, Double userLat, Double userLng) {
         Intent intent = new Intent(from, RestaurantInfoActivity.class);
         intent.putExtra(EXTRA_RESTAURANT_ID, restaurantId);
+        putScope(intent, scope);
+        putPosition(intent, userLat, userLng);
         start(from, intent);
+    }
+
+    /** PHASE 9: Description page "See more" -> all reviews of the restaurant. */
+    static void openReviews(Activity from, String restaurantId, String restaurantName) {
+        Intent intent = new Intent(from, ReviewsActivity.class);
+        intent.putExtra(EXTRA_RESTAURANT_ID, restaurantId);
+        intent.putExtra(EXTRA_RESTAURANT_NAME, restaurantName);
+        start(from, intent);
+    }
+
+    /** PHASE 9: read-only "Your location" panel (Discover location chip, Settings address row). */
+    static void openLocationInfo(Activity from) {
+        from.startActivityForResult(new Intent(from, LocationInfoActivity.class), REQUEST_EDIT_ADDRESS, animation(from));
+    }
+
+    /** PHASE 9: Premium placeholder (no plans, prices or payments yet). */
+    static void openPremium(Activity from) {
+        start(from, new Intent(from, PremiumActivity.class));
     }
 
     /**

@@ -110,6 +110,8 @@ final class RestaurantViews {
     static String area(Restaurant r, LocationScope scope) {
         String a = r.areaLabel();
         if (a != null) return a;
+        String named = RestaurantQuery.areaName(r, scope); // PHASE 9: its own catalogue area
+        if (named != null) return named;
         // Only fall back to the selected area's name when the restaurant really is in it (the Map
         // lists the whole city / all registered restaurants).
         return scope != null && RestaurantQuery.isInScope(r, scope) ? scope.shortLabel() : null;

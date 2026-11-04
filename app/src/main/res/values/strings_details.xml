@@ -106,31 +106,8 @@
     <string name="save_pending">Saved on this phone. It will sync when you\'re online.</string>
     <string name="save_signed_out">Please sign in again to save restaurants.</string>
 
-    <!-- ========================= GET DETAILS (restaurant information page) ========================= -->
-    <string name="rinfo_title">Restaurant information</string>
-    <string name="rinfo_heading_status">Right now</string>
-    <string name="rinfo_heading_food">Food &amp; price</string>
-    <string name="rinfo_heading_place">Place</string>
-    <string name="rinfo_heading_contact">Contact</string>
-    <string name="rinfo_cuisines">Cuisines</string>
-    <string name="rinfo_price">Price</string>
-    <string name="rinfo_area">Area</string>
-    <string name="rinfo_city">City</string>
-    <string name="rinfo_address">Address</string>
-    <string name="rinfo_tables">Tables</string>
-    <string name="rinfo_open">Open now</string>
-    <string name="rinfo_accepting">Accepting diners</string>
-    <string name="rinfo_wait">Wait time</string>
-    <string name="rinfo_updated">Availability updated</string>
-    <string name="rinfo_phone">Phone</string>
-    <string name="rinfo_yes">Yes</string>
-    <string name="rinfo_no">No</string>
-    <string name="rinfo_not_shared">Not shared</string>
-    <string name="rinfo_call">Call</string>
-    <!-- %1$d free of %2$d total -->
-    <string name="rinfo_tables_value">%1$d free of %2$d</string>
-    <!-- [EDIT TEXT] Honest note: only real data is shown -->
-    <string name="rinfo_note">ASANNI shows only what the restaurant has shared. Menus, opening hours and facilities will appear here when restaurants add them.</string>
+    <!-- PHASE 9: the old "Get details" information-list texts (rinfo_*) were removed; the
+         Description page's texts are in strings_description.xml. -->
 
     <!-- ========================= SAVED TAB ========================= -->
     <!-- [EDIT TEXT] Saved tab -->

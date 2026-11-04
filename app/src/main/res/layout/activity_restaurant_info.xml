@@ -1,52 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    ASANNI - Restaurant information ("Get details" on Restaurant Details)  (NEW in phase 8)
-    Location: app/src/main/res/layout/activity_restaurant_info.xml   Logic: ui/RestaurantInfoActivity.java
-    Shows ONLY fields the desktop app really provides (no invented menus, hours or facilities).
-    Rows are added in code with layout/item_info_row.xml.
+    ASANNI - Description page  (REWRITTEN in phase 9 from the "LIVE STATUS · Dine-in availability"
+    reference image; it was the phase-8 "Get details" information list)
+    Location: app/src/main/res/layout/activity_restaurant_info.xml
+    Logic:    app/src/main/java/com/asanni/app/ui/RestaurantInfoActivity.java
+    Texts:    app/src/main/res/values/strings_description.xml   ([EDIT TEXT] there)
+    Colors:   app/src/main/res/values/colors_description.xml    ([COLOR] there)
+
+    Top to bottom (as in the reference): back + LIVE STATUS / Dine-in availability + refresh,
+    logo + name + "area · distance" (+ phone, the only addition), big status card, AVAILABILITY
+    LANGUAGE (3 cards), "From your location" row, Open directions. Below, by scrolling: rate &
+    review, rating statistics, top five reviews, See more.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rinfo_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/asanni_discover_background"
-    android:orientation="vertical">
-
-    <LinearLayout
-        style="@style/AsanniTopBar"
-        android:paddingStart="16dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp">
-
-        <FrameLayout
-            android:id="@+id/button_back"
-            style="@style/AsanniTopBarButton"
-            android:contentDescription="@string/back">
-
-            <ImageView
-                style="@style/AsanniTopBarIcon"
-                android:src="@drawable/ic_arrow_back" />
-        </FrameLayout>
-
-        <!-- [EDIT TEXT] rinfo_title -->
-        <TextView
-            android:id="@+id/rinfo_title"
-            style="@style/AsanniTopBarTitle"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/rinfo_title" />
-    </LinearLayout>
+    android:background="@color/desc_background">
 
     <ScrollView
+        android:id="@+id/desc_scroll"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="none">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/rinfo_content"
+            android:id="@+id/desc_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -55,45 +35,582 @@
             android:paddingEnd="20dp"
             android:paddingBottom="28dp">
 
-            <TextView
-                android:id="@+id/rinfo_name"
+            <!-- ================= HEADER ================= -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:accessibilityHeading="true"
-                android:textColor="@color/asanni_welcome_ink"
-                android:textSize="24sp" />
+                android:gravity="center_vertical"
+                android:minHeight="72dp"
+                android:orientation="horizontal">
 
+                <!-- [UI ASSET] Back arrow: res/drawable/ic_arrow_back.xml -->
+                <ImageView
+                    android:id="@+id/button_back"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_desc_round_button"
+                    android:contentDescription="@string/detail_back"
+                    android:elevation="1dp"
+                    android:padding="13dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:tint="@color/desc_ink" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!-- [EDIT TEXT] desc_eyebrow ("LIVE STATUS") -->
+                    <TextView
+                        android:id="@+id/desc_eyebrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.04"
+                        android:text="@string/desc_eyebrow"
+                        android:textColor="@color/desc_red"
+                        android:textSize="12sp" />
+
+                    <!-- [EDIT TEXT] desc_title ("Dine-in availability") -->
+                    <TextView
+                        android:id="@+id/rinfo_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/desc_title"
+                        android:textColor="@color/desc_ink"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- [UI ASSET] Refresh arrows: res/drawable/ic_refresh.xml -->
+                <FrameLayout
+                    android:id="@+id/button_refresh"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_desc_round_button"
+                    android:clickable="true"
+                    android:contentDescription="@string/desc_refresh"
+                    android:elevation="1dp"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:id="@+id/refresh_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_refresh"
+                        android:tint="@color/desc_ink" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Shown only for the development dummy restaurant -->
             <TextView
                 android:id="@+id/rinfo_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_test_banner"
-                android:gravity="center"
-                android:padding="10dp"
+                android:paddingStart="14dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="8dp"
                 android:text="@string/detail_test_banner"
-                android:textColor="@color/asanni_pending"
-                android:textSize="13sp"
-                android:textStyle="bold"
+                android:textColor="#5C4400"
+                android:textSize="12sp"
                 android:visibility="gone" />
 
+            <!-- ================= RESTAURANT ================= -->
             <LinearLayout
-                android:id="@+id/rinfo_sections"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-            <!-- [EDIT TEXT] rinfo_note: honest note about missing information -->
-            <TextView
+                android:id="@+id/desc_restaurant_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:background="@drawable/bg_info_box"
-                android:lineSpacingMultiplier="1.15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- [UI ASSET] Logo placeholder (no logoUrl): res/drawable/restaurant_placeholder.xml
+                     The real logo comes from the restaurant's logoUrl (never the cover photo). -->
+                <ImageView
+                    android:id="@+id/desc_logo"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:background="@drawable/bg_desc_logo"
+                    android:clipToOutline="true"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/rinfo_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxLines="2"
+                        android:textColor="@color/desc_ink"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+                    <!-- "Zamzama · 2.1 km" -->
+                    <TextView
+                        android:id="@+id/desc_area"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/desc_muted"
+                        android:textSize="15sp" />
+
+                    <!-- PHASE 9 addition (not in the reference): the restaurant's phone number.
+                         Hidden when there's no valid number. Tap = phone dialer (nothing is called). -->
+                    <LinearLayout
+                        android:id="@+id/desc_phone_row"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <!-- [UI ASSET] Phone icon: res/drawable/ic_call.xml -->
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_call"
+                            android:tint="@color/desc_red" />
+
+                        <TextView
+                            android:id="@+id/desc_phone_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/desc_red"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ================= BIG STATUS CARD ================= -->
+            <LinearLayout
+                android:id="@+id/desc_status_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:accessibilityLiveRegion="polite"
+                android:background="@drawable/bg_desc_card_large"
+                android:backgroundTint="@color/desc_neutral_bg"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="22dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/desc_status_dot"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/bg_desc_dot"
+                        android:backgroundTint="@color/desc_neutral_text" />
+
+                    <TextView
+                        android:id="@+id/desc_status_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:letterSpacing="0.03"
+                        android:textColor="@color/desc_neutral_text"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/desc_status_updated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:gravity="end"
+                        android:textColor="@color/desc_neutral_text"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- "15 min" / "No wait" / "Not reported" -->
+                <TextView
+                    android:id="@+id/desc_status_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/desc_neutral_text"
+                    android:textSize="44sp" />
+
+                <!-- [EDIT TEXT] desc_walk_in ("The restaurant is serving walk-ins in order of arrival.") -->
+                <TextView
+                    android:id="@+id/desc_status_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:textColor="@color/desc_neutral_text"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- ================= AVAILABILITY LANGUAGE ================= -->
+            <!-- [EDIT TEXT] desc_language_heading -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:accessibilityHeading="true"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.04"
+                android:text="@string/desc_language_heading"
+                android:textColor="@color/desc_muted"
+                android:textSize="12sp" />
+
+            <include
+                android:id="@+id/desc_lang_free"
+                layout="@layout/item_desc_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
+            <include
+                android:id="@+id/desc_lang_wait"
+                layout="@layout/item_desc_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
+            <include
+                android:id="@+id/desc_lang_full"
+                layout="@layout/item_desc_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
+            <!-- ================= FROM YOUR LOCATION ================= -->
+            <LinearLayout
+                android:id="@+id/desc_drive_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- [UI ASSET] Navigation arrow: res/drawable/ic_navigation_outline.xml -->
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_desc_round_button"
+                    android:importantForAccessibility="no"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_navigation_outline"
+                    android:tint="@color/desc_ink" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!-- [EDIT TEXT] desc_from_location -->
+                    <TextView
+                        android:id="@+id/desc_drive_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/desc_from_location"
+                        android:textColor="@color/desc_muted"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/desc_drive_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/desc_ink"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Directions problems (permission, GPS off, no route...) with an action -->
+            <LinearLayout
+                android:id="@+id/desc_directions_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:accessibilityLiveRegion="polite"
+                android:background="@drawable/bg_desc_card"
+                android:backgroundTint="@color/desc_surface"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:padding="14dp"
-                android:text="@string/rinfo_note"
-                android:textColor="@color/asanni_discover_muted"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/desc_directions_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/desc_ink"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/desc_directions_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/desc_red"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- ================= OPEN DIRECTIONS ================= -->
+            <LinearLayout
+                android:id="@+id/desc_open_directions"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="22dp"
+                android:background="@drawable/bg_desc_button"
+                android:clickable="true"
+                android:contentDescription="@string/desc_open_directions"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/desc_open_directions_progress"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:indeterminateTint="@color/desc_on_red"
+                    android:visibility="gone" />
+
+                <!-- [UI ASSET] Directions arrow: res/drawable/ic_navigation_outline.xml -->
+                <ImageView
+                    android:id="@+id/desc_open_directions_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_navigation_outline"
+                    android:tint="@color/desc_on_red" />
+
+                <!-- [EDIT TEXT] desc_open_directions -->
+                <TextView
+                    android:id="@+id/desc_open_directions_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/desc_open_directions"
+                    android:textColor="@color/desc_on_red"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- ================= REVIEWS (scroll down) ================= -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="32dp"
+                android:background="@color/desc_divider" />
+
+            <!-- [EDIT TEXT] desc_rate_heading -->
+            <TextView
+                android:id="@+id/desc_rate_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:accessibilityHeading="true"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.04"
+                android:text="@string/desc_rate_heading"
+                android:textColor="@color/desc_muted"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/desc_rate_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/desc_rate_title"
+                android:textColor="@color/desc_ink"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <!-- 1-5 stars, built in code -->
+            <LinearLayout
+                android:id="@+id/desc_stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/desc_stars_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:accessibilityLiveRegion="polite"
+                android:text="@string/review_tap_star"
+                android:textColor="@color/desc_muted"
                 android:textSize="13sp" />
+
+            <!-- [EDIT TEXT] review_hint -->
+            <EditText
+                android:id="@+id/desc_review_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_desc_input"
+                android:gravity="top|start"
+                android:hint="@string/review_hint"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLength="5000"
+                android:minHeight="120dp"
+                android:padding="16dp"
+                android:textColor="@color/desc_ink"
+                android:textColorHint="@color/desc_muted"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/desc_review_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:accessibilityLiveRegion="polite"
+                    android:textColor="@color/desc_muted"
+                    android:textSize="13sp" />
+
+                <!-- "0 / 5,000" -->
+                <TextView
+                    android:id="@+id/desc_review_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/desc_muted"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/desc_review_submit"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_desc_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/desc_review_submit_progress"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="12dp"
+                    android:indeterminateTint="@color/desc_on_red"
+                    android:visibility="gone" />
+
+                <!-- [EDIT TEXT] review_submit / review_update -->
+                <TextView
+                    android:id="@+id/desc_review_submit_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/review_submit"
+                    android:textColor="@color/desc_on_red"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- ================= RATING STATISTICS ================= -->
+            <!-- [EDIT TEXT] desc_ratings_heading -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34dp"
+                android:accessibilityHeading="true"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.04"
+                android:text="@string/desc_ratings_heading"
+                android:textColor="@color/desc_muted"
+                android:textSize="12sp" />
+
+            <include
+                android:id="@+id/desc_stats"
+                layout="@layout/view_review_stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
+            <!-- ================= TOP FIVE REVIEWS ================= -->
+            <LinearLayout
+                android:id="@+id/desc_top_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/desc_reviews_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:accessibilityLiveRegion="polite"
+                android:gravity="center"
+                android:padding="12dp"
+                android:textColor="@color/desc_muted"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <!-- [EDIT TEXT] desc_see_more ("See more") -->
+            <TextView
+                android:id="@+id/desc_see_more"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_desc_outline_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/desc_see_more"
+                android:textColor="@color/desc_ink"
+                android:textSize="15sp"
+                android:visibility="gone" />
 
             <ProgressBar
                 android:id="@+id/rinfo_progress"
@@ -102,9 +619,10 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp"
                 android:contentDescription="@string/loading_description"
-                android:indeterminateTint="@color/asanni_welcome_accent" />
+                android:indeterminateTint="@color/desc_red"
+                android:visibility="gone" />
 
-            <!-- PHASE 8: offline / error state with Retry -->
+            <!-- Offline / error state with Retry (only when nothing could be loaded) -->
             <include
                 android:id="@+id/rinfo_state"
                 layout="@layout/view_discover_state"
@@ -114,4 +632,4 @@
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</FrameLayout>

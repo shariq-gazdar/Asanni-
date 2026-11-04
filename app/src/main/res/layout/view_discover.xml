@@ -59,7 +59,7 @@
                         android:textColor="@color/asanni_discover_muted"
                         android:textSize="13sp" />
 
-                    <!-- Browsing location: tap the row (or the arrow) to change it -->
+                    <!-- Your location (PHASE 9: read-only; tap = "Your location" panel) -->
                     <LinearLayout
                         android:id="@+id/discover_location_button"
                         android:layout_width="wrap_content"
@@ -92,15 +92,18 @@
                             android:textColor="@color/asanni_welcome_ink"
                             android:textSize="16sp" />
 
-                        <!-- The dropdown arrow the first-time tip points at -->
+                        <!-- PHASE 9: an info icon instead of a dropdown arrow - the location is locked
+                             (detected from the phone). Tap opens the read-only "Your location" panel.
+                             The first-time tip still points here (same id).
+                             [UI ASSET] res/drawable/ic_info_outline.xml -->
                         <ImageView
                             android:id="@+id/discover_location_arrow"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
                             android:layout_marginStart="6dp"
                             android:importantForAccessibility="no"
-                            android:src="@drawable/ic_expand_more"
-                            android:tint="@color/asanni_welcome_ink" />
+                            android:src="@drawable/ic_info_outline"
+                            android:tint="@color/asanni_discover_muted" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -732,7 +735,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/coach_location_title"
+                android:text="@string/coach_location_locked_title"
                 android:textColor="@color/asanni_coach_text"
                 android:textSize="15sp" />
 
@@ -741,7 +744,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:lineSpacingMultiplier="1.15"
-                android:text="@string/coach_location_text"
+                android:text="@string/coach_location_locked_text"
                 android:textColor="@color/asanni_coach_subtext"
                 android:textSize="14sp" />
 

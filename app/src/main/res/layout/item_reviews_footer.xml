@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Reviews page list footer: loading more / end / retry (NEW in phase 9). -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="64dp">
+
+    <ProgressBar
+        android:id="@+id/footer_progress"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/desc_red" />
+
+    <TextView
+        android:id="@+id/footer_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:textColor="@color/desc_muted"
+        android:textSize="13sp"
+        android:visibility="gone" />
+</FrameLayout>

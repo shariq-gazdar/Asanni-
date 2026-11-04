@@ -376,9 +376,10 @@ public class RestaurantDetailActivity extends AsanniActivity implements Restaura
         } else if (userLat == null || userLng == null) {
             value.setText(R.string.distance_unavailable);
             sub.setText(R.string.distance_unavailable_detail);
-        } else if (lastRoute != null && !lastRoute.approximate) {
-            value.setText(lastRoute.distanceText());   // real road distance (GraphHopper)
-            String t = lastRoute.durationText();
+        } else if (knownRoute(r) != null) {
+            Route known = knownRoute(r);
+            value.setText(known.distanceText());   // real road distance (GraphHopper)
+            String t = known.durationText();
             sub.setText(t.isEmpty() ? getString(R.string.distance_drive_hint) : getString(R.string.distance_drive_time, t));
         } else {
             Double km = RestaurantQuery.distanceKm(r, userLat, userLng);
@@ -386,6 +387,13 @@ public class RestaurantDetailActivity extends AsanniActivity implements Restaura
             sub.setText(R.string.distance_straight_sub);
         }
         findViewById(R.id.detail_distance_box).setContentDescription(value.getText() + ". " + sub.getText());
+    }
+
+    /** PHASE 9: this page's route, or a recent identical one from another page (RouteMemory). */
+    private Route knownRoute(Restaurant r) {
+        if (lastRoute != null && !lastRoute.approximate) return lastRoute;
+        RouteMemory.Entry e = RouteMemory.find(r.id, userLat, userLng, System.currentTimeMillis());
+        return e != null ? e.route : null;
     }
 
     /** waitMinutes: 0 = "No wait" (a real value), missing = "not shared", old = "may be outdated". */
@@ -457,10 +465,12 @@ public class RestaurantDetailActivity extends AsanniActivity implements Restaura
             box.setContentDescription(getResources().getQuantityString(R.plurals.reviews_summary_description,
                     (int) Math.min(reviews.count, Integer.MAX_VALUE), avg, (int) Math.min(reviews.count, Integer.MAX_VALUE)));
         } else {
-            text.setText(R.string.reviews_none); // never an invented rating
+            text.setText(reviews != null && reviews.failed ? R.string.stats_failed
+                    : R.string.reviews_none); // never an invented rating
             text.setTextColor(getColor(R.color.asanni_discover_muted));
             star.setVisibility(View.GONE);
-            box.setContentDescription(getString(R.string.reviews_none));
+            box.setContentDescription(getString(reviews != null && reviews.failed ? R.string.stats_failed
+                    : R.string.reviews_none));
         }
         if (box.getAlpha() < 1f) box.animate().alpha(1f).setDuration(motion() ? 200 : 0).start();
     }
@@ -523,7 +533,7 @@ public class RestaurantDetailActivity extends AsanniActivity implements Restaura
 
     private void openInformation() {
         if (restaurantId == null) return;
-        AppNavigator.openRestaurantInformation(this, restaurantId);
+        AppNavigator.openRestaurantInformation(this, restaurantId, scope, userLat, userLng); // PHASE 9
     }
 
     // ============================================================================ Get directions (explicit only)
@@ -588,6 +598,7 @@ public class RestaurantDetailActivity extends AsanniActivity implements Restaura
                         return;
                     }
                     lastRoute = route;
+                    RouteMemory.remember(r.id, route, from.getLatitude(), from.getLongitude()); // PHASE 9
                     bindDistance(); // real road distance + drive time now known
                     // Map draws the same route (Routeservice answers it from its cache: no 2nd credit).
                     AppNavigator.openMapWithRoute(this, r.id, scope, from.getLatitude(), from.getLongitude());

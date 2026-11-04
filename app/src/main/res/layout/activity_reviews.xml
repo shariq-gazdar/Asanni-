@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - Reviews page  (NEW in phase 9, no reference image: built with the Description page's
+    design language). Opened by "See more" on the Description page.
+    Location: app/src/main/res/layout/activity_reviews.xml   Logic: ui/ReviewsActivity.java
+    Texts: res/values/strings_description.xml ("REVIEWS PAGE" section, [EDIT TEXT])
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reviews_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/desc_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="72dp"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <!-- [UI ASSET] Back arrow: res/drawable/ic_arrow_back.xml -->
+        <ImageView
+            android:id="@+id/button_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_desc_round_button"
+            android:contentDescription="@string/detail_back"
+            android:elevation="1dp"
+            android:padding="13dp"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/desc_ink" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Restaurant name (from Firestore) -->
+            <TextView
+                android:id="@+id/reviews_restaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:textColor="@color/desc_red"
+                android:textSize="12sp" />
+
+            <!-- [EDIT TEXT] reviews_title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/reviews_title"
+                android:textColor="@color/desc_ink"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/reviews_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="12dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp"
+            android:scrollbarStyle="outsideOverlay" />
+
+        <ProgressBar
+            android:id="@+id/reviews_progress"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/loading_description"
+            android:indeterminateTint="@color/desc_red" />
+
+        <include
+            android:id="@+id/reviews_state"
+            layout="@layout/view_discover_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

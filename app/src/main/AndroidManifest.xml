@@ -116,6 +116,21 @@
             android:theme="@style/AsanniScreenTheme" />
 
         <activity
+            android:name=".ui.ReviewsActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme" />
+
+        <activity
+            android:name=".ui.LocationInfoActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme" />
+
+        <activity
+            android:name=".ui.PremiumActivity"
+            android:exported="false"
+            android:theme="@style/AsanniScreenTheme" />
+
+        <activity
             android:name=".ui.RestaurantInfoActivity"
             android:exported="false"
             android:theme="@style/AsanniScreenTheme" />

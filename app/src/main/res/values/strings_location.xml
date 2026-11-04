@@ -37,16 +37,16 @@
 
     <!-- [EDIT TEXT] Allow Location: status messages -->
     <string name="location_suggest_area">It looks like you\'re in %1$s, %2$s. Is that right?</string>
-    <string name="location_suggest_city">We found %1$s, but not your exact area. Please choose it from the list.</string>
+    <string name="location_suggest_city">We found %1$s, but not your exact area, so ASANNI will use all of %1$s.</string>
     <string name="location_approximate_note">(Approximate location, so please double-check.)</string>
-    <string name="location_denied">Location access was not allowed. You can try again or enter your area manually.</string>
-    <string name="location_blocked">Location is turned off for ASANNI. Allow it in app settings, or enter your area manually.</string>
-    <string name="location_services_off">Your phone\'s location is switched off. Turn it on, or enter your area manually.</string>
-    <string name="location_unavailable">We couldn\'t find your location just now. Move near a window or try again, or enter your area manually.</string>
-    <string name="location_failed">Something went wrong while finding your location. Try again or enter your area manually.</string>
-    <string name="location_geocode_unavailable">We found your position but couldn\'t work out the area name. Please enter your area manually.</string>
-    <string name="location_no_city_match">Your city isn\'t in ASANNI\'s list yet. Please enter your area manually.</string>
-    <string name="location_outside_country">ASANNI is only available in Pakistan for now. You can still enter an area manually.</string>
+    <string name="location_denied">ASANNI needs your location to find restaurants in your city. Tap Try again to allow it.</string>
+    <string name="location_blocked">Location is turned off for ASANNI. Allow it in app settings to find restaurants in your city.</string>
+    <string name="location_services_off">Your phone\'s location is switched off. Turn it on to continue.</string>
+    <string name="location_unavailable">We couldn\'t find your location just now. Move near a window and try again.</string>
+    <string name="location_failed">Something went wrong while finding your location. Please try again.</string>
+    <string name="location_geocode_unavailable">We found your position but couldn\'t work out the city name. Check your internet connection and try again.</string>
+    <string name="location_no_city_match">ASANNI isn\'t available in your city yet. We\'re adding more cities soon.</string>
+    <string name="location_outside_country">ASANNI is only available in Pakistan for now.</string>
     <string name="location_settings_unavailable">Couldn\'t open settings on this device.</string>
     <string name="location_saving_slow">Still saving… check your internet connection.</string>
 

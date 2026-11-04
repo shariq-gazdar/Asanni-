@@ -1,22 +1,13 @@
 package com.asanni.app.saved;
 
-import android.util.Log;
-
-import com.google.firebase.firestore.AggregateField;
-import com.google.firebase.firestore.AggregateQuerySnapshot;
-import com.google.firebase.firestore.AggregateSource;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * READ-ONLY restaurant reviews summary (phase 8). The page where diners WRITE reviews comes in a
  * later phase; nothing here can create a review.
  *
  * Location: app/src/main/java/com/asanni/app/saved/RestaurantFeedback.java  (NEW in phase 8)
  *
- * Data contract (recommended, see GUIDE.md):
+ * PHASE 9: reviews moved to restaurantOwner/{restaurantId}/reviews/{userUid} (nothing had been
+ * written to the phase-8 path). Old phase-8 contract, kept for reference:
  *   restaurantReviews/{restaurantId}/reviews/{userUid}
  *       rating     int 1-5        (required)
  *       text       string ≤ 1000  (optional)
@@ -29,20 +20,22 @@ import java.util.Map;
  */
 public final class RestaurantFeedback {
 
-    private static final String TAG = "AsanniReviews";
-    public static final String COLLECTION = "restaurantReviews";
-    public static final String SUBCOLLECTION = "reviews";
-    public static final String FIELD_RATING = "rating";
-    private static final long CACHE_MS = 2 * 60_000L;
-
     public static final class Summary {
         public final long count;
         /** 1.0 - 5.0, or null when there are no reviews. */
         public final Double average;
 
+        /** PHASE 9: true = couldn't be loaded (shown as such, never as "No reviews yet"). */
+        public final boolean failed;
+
         Summary(long count, Double average) {
+            this(count, average, false);
+        }
+
+        Summary(long count, Double average, boolean failed) {
             this.count = count;
             this.average = average;
+            this.failed = failed;
         }
 
         public boolean hasReviews() {
@@ -54,38 +47,16 @@ public final class RestaurantFeedback {
         void onSummary(Summary summary);
     }
 
-    private static final Map<String, Summary> CACHE = new HashMap<>();
-    private static final Map<String, Long> CACHED_AT = new HashMap<>();
-
     private RestaurantFeedback() {}
 
+    /**
+     * PHASE 9: the same real statistics as the Description page (reviews now live in
+     * restaurantOwner/{id}/reviews, see reviews/ReviewRepository). Failure -> "No reviews yet".
+     */
     public static void load(final String restaurantId, final Callback cb) {
-        Long at = CACHED_AT.get(restaurantId);
-        if (at != null && System.currentTimeMillis() - at < CACHE_MS) {
-            cb.onSummary(CACHE.get(restaurantId));
-            return;
-        }
-        final AggregateField.AverageAggregateField avg = AggregateField.average(FIELD_RATING);
-        FirebaseFirestore.getInstance().collection(COLLECTION).document(restaurantId).collection(SUBCOLLECTION)
-                .aggregate(AggregateField.count(), avg)
-                .get(AggregateSource.SERVER)
-                .addOnSuccessListener(snap -> {
-                    Summary s = summarize(snap, avg);
-                    CACHE.put(restaurantId, s);
-                    CACHED_AT.put(restaurantId, System.currentTimeMillis());
-                    cb.onSummary(s);
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Reviews summary unavailable: " + e.getClass().getSimpleName());
-                    cb.onSummary(new Summary(0, null)); // shown as "No reviews yet"
-                });
-    }
-
-    private static Summary summarize(AggregateQuerySnapshot snap, AggregateField.AverageAggregateField avg) {
-        long count = snap.getCount();
-        Double average = snap.get(avg);
-        // Ratings outside 1-5 can't come from valid reviews: don't show a broken number.
-        if (average == null || average.isNaN() || average < 1 || average > 5) average = null;
-        return new Summary(count, average);
+        com.asanni.app.reviews.ReviewRepository.loadStats(restaurantId, false, stats ->
+                cb.onSummary(stats == null ? new Summary(0, null, true)
+                        : !stats.hasReviews() ? new Summary(0, null)
+                        : new Summary(stats.total, stats.average)));
     }
 }

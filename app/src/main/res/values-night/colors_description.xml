@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location: app/src/main/res/values-night/colors_description.xml (NEW in phase 9). Dark theme. -->
+<resources>
+    <color name="desc_background">#151413</color>
+    <color name="desc_surface">#262422</color>
+    <color name="desc_ink">#F2EFEA</color>
+    <color name="desc_muted">#A9A49C</color>
+    <color name="desc_red">#D8454C</color>
+    <color name="desc_on_red">#FFFFFF</color>
+    <color name="desc_divider">#3A3734</color>
+    <color name="desc_peach_bg">#3A2A19</color>
+    <color name="desc_peach_text">#F1B474</color>
+    <color name="desc_green_bg">#1D3125</color>
+    <color name="desc_green_text">#8ED2A6</color>
+    <color name="desc_full_bg">#3A1F1F</color>
+    <color name="desc_full_text">#F0A4A4</color>
+    <color name="desc_neutral_bg">#2E2C29</color>
+    <color name="desc_neutral_text">#BDB8AF</color>
+    <color name="desc_star">#F2B632</color>
+    <color name="desc_bar_track">#3A3734</color>
+    <color name="desc_reply_bg">#1E1D1B</color>
+</resources>

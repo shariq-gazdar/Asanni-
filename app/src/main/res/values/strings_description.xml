@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Location: app/src/main/res/values/strings_description.xml  (NEW in phase 9)
+    [EDIT TEXT] Texts for the Description page (LIVE STATUS · Dine-in availability), customer
+    reviews and the Reviews page. %1$s / %1$d = values filled in by the app - keep them.
+    Names, wait times, table counts, phone numbers, ratings and review texts always come from
+    Firestore, never from here.
+-->
+<resources>
+    <!-- ========================= HEADER ========================= -->
+    <!-- [EDIT TEXT] Small red heading -->
+    <string name="desc_eyebrow">LIVE STATUS</string>
+    <!-- [EDIT TEXT] Page title -->
+    <string name="desc_title">Dine-in availability</string>
+    <string name="desc_refresh">Refresh availability</string>
+    <string name="desc_refreshing">Refreshing…</string>
+    <string name="desc_refreshed">Availability refreshed</string>
+    <string name="desc_refresh_failed">Couldn\'t refresh. Showing the last loaded information.</string>
+    <string name="desc_refresh_offline">You\'re offline. Showing the last loaded information.</string>
+    <!-- %1$s = area, %2$s = distance -->
+    <string name="desc_area_distance">%1$s · %2$s</string>
+    <string name="desc_area_missing">Area not shared</string>
+    <string name="desc_phone_description">Call %1$s. Opens the phone dialer.</string>
+
+    <!-- ========================= STATUS CARD ========================= -->
+    <!-- [EDIT TEXT] State labels -->
+    <string name="status_available_now">AVAILABLE NOW</string>
+    <string name="status_short_wait">SHORT WAIT</string>
+    <string name="status_currently_full">CURRENTLY FULL</string>
+    <string name="status_not_accepting">NOT TAKING DINERS</string>
+    <string name="status_stale">MAY BE OUTDATED</string>
+    <string name="status_unknown">AVAILABILITY UNKNOWN</string>
+    <!-- Big value -->
+    <string name="status_value_minutes">%1$d min</string>
+    <string name="status_value_no_wait">No wait</string>
+    <plurals name="status_value_tables">
+        <item quantity="one">%1$d table free</item>
+        <item quantity="other">%1$d tables free</item>
+    </plurals>
+    <string name="status_value_unknown">Not reported</string>
+    <string name="status_value_closed">Closed now</string>
+    <string name="status_value_not_accepting">Not accepting diners</string>
+    <!-- [EDIT TEXT] Sentence from the reference (shown for Available now / Short wait / Currently full) -->
+    <string name="desc_walk_in">The restaurant is serving walk-ins in order of arrival.</string>
+    <!-- Honest sentences for the other states -->
+    <string name="desc_text_unknown">The restaurant hasn\'t shared a current wait time, so ASANNI can\'t say how busy it is.</string>
+    <string name="desc_text_stale">This is the restaurant\'s last report. It\'s old, so the wait right now may be different.</string>
+    <string name="desc_text_closed">The restaurant says it\'s closed right now.</string>
+    <string name="desc_text_not_accepting">The restaurant says it isn\'t accepting diners right now.</string>
+    <!-- Last update (availabilityUpdatedAt) -->
+    <string name="upd_just_now">Updated just now</string>
+    <plurals name="upd_minutes">
+        <item quantity="one">Updated %1$d min ago</item>
+        <item quantity="other">Updated %1$d mins ago</item>
+    </plurals>
+    <plurals name="upd_hours">
+        <item quantity="one">Updated %1$d hour ago</item>
+        <item quantity="other">Updated %1$d hours ago</item>
+    </plurals>
+    <string name="upd_date">Updated %1$s</string>
+    <string name="upd_missing">Update time not shared</string>
+    <string name="upd_invalid">Update time unavailable</string>
+    <!-- %1$s = state, %2$s = value, %3$s = update time, %4$s = sentence -->
+    <string name="status_card_description">%1$s. %2$s. %3$s. %4$s</string>
+
+    <!-- ========================= AVAILABILITY LANGUAGE ========================= -->
+    <!-- [EDIT TEXT] -->
+    <string name="desc_language_heading">AVAILABILITY LANGUAGE</string>
+    <string name="lang_free_title">Available now</string>
+    <string name="lang_free_sub">No wait · walk in</string>
+    <plurals name="lang_free_sub_tables">
+        <item quantity="one">%1$d table free · walk in</item>
+        <item quantity="other">%1$d tables free · walk in</item>
+    </plurals>
+    <string name="lang_free_label">FREE</string>
+    <string name="lang_wait_title">Short wait</string>
+    <!-- %1$d = 20 (WaitStatus.SHORT_WAIT_MAX_MINUTES) -->
+    <string name="lang_wait_sub">Wait of up to %1$d min</string>
+    <string name="lang_wait_sub_now">Now: about %1$d min</string>
+    <string name="lang_wait_label">WAIT</string>
+    <string name="lang_full_title">Currently full</string>
+    <string name="lang_full_sub">Wait of more than %1$d min</string>
+    <string name="lang_full_sub_now">Now: about %1$d min</string>
+    <string name="lang_full_label">FULL</string>
+    <string name="lang_current">current status</string>
+
+    <!-- ========================= FROM YOUR LOCATION ========================= -->
+    <!-- [EDIT TEXT] -->
+    <string name="desc_from_location">From your location</string>
+    <!-- %1$s = road distance, %2$s = driving time (GraphHopper route, no live traffic) -->
+    <string name="drive_value">%1$s · around %2$s by car</string>
+    <string name="drive_distance_only">%1$s by road</string>
+    <!-- %1$s = straight-line distance (no route requested yet) -->
+    <string name="drive_straight">%1$s straight line · tap Open directions for driving time</string>
+    <string name="drive_need_location">Turn on location to see the distance</string>
+    <string name="drive_no_coords">This restaurant hasn\'t shared its map location</string>
+    <string name="drive_locating">Finding your location…</string>
+    <!-- [EDIT TEXT] Button -->
+    <string name="desc_open_directions">Open directions</string>
+    <string name="desc_finding_route">Finding route…</string>
+
+    <!-- ========================= WRITE A REVIEW ========================= -->
+    <!-- [EDIT TEXT] -->
+    <string name="desc_rate_heading">CUSTOMER FEEDBACK</string>
+    <string name="desc_rate_title">Rate this restaurant</string>
+    <string name="desc_rate_title_edit">Edit your review</string>
+    <string name="review_tap_star">Tap a star to rate</string>
+    <string-array name="review_rating_words">
+        <item>Terrible</item>
+        <item>Poor</item>
+        <item>Okay</item>
+        <item>Good</item>
+        <item>Excellent</item>
+    </string-array>
+    <plurals name="review_star_description">
+        <item quantity="one">%1$d star</item>
+        <item quantity="other">%1$d stars</item>
+    </plurals>
+    <string name="review_hint">Share your experience: food, service, waiting time…</string>
+    <!-- %1$s = characters typed, %2$s = 5,000 -->
+    <string name="review_counter">%1$s / %2$s</string>
+    <string name="review_submit">Submit review</string>
+    <string name="review_update">Update review</string>
+    <string name="review_submitting">Submitting…</string>
+    <string name="review_need_rating">Choose a rating from 1 to 5 stars.</string>
+    <string name="review_need_text">Write a few words about your visit.</string>
+    <string name="review_too_long">Reviews can be up to 5,000 characters.</string>
+    <string name="review_success">Thank you! Your review is published.</string>
+    <string name="review_updated">Your review was updated.</string>
+    <string name="review_editing_note">You\'ve reviewed this restaurant before. Submitting will update your review.</string>
+    <string name="review_failed_offline">You\'re offline. Your review is kept here. Try again when you\'re online.</string>
+    <string name="review_failed_not_allowed">Reviews can\'t be posted for this restaurant right now. Your text is kept.</string>
+    <string name="review_failed">Couldn\'t submit your review. Your text is kept. Please try again.</string>
+    <string name="review_signed_out">Please sign in again to post a review.</string>
+    <string name="review_profile_needed">Your profile is still loading. Please try again in a moment.</string>
+    <string name="review_test_restaurant">Reviews are switched off for the TEST DATA restaurant.</string>
+
+    <!-- ========================= RATINGS + REVIEWS ========================= -->
+    <!-- [EDIT TEXT] -->
+    <string name="desc_ratings_heading">RATINGS &amp; REVIEWS</string>
+    <plurals name="stats_total">
+        <item quantity="one">%1$s review</item>
+        <item quantity="other">%1$s reviews</item>
+    </plurals>
+    <string name="stats_none">No reviews yet</string>
+    <string name="stats_failed">Ratings can\'t be loaded right now.</string>
+    <string name="stats_description">Rated %1$s out of 5 from %2$s reviews.</string>
+    <string name="stats_none_description">No reviews yet.</string>
+    <!-- %1$d = stars, %2$s = number of reviews -->
+    <string name="bar_description">%1$d stars: %2$s</string>
+    <string name="reviews_none_text">No reviews yet. Be the first to share a genuine review.</string>
+    <string name="reviews_failed">Reviews can\'t be loaded right now. Tap to try again.</string>
+    <string name="desc_see_more">See more</string>
+    <string name="review_read_more">Read more</string>
+    <string name="review_read_less">Show less</string>
+    <string name="review_reply_label">Response from the restaurant</string>
+    <string name="review_anonymous">ASANNI diner</string>
+    <!-- %1$s = name, %2$d = stars, %3$s = date, %4$s = review text -->
+    <string name="review_card_description">%1$s, %2$d out of 5 stars, %3$s. %4$s</string>
+    <string name="reply_description">Response from the restaurant, %1$s. %2$s</string>
+    <string name="review_edited">edited</string>
+
+    <!-- ========================= REVIEWS PAGE ========================= -->
+    <!-- [EDIT TEXT] -->
+    <string name="reviews_title">Reviews</string>
+    <string name="reviews_empty_title">No reviews yet</string>
+    <string name="reviews_empty_text">Be the first to share a genuine review of %1$s.</string>
+    <string name="reviews_write">Write a review</string>
+    <string name="reviews_end">You\'ve reached the end</string>
+    <string name="reviews_load_more_failed">Couldn\'t load more reviews. Tap to try again.</string>
+</resources>

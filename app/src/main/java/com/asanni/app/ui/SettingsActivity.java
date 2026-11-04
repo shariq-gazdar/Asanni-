@@ -79,6 +79,11 @@ public class SettingsActivity extends AsanniActivity {
         });
         findViewById(R.id.row_address).setOnClickListener(v -> editAddress());
         findViewById(R.id.row_alerts).setOnClickListener(v -> SystemSettingsLinks.openNotificationSettings(this));
+        findViewById(R.id.row_premium).setOnClickListener(v -> { // PHASE 9: placeholder page
+            if (navigating) return;
+            navigating = true;
+            AppNavigator.openPremium(this);
+        });
     }
 
     @Override
@@ -89,6 +94,12 @@ public class SettingsActivity extends AsanniActivity {
         alertsValue.setText(NotificationPrompt.notificationsAllowed(this)
                 ? R.string.settings_alerts_on : R.string.settings_alerts_off);
         loadProfile();
+        // PHASE 9: verified plan only (Free unless the backend wrote an active entitlement).
+        com.asanni.app.premium.Entitlements.refresh(e -> {
+            if (isFinishing() || isDestroyed()) return;
+            ((TextView) findViewById(R.id.value_premium)).setText(e.isActive(System.currentTimeMillis())
+                    ? R.string.premium_status_active : R.string.premium_status_free);
+        });
     }
 
     private void loadProfile() {
@@ -131,7 +142,7 @@ public class SettingsActivity extends AsanniActivity {
 
         String address = profile.addressLine();
         addressValue.setText(address != null ? address : getString(R.string.settings_address_none));
-        findViewById(R.id.row_address).setContentDescription(getString(R.string.settings_address_description,
+        findViewById(R.id.row_address).setContentDescription(getString(R.string.settings_location_description,
                 address != null ? address : getString(R.string.settings_address_none)));
 
         // A choice made here while offline: keep it and try saving it again.
@@ -174,19 +185,18 @@ public class SettingsActivity extends AsanniActivity {
         });
     }
 
-    /** [NAVIGATION] Home area -> manual city/area form (country stays Pakistan). */
+    /** [NAVIGATION] PHASE 9: location row -> read-only "Your location" panel (no manual editing). */
     private void editAddress() {
         if (navigating) return;
         navigating = true;
-        AppNavigator.openEditAddress(this,
-                profile != null ? profile.cityId : null, profile != null ? profile.areaId : null);
+        AppNavigator.openLocationInfo(this);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppNavigator.REQUEST_EDIT_ADDRESS && resultCode == RESULT_OK) {
-            Toast.makeText(this, R.string.settings_address_saved, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.settings_location_updated, Toast.LENGTH_SHORT).show();
             // onResume reloads the profile and shows the new address.
         }
     }

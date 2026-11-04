@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI - "Your location" (NEW in phase 9): READ-ONLY. Shows the city + area detected from the
+    phone's location and how/when it was detected. There is NO city/area selector anymore; the
+    only action is "Update from my current location" (GPS + reverse geocoding).
+    Location: app/src/main/res/layout/activity_location_info.xml  Logic: ui/LocationInfoActivity.java
+    Texts: res/values/strings_location_lock.xml ([EDIT TEXT])
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/locinfo_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/desc_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="72dp"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <!-- [UI ASSET] Back arrow: res/drawable/ic_arrow_back.xml -->
+        <ImageView
+            android:id="@+id/button_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_desc_round_button"
+            android:contentDescription="@string/detail_back"
+            android:elevation="1dp"
+            android:padding="13dp"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/desc_ink" />
+
+        <!-- [EDIT TEXT] locinfo_title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:accessibilityHeading="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/locinfo_title"
+            android:textColor="@color/desc_ink"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="28dp">
+
+            <LinearLayout
+                android:id="@+id/locinfo_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite"
+                android:background="@drawable/bg_desc_card_large"
+                android:backgroundTint="@color/desc_surface"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="22dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!-- [UI ASSET] Location pin: res/drawable/ic_location_pin.xml -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_location_pin"
+                        android:tint="@color/desc_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.04"
+                        android:text="@string/locinfo_eyebrow"
+                        android:textColor="@color/desc_red"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/locinfo_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/desc_ink"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/locinfo_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/desc_muted"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/locinfo_source"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:lineSpacingMultiplier="1.15"
+                    android:textColor="@color/desc_muted"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- [EDIT TEXT] locinfo_explain -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/locinfo_explain"
+                android:textColor="@color/desc_ink"
+                android:textSize="15sp" />
+
+            <!-- [EDIT TEXT] locinfo_privacy -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="8dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/locinfo_privacy"
+                android:textColor="@color/desc_muted"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/locinfo_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:accessibilityLiveRegion="polite"
+                android:background="@drawable/bg_desc_card"
+                android:backgroundTint="@color/desc_surface"
+                android:lineSpacingMultiplier="1.15"
+                android:padding="14dp"
+                android:textColor="@color/desc_ink"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/locinfo_update"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_desc_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/locinfo_update_progress"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="12dp"
+                    android:indeterminateTint="@color/desc_on_red"
+                    android:visibility="gone" />
+
+                <!-- [UI ASSET] res/drawable/ic_my_location.xml -->
+                <ImageView
+                    android:id="@+id/locinfo_update_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="12dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_my_location"
+                    android:tint="@color/desc_on_red" />
+
+                <TextView
+                    android:id="@+id/locinfo_update_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/locinfo_update"
+                    android:textColor="@color/desc_on_red"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

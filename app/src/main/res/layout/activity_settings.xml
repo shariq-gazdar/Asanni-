@@ -151,7 +151,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp">
 
-                <!-- Home area -> same manual city/area form as onboarding -->
+                <!-- PHASE 9: Your location -> read-only panel (detected from the phone; no manual editing) -->
                 <LinearLayout
                     android:id="@+id/row_address"
                     style="@style/AsanniSettingsRow">
@@ -163,7 +163,7 @@
                     <!-- [EDIT TEXT] Settings address label -->
                     <TextView
                         style="@style/AsanniSettingsRowLabel"
-                        android:text="@string/address_label" />
+                        android:text="@string/settings_location_label" />
 
                     <TextView
                         android:id="@+id/value_address"
@@ -191,6 +191,31 @@
                     <TextView
                         android:id="@+id/value_alerts"
                         style="@style/AsanniSettingsRowValue" />
+
+                    <ImageView style="@style/AsanniSettingsChevron" />
+                </LinearLayout>
+
+                <View style="@style/AsanniDivider" />
+
+                <!-- PHASE 9: ASANNI Premium -> placeholder page (no plans / payments yet) -->
+                <LinearLayout
+                    android:id="@+id/row_premium"
+                    style="@style/AsanniSettingsRow">
+
+                    <!-- [UI ASSET] Premium icon: res/drawable/ic_star_outline.xml -->
+                    <ImageView
+                        style="@style/AsanniSettingsRowIcon"
+                        android:src="@drawable/ic_star_outline" />
+
+                    <!-- [EDIT TEXT] premium_row_label -->
+                    <TextView
+                        style="@style/AsanniSettingsRowLabel"
+                        android:text="@string/premium_row_label" />
+
+                    <TextView
+                        android:id="@+id/value_premium"
+                        style="@style/AsanniSettingsRowValue"
+                        android:text="@string/premium_status_free" />
 
                     <ImageView style="@style/AsanniSettingsChevron" />
                 </LinearLayout>

@@ -34,6 +34,8 @@ public final class ProfileData {
     public final String areaId;
     public final String areaName;
     public final String locationSource;
+    /** PHASE 9: when the location was last detected from the phone's GPS (epoch ms), or null. */
+    public final Long locationUpdatedAt;
     public final boolean onboardingCompleted;
     public final boolean registrationCompleted;
     /** True when read from the phone's Firestore cache (offline), not confirmed by the server. */
@@ -61,6 +63,7 @@ public final class ProfileData {
         areaId = b.areaId;
         areaName = b.areaName;
         locationSource = b.locationSource;
+        locationUpdatedAt = b.locationUpdatedAt;
         onboardingCompleted = b.onboardingCompleted;
         registrationCompleted = b.registrationCompleted;
     }
@@ -88,6 +91,8 @@ public final class ProfileData {
         b.areaId = s.getString(UserProfile.FIELD_AREA_ID);
         b.areaName = s.getString(UserProfile.FIELD_AREA_NAME);
         b.locationSource = s.getString(UserProfile.FIELD_LOCATION_SOURCE);
+        com.google.firebase.Timestamp located = s.getTimestamp(UserProfile.FIELD_LOCATION_UPDATED_AT);
+        b.locationUpdatedAt = located != null && located.toDate() != null ? located.toDate().getTime() : null;
         b.onboardingCompleted = Boolean.TRUE.equals(s.getBoolean(UserProfile.FIELD_ONBOARDING_COMPLETED));
         b.registrationCompleted = Boolean.TRUE.equals(s.getBoolean(UserProfile.FIELD_REGISTRATION_COMPLETED));
         return new ProfileData(b);
@@ -145,5 +150,6 @@ public final class ProfileData {
                 photoStoragePath, photoLocalId, phoneNumber, language, appearanceId, role, cityId, cityName,
                 areaId, areaName, locationSource;
         boolean phoneVerified, onboardingCompleted, registrationCompleted, fromCache;
+        Long locationUpdatedAt;
     }
 }

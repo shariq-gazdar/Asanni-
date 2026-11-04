@@ -140,6 +140,10 @@ public final class UserProfileRepository {
         c.put(UserProfile.FIELD_AREA_ID, selection.areaId);
         c.put(UserProfile.FIELD_AREA_NAME, selection.areaName);
         c.put(UserProfile.FIELD_LOCATION_SOURCE, selection.source);
+        if (UserProfile.SOURCE_GPS.equals(selection.source)) {
+            // PHASE 9: "detected at" time, so a saved location is never shown as freshly detected.
+            c.put(UserProfile.FIELD_LOCATION_UPDATED_AT, FieldValue.serverTimestamp());
+        }
         c.put(UserProfile.FIELD_ONBOARDING_COMPLETED, true);
         updateWithTimeout(uid, c, callback, "saveLocation");
     }

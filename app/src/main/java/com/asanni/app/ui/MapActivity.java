@@ -1146,6 +1146,8 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
         setRouteStatus(getString(R.string.route_loading), false);
         final String forId = r.id;
         final int gen = routeGeneration;
+        final double startLat = fromLat;
+        final double startLng = fromLng;
         routeRequest = Routeservice.get().request(fromLat, fromLng, r.latitude, r.longitude, routeMode, result -> {
             if (gen != routeGeneration || isDestroyed() || !routeVisible || !forId.equals(routeRestaurantId)) return;
             routeRequest = null;
@@ -1156,6 +1158,7 @@ public class MapActivity extends AsanniActivity implements RestaurantRepository.
                 return;
             }
             route = result;
+            if (routeMode == Routeconfig.Profile.DRIVING) RouteMemory.remember(forId, result, startLat, startLng); // PHASE 9
             setRouteStatus(null, false);
             drawRoute();
             bindRouteOptions();

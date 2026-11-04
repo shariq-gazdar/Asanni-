@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ASANNI Premium - PLACEHOLDER (NEW in phase 9). No plans, prices, payments or fake success:
+    it only says Premium is coming and shows the user's VERIFIED plan (Free unless the trusted
+    backend wrote an active entitlement). The plans page of the next phase replaces this content.
+    Location: app/src/main/res/layout/activity_premium.xml   Logic: ui/PremiumActivity.java
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/premium_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/desc_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="72dp"
+        android:orientation="horizontal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <ImageView
+            android:id="@+id/button_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_desc_round_button"
+            android:contentDescription="@string/premium_back"
+            android:elevation="1dp"
+            android:padding="13dp"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@color/desc_ink" />
+
+        <!-- [EDIT TEXT] premium_title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:accessibilityHeading="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/premium_title"
+            android:textColor="@color/desc_ink"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_desc_card_large"
+        android:backgroundTint="@color/desc_surface"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- [UI ASSET] Premium illustration: replace this star with an image from the ui folder
+             (copy it to res/drawable/ and change android:src). -->
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_star_filled"
+            android:tint="@color/desc_star" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.04"
+            android:text="@string/premium_eyebrow"
+            android:textColor="@color/desc_red"
+            android:textSize="12sp" />
+
+        <!-- [EDIT TEXT] premium_headline / premium_text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/premium_headline"
+            android:textColor="@color/desc_ink"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="@string/premium_text"
+            android:textColor="@color/desc_muted"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/premium_current"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:accessibilityLiveRegion="polite"
+            android:background="@drawable/bg_desc_card"
+            android:backgroundTint="@color/desc_reply_bg"
+            android:padding="14dp"
+            android:textColor="@color/desc_ink"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>
